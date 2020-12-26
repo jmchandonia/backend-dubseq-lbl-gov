@@ -1,6 +1,7 @@
 package gov.lbl.enigma.dubseq.api;
 
 import gov.lbl.enigma.dubseq.model.*;
+import gov.lbl.enigma.dubseq.service.ExperimentsCollector;
 import gov.lbl.enigma.dubseq.service.FScoreCollector;
 import gov.lbl.enigma.dubseq.service.GScoreCollector;
 import gov.lbl.enigma.dubseq.service.OrganismCollector;
@@ -26,6 +27,9 @@ public class Controller {
     @Autowired
     private OrganismCollector organismCollector;
 
+    @Autowired
+    private ExperimentsCollector experimentsCollector;
+
     @CrossOrigin
     @GetMapping("/fragview")
     public Collection<FragView> getFragmenrs(
@@ -47,5 +51,12 @@ public class Controller {
     public Collection<OrganismRecord> getOrganisms() throws IOException {
 
         return organismCollector.composeOrganisms();
+    }
+
+    @CrossOrigin
+    @GetMapping("/experiments")
+    public Collection<ExperimentsRecord> getExperiments() throws IOException {
+
+        return experimentsCollector.composeExperiments();
     }
 }

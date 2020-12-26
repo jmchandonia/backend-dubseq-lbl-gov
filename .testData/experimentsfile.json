@@ -1,0 +1,23 @@
+[
+  {
+    "condition": "Sodium chloride",
+    "division": "Salt",
+    "experiments": 10,
+    "organisms":"ecoli",
+    "description": "Description"
+  },
+  {
+    "condition": "Aluminium",
+    "division": "Metal",
+    "experiments": 20,
+    "organisms":"ecoli",
+    "description": "Description"
+  },
+  {
+    "condition": "Sodium chloride",
+    "division": "Antibiotic",
+    "experiments": 0,
+    "organisms":"ecoli",
+    "description": "Description"
+  }
+]
