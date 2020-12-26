@@ -1,0 +1,16 @@
+[
+  {
+    "organism": "Aluminium",
+    "division": "Metal",
+    "experiments": 10,
+    "info":"info",
+    "updatedAnnotations": "Aluminium test"
+  },
+  {
+    "organism": "Sodiumm chloride",
+    "division": "salt",
+    "experiments": 20,
+    "info":"info",
+    "updatedAnnotations": "salt test"
+  }
+]

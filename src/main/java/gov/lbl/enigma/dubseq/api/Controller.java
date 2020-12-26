@@ -1,13 +1,11 @@
 package gov.lbl.enigma.dubseq.api;
 
-import gov.lbl.enigma.dubseq.dao.FScoreBaseDao;
-import gov.lbl.enigma.dubseq.dao.FScoreDao;
-import gov.lbl.enigma.dubseq.dao.GScoreBaseDao;
-import gov.lbl.enigma.dubseq.dao.GScoreDao;
 import gov.lbl.enigma.dubseq.model.*;
 import gov.lbl.enigma.dubseq.service.FScoreCollector;
 import gov.lbl.enigma.dubseq.service.GScoreCollector;
+import gov.lbl.enigma.dubseq.service.OrganismCollector;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +23,10 @@ public class Controller {
     @Autowired
     private GScoreCollector gScoreCollector;
 
+    @Autowired
+    private OrganismCollector organismCollector;
+
+    @CrossOrigin
     @GetMapping("/fragview")
     public Collection<FragView> getFragmenrs(
             @RequestParam int posFrom,
@@ -32,10 +34,18 @@ public class Controller {
         return fScoreCollector.composeFragment(posFrom, posTo);
     }
 
+    @CrossOrigin
     @GetMapping("/geneview")
     public Collection<GeneView> getGenes(
             @RequestParam int posFrom,
             @RequestParam int posTo) throws IOException {
         return gScoreCollector.composeGene(posFrom, posTo);
+    }
+
+    @CrossOrigin
+    @GetMapping("/organisms")
+    public Collection<OrganismRecord> getOrganisms() throws IOException {
+
+        return organismCollector.composeOrganisms();
     }
 }
