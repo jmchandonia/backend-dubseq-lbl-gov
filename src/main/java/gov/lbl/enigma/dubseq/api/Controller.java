@@ -1,10 +1,7 @@
 package gov.lbl.enigma.dubseq.api;
 
 import gov.lbl.enigma.dubseq.model.*;
-import gov.lbl.enigma.dubseq.service.ExperimentsCollector;
-import gov.lbl.enigma.dubseq.service.FScoreCollector;
-import gov.lbl.enigma.dubseq.service.GScoreCollector;
-import gov.lbl.enigma.dubseq.service.OrganismCollector;
+import gov.lbl.enigma.dubseq.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +26,9 @@ public class Controller {
 
     @Autowired
     private ExperimentsCollector experimentsCollector;
+
+    @Autowired
+    private GenesCollector genesCollector;
 
     @CrossOrigin
     @GetMapping("/fragview")
@@ -59,4 +59,13 @@ public class Controller {
 
         return experimentsCollector.composeExperiments();
     }
+
+    @CrossOrigin
+    @GetMapping("/genes")
+    public Collection<GeneRecord> getGenesList() throws IOException {
+
+        return genesCollector.composeGene();
+    }
+
+    
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "gene": "recA",
+    "organism": "ecoli",
+    "description": "description",
+    "avg_fitness": 10
+  },
+  {
+    "gene": "recA",
+    "organism": "ecoli2",
+    "description": "description",
+    "avg_fitness": 20
+  },
+  {
+    "gene": "reca",
+    "organism": "ecoli3",
+    "description": "description",
+    "avg_fitness": 30
+  }
+]
