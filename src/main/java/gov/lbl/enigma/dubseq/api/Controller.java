@@ -3,6 +3,7 @@ package gov.lbl.enigma.dubseq.api;
 import gov.lbl.enigma.dubseq.model.*;
 import gov.lbl.enigma.dubseq.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,9 @@ public class Controller {
 
     @Autowired
     private GenesCollector genesCollector;
+
+    @Autowired
+    private LayoutCollector layoutCollector;
 
     @CrossOrigin
     @GetMapping("/fragview")
@@ -67,5 +71,9 @@ public class Controller {
         return genesCollector.composeGene();
     }
 
-    
+    @CrossOrigin
+    @GetMapping("/layout")
+    public Collection<LayoutRecord> getLayoutList() throws IOException {
+        return layoutCollector.composeLayout();
+    }
 }
