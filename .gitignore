@@ -1,7 +1,6 @@
 .DS_Store
 .idea
-.mvn
-
-*.properties
-
+.vscode/
 target/
+*/node_modules/
+*/build
