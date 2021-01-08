@@ -24,14 +24,14 @@ class ScoreGraph extends Component {
 
         evt.preventDefault();
 
-        let frag_res = await axios.get("http://localhost:8080/fragview", {
+        let frag_res = await axios.get("/api/fragview", {
             params: {
                 posFrom: this.state.start,
                 posTo: this.state.end
             }
         })
 
-        let gene_res = await axios.get("http://localhost:8080/geneview", {
+        let gene_res = await axios.get("/api/geneview", {
             params: {
                 posFrom: this.state.start,
                 posTo: this.state.end
