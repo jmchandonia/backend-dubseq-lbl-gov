@@ -59,7 +59,7 @@ class TablePage extends Component {
 	}
 	getOrganisms = async () => {
         
-        let content = await axios.get("api/organisms")
+        let content = await axios.get("/api/organisms")
         await this.setState({ tableContent: content.data });
 	}
 	
@@ -71,7 +71,7 @@ class TablePage extends Component {
 
 	getGenes = async () => {
 	
-		let content = await axios.get("api/genes")
+		let content = await axios.get("/api/genes")
         await this.setState({ tableContent: content.data });
 	}
 
