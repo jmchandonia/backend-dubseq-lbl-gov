@@ -32,7 +32,7 @@ class HomeScreen extends Component {
 							rowOne={
 								<Aux>
 									<Card title='By Organism' image={GenomeSVG} body='Link to list of organisms.' link='/listPage/1' />
-									<Card title='By Experiment' image={ExperimentSVG} body='Link to list of experiments.' link='/listPage/2' />
+									<Card title='By Condition' image={ExperimentSVG} body='Link to list of condition.' link='/listPage/2' />
 									<Card title='By Gene' image={GeneSVG} body='Link to list of genes.' link='/listPage/3'/>
 								</Aux>}
 							rowTwo={

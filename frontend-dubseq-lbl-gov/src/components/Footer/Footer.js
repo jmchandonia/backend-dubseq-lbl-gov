@@ -2,20 +2,18 @@ import React from 'react';
 import './Footer.css';
 
 const Footer = () => (
-	<footer id='footer'>
-		<div className='box-bottom'>
-			<div className='inner'>
-				<div className='box-left'>
-					<ul className='menu-footer'>
-						<li>first</li>
-						<li>second</li>
-						<li>third</li>
-					</ul>
+	<footer className='text-muted footer'>
+		<div className='container py-1'>
+			<div className='row'>
+				<div className='col-sm-4'>
+					<p>this is the left portion of the footer</p>
+					<small class="d-block mb-3 text-muted">© 2020</small>
 				</div>
-				<div className='box-right'>
-					<p>
-						by G.Z.
-					</p>
+				<div className='col-sm-4'>
+					<p>this is the middle portion of the footer</p>
+				</div>
+				<div className='col-sm-4'>
+					<p>this is the right portion of the footer</p>
 				</div>
 			</div>
 		</div>
