@@ -1,0 +1,14 @@
+.nagivation-bar{
+	/* height: 100%; */
+	/* border-right: 1px solid; */
+	/* background-color: rgb(145, 145, 16); */
+}
+
+.link{
+	background-color: transparent;
+	border: 0cm;
+	color: #d14d19;
+	width: 100%;
+	text-align: left;
+	overflow-wrap: normal;
+}

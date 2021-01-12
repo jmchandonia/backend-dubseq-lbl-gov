@@ -1,0 +1,17 @@
+.menu-footer {
+	display: flex;
+}
+
+.footer {
+	border-top: 1px solid;
+	padding-top: 25px;
+	background-color: beige;
+}
+
+ul {
+	list-style-type: none;
+}
+
+div {
+	display: block;
+}

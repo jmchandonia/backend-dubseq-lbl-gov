@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class LayoutDaoImpl implements LayoutDao{
 
-    @Value("${appbarseqlayout}")
+    @Value("${appbarseqlayoutfile}")
     private String fileName;
 
     @Override
