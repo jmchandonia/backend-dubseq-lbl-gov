@@ -3,9 +3,8 @@
 }
 
 .footer {
-	border-top: 1px solid;
 	padding-top: 25px;
-	background-color: beige;
+	background: linear-gradient(#ffffff, #b8b8b8);
 }
 
 ul {
@@ -14,4 +13,8 @@ ul {
 
 div {
 	display: block;
+}
+
+p {
+	color: rgb(0, 0, 180);
 }
