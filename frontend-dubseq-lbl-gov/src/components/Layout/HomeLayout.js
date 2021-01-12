@@ -9,6 +9,7 @@ const layout = (props) => (
 		<div class="card-deck">
 			{props.rowOne}
 		</div>
+		
 		<h2>{props.rowTwoTitle}</h2>
 		<div class="card-deck">
 			{props.rowTwo}
