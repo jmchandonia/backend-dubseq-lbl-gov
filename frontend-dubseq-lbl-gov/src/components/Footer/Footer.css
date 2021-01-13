@@ -5,6 +5,11 @@
 .footer {
 	padding-top: 25px;
 	background: linear-gradient(#ffffff, #b8b8b8);
+	flex-shrink: none;
+}
+
+.footer, .push {
+    height: 155px; /* .push must be the same height as .footer */
 }
 
 ul {

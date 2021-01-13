@@ -17,32 +17,36 @@ class HomeScreen extends Component {
 	render() {
 		return (
 			<Aux>
-				<Header title='HomePage' />
-				<Layout navbarContent={
-					<ul>
-						<li><Link className='link' to='/search'>Search</Link></li>
-						<li><Link className='link' to='/graphPage'>Graphs</Link></li>
-						<li><Link className='link' to='/about'>About</Link></li>
-						<li><div className='link'>Stats</div></li>
-					</ul>}
-					mainContent={
-						<HomePageLayout
-							rowOneTitle={'Search'}
-							rowTwoTitle={'LandingPage'}
-							rowOne={
-								<Aux>
-									<Card title='By Organism' image={GenomeSVG} body='Link to list of organisms.' link='/listPage/1' />
-									<Card title='By Condition' image={ExperimentSVG} body='Link to list of condition.' link='/listPage/2' />
-									<Card title='By Gene' image={GeneSVG} body='Link to list of genes.' link='/listPage/3'/>
-								</Aux>}
-							rowTwo={
-								<Aux>
-									<Card title='Organims LandingPage' body='Organisms.' link='/landingPage/1'/>
-									<Card title='Gene LandingPage' body='Genes.' link='/landingPage/2' />
-								</Aux>
-							} />
-					}
-				/>
+				<div className='wrapper'>
+					<Header title='HomePage' />
+					<Layout navbarContent={
+						<ul>
+							<li><Link className='link' to='/search'>Search</Link></li>
+							<li><Link className='link' to='/graphPage'>Graphs</Link></li>
+							<li><Link className='link' to='/about'>About</Link></li>
+							<li><Link className='link' to='/testing'>testing</Link></li>
+						</ul>}
+						mainContent={
+							<HomePageLayout
+								className='content'
+								rowOneTitle={'Search'}
+								rowTwoTitle={'LandingPage'}
+								rowOne={
+									<Aux>
+										<Card title='By Organism' image={GenomeSVG} body='Link to list of organisms.' link='/listPage/1' />
+										<Card title='By Condition' image={ExperimentSVG} body='Link to list of condition.' link='/listPage/2' />
+										<Card title='By Gene' image={GeneSVG} body='Link to list of genes.' link='/listPage/3' />
+									</Aux>}
+								rowTwo={
+									<Aux>
+										<Card title='Organims LandingPage' body='Organisms.' link='/landingPage/1' />
+										<Card title='Gene LandingPage' body='Genes.' link='/landingPage/2' />
+									</Aux>
+								} />
+						}
+					/>
+					<div className='push' />
+				</div>
 				<Footer />
 			</Aux>
 		)

@@ -2,7 +2,7 @@ import React from 'react';
 import './Footer.css';
 
 const Footer = () => (
-	<footer className='text-muted footer'>
+	<footer className='footer'>
 		<div className='container py-1'>
 			<div className='row'>
 				<div className='col-sm-4'>

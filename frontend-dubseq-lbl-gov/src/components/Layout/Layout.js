@@ -5,10 +5,9 @@ import "./Layout.css";
 const Layout = (props) => (
 
 	<Aux>
-		<div className="container-fluid">
+		<main className='content'>
 			<div className='row flex-xl-nowrap'>
-				{/* <div className="col-12 col-md-3 col-xl-2 bd-sidebar" style={{ padding: 0}}> */}
-				<div className="col-xl-2 bd-sidebar" style={{ padding: 0}}>
+				<div className="col-sm-2 bd-sidebar">
 					<div className='nagivation-bar'>
 						<div className='container'>
 							{props.navbarContent}
@@ -21,7 +20,7 @@ const Layout = (props) => (
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	</Aux>
 
 )
