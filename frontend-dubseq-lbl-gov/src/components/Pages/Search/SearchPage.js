@@ -6,9 +6,6 @@ import Header from '../../Header/Header';
 
 class SearchPage extends Component {
 
-
-
-
 	render() {
 
 		return (

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
-import VerticalLayout from '../../Layout/VerticalLayout';
+import VerticalLayout from '../../Layouts/VerticalLayout';
 import Header from '../../Header/Header';
 import Table from '../../UI/Table/Table';
-import HorizontalLayout from '../../Layout/HorizontalLayout';
+import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Histogram from '../../D3Components/Histogram';
+import Footer from '../../Footer/Footer';
 
 
 
@@ -77,6 +78,7 @@ class LandingPage extends Component {
 				<div className='container'>
 					<VerticalLayout content={pageContent_V} />
 				</div>
+				<Footer />
 			</Aux>
 		)
 	}
