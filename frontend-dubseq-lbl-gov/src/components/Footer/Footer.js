@@ -1,8 +1,8 @@
 import React from 'react';
-import './Footer.css';
+import classes from './Footer.module.css';
 
 const Footer = () => (
-	<footer className='footer'>
+	<footer className={classes.footer}>
 		<div className='container py-1'>
 			<div className='row'>
 				<div className='col-sm-4'>

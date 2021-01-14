@@ -2,15 +2,10 @@ import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
-import { Link } from 'react-router-dom';
-import Layout from '../../Layout/Layout';
-import HomePageLayout from '../../Layout/HomeLayout';
-import GenomeSVG from '../../../images/genome.svg';
-import GeneSVG from '../../../images/gene.svg';
-import ExperimentSVG from '../../../images/experiment.svg';
+import SideBarLayout from '../../Layouts/SideBarLayout';
+import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
-import './HomePage.css';
-
+import SideBar from '../../UI/SideBar/SideBar';
 
 class HomeScreen extends Component {
 
@@ -19,13 +14,22 @@ class HomeScreen extends Component {
 			<Aux>
 				<div className='wrapper'>
 					<Header title='HomePage' />
-					<Layout navbarContent={
-						<ul>
-							<li><Link className='link' to='/search'>Search</Link></li>
-							<li><Link className='link' to='/graphPage'>Graphs</Link></li>
-							<li><Link className='link' to='/about'>About</Link></li>
-							<li><Link className='link' to='/testing'>testing</Link></li>
-						</ul>}
+					<SideBarLayout
+						navbarContent={
+							<SideBar
+								content={[
+									{path: '/search', name: 'Search'},
+									{path: '/graphPage', name: 'Graphs'},
+									{path: '/about', name: 'About'},
+									{path: '/testing', name: 'Testing'}
+							
+									// <Link style={{color: "red"}}to='/search'>Search</Link>,
+									// <Link to='/graphPage'>Graphs</Link>,
+									// <Link to='/about'>About</Link>,
+									// <Link to='/testing'>testing</Link>
+								]}
+							/>
+						}
 						mainContent={
 							<HomePageLayout
 								className='content'
@@ -33,9 +37,9 @@ class HomeScreen extends Component {
 								rowTwoTitle={'LandingPage'}
 								rowOne={
 									<Aux>
-										<Card title='By Organism' image={GenomeSVG} body='Link to list of organisms.' link='/listPage/1' />
-										<Card title='By Condition' image={ExperimentSVG} body='Link to list of condition.' link='/listPage/2' />
-										<Card title='By Gene' image={GeneSVG} body='Link to list of genes.' link='/listPage/3' />
+										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/listPage/1' />
+										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/listPage/2' />
+										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/listPage/3' />
 									</Aux>}
 								rowTwo={
 									<Aux>

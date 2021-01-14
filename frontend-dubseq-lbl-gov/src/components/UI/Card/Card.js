@@ -1,19 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Card.css';
+import classes from './Card.module.css';
 
 
 const card = (props) => (
 
-
 	<div className='card'>
-		<div class='card-dynamic'>
+		<div className={classes.card_dynamic}>
 			<div className='container'>
-				<h5 class="card-title">{props.title}</h5>
-				<div className='img'>
+				<h5 className="card-title">{props.title}</h5>
+				<div className={classes.img}>
 					{props.image == null ? <div>"def img"</div> : <img className="card-img-top" src={props.image} alt="Card cap" />}
 				</div>
-				<div class="card-body">
+				<div className="card-body">
 					<div className='card-text'>{props.body}</div>
 					<Link to={props.link} className='stretched-link' />
 				</div>

@@ -1,16 +1,16 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux';
 import GeneSearchBox from '../../Pages/Search/GeneSearchBox';
+import classes from './TestingPage.module.css';
 
 class TestingPage extends React.Component {
 
 	render() {
 		return (
 			<Aux>
-				<div className='center'>
+				<div className={classes.center}>
 					<GeneSearchBox />
 				</div>
-				<div className='img'>kjhkjh</div>
 			</Aux>
 		)
 	}

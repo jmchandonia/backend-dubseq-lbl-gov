@@ -1,0 +1,13 @@
+.link {
+	background-color: transparent;
+	border: 0cm;
+	color: #d14d19;
+	width: 100%;
+	text-align: left;
+	overflow-wrap: normal;
+}
+.nav_content {
+	margin: 40px 0px;
+	padding: 20px 0px;
+	border: solid red 1px;
+}
