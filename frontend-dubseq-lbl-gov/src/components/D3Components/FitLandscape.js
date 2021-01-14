@@ -4,7 +4,6 @@ import { scaleLinear } from 'd3-scale';
 import { max, min } from 'd3-array';
 import { select} from 'd3-selection';
 import { axisBottom, axisLeft } from 'd3-axis';
-import './FitLandscape.css';
 
 class ScoreGraph extends Component {
 
@@ -58,6 +57,7 @@ class ScoreGraph extends Component {
             .attr("height", wHeight);
 
         // Creating gene chart
+        // eslint-disable-next-line
         const geneChart = svg.append('g')
             .attr('class', 'geneChart')
             .attr('width', graphWidth)

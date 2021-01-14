@@ -70,6 +70,7 @@ class Histogram extends Component {
 
 	updateChart = () => {
 
+		// eslint-disable-next-line
 		let minVal = min(this.state.data, d => d.age);
 		let maxVal = max(this.state.data, d => d.age);
 

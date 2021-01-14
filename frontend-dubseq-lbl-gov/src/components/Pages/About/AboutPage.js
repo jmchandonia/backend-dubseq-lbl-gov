@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import Aux from '../../../hoc/Aux'
 import Header from '../../Header/Header';
-import './AboutPage.css'
 
 class About extends Component {
-
-
 
 	render () {
 		return (

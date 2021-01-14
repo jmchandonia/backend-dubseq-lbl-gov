@@ -6,6 +6,7 @@ import About       from './components/Pages/About/AboutPage';
 import TablePage   from './components/Pages/Table/TablePage';
 import SearchPage  from './components/Pages/Search/SearchPage';
 import LandingPage from './components/Pages/Landing/LandingPage';
+import TestingPage from './components/Pages/Testing/TestingPage';
 
 class App extends Component {
 	render() {
@@ -17,6 +18,7 @@ class App extends Component {
 					<Route path='/listPage/:id' component={TablePage}/>
 					<Route path='/search' component={SearchPage}/>
 					<Route path='/landingPage/:id' component={LandingPage} />
+					<Route path='/testing' component={TestingPage} />
 			</Router>
 		);
 	}
