@@ -23,6 +23,6 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
       - name: Build with Maven
-        run: mvn -X -e -B package --file pom.xml
+        run: mvn -B package --file pom.xml
         env:
           CI: false
