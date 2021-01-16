@@ -13,7 +13,7 @@ const layout = (props) => (
 		</div>
 		<div className={classes.container_self}>
 			<h2>{props.rowTwoTitle}</h2>
-			<div class="card-deck">
+			<div className="card-deck">
 				{props.rowTwo}
 			</div>
 		</div>

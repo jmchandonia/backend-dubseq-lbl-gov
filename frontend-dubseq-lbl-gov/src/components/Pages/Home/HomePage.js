@@ -22,11 +22,6 @@ class HomeScreen extends Component {
 									{path: '/graphPage', name: 'Graphs'},
 									{path: '/about', name: 'About'},
 									{path: '/testing', name: 'Testing'}
-							
-									// <Link style={{color: "red"}}to='/search'>Search</Link>,
-									// <Link to='/graphPage'>Graphs</Link>,
-									// <Link to='/about'>About</Link>,
-									// <Link to='/testing'>testing</Link>
 								]}
 							/>
 						}
@@ -37,9 +32,9 @@ class HomeScreen extends Component {
 								rowTwoTitle={'LandingPage'}
 								rowOne={
 									<Aux>
-										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/listPage/1' />
-										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/listPage/2' />
-										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/listPage/3' />
+										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/genome' />
+										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/condition' />
+										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/gene' />
 									</Aux>}
 								rowTwo={
 									<Aux>

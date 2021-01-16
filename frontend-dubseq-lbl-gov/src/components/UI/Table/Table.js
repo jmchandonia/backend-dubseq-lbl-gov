@@ -4,7 +4,7 @@ import Aux from '../../../hoc/Aux';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
-		<td key={props.data[key]}>{props.data[key]}</td>
+		<td key={index}>{props.data[key]}</td>
 	))
 }
 
@@ -23,11 +23,14 @@ const Table = (props) => {
 			))
 	}
 
-	function getRowsData(obj) {
-		var items = obj;
-		var keys = getKeys(obj[0]);
+	function getRowsData(content) {
+		var items = content;
+		var keys = getKeys(content[0]);
 		return items.map((row, index) => (
-			<tr key={index}><RenderRow key={index} data={row} keys={keys} /></tr>
+			<tr key={index}>
+				<RenderRow data={row} keys={keys} />
+				{props.onClick && <td><button className='btn btn-success'onClick={(() => props.onClick(index))}>see more</button></td>}
+			</tr>
 		))
 	}
 
@@ -36,7 +39,10 @@ const Table = (props) => {
 			<h2>{props.title}</h2>
 			<table className='table table-hover' id='students'>
 				<thead>
-					<tr>{getHeaders(props.content)}</tr>
+					<tr>{getHeaders(props.content)}
+						{props.onClick && <th>LandingPage</th>}
+					</tr>
+
 				</thead>
 				<tbody>
 					{getRowsData(props.content)}

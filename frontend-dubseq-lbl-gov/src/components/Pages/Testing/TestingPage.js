@@ -1,14 +1,13 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux';
-import GeneSearchBox from '../../Pages/Search/GeneSearchBox';
-import classes from './TestingPage.module.css';
+import GeneSearchBox from '../Search/SearchBox';
 
 class TestingPage extends React.Component {
 
 	render() {
 		return (
 			<Aux>
-				<div className={classes.center}>
+				<div className='container'>
 					<GeneSearchBox />
 				</div>
 			</Aux>

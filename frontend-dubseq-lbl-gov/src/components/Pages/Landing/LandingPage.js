@@ -68,15 +68,18 @@ class LandingPage extends Component {
 
 		let pageContent_V = [
 			<Table content={firstContent} title='first' />,
-			<HorizontalLayout content={[<Histogram title="f"/>, <Histogram title="s"/>]} contentProperty={[50]} />,
-			<HorizontalLayout content={pageContent_H} contentProperty={[20, 20, 20]} />
+			<HorizontalLayout content={[<Histogram title="f" />, <Histogram title="s" />]} contentWidth={[6, 6]} />,
+			<HorizontalLayout content={pageContent_H} contentWidth={[4, 4, 4]} />
 		]
 
 		return (
 			<Aux>
-				<Header title="LandingPage" />
-				<div className='container'>
-					<VerticalLayout content={pageContent_V} />
+				<div className='wrapper'>
+					<Header title="LandingPage" />
+					<div className='container'>
+						<VerticalLayout content={pageContent_V} />
+					</div>
+					<div className='push' />
 				</div>
 				<Footer />
 			</Aux>
