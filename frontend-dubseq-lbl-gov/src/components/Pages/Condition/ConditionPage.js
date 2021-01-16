@@ -4,6 +4,7 @@ import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
+import HorizontalLayout from '../../Layouts/HorizontalLayout';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
@@ -17,7 +18,6 @@ class ConditionPage extends Component {
 		super(props)
 		this.state = {
 			tableContent: [{ first: 1, second: 2 }],
-			search: 1,
 			selectionData: ['metal', 'salt', 'antibiotic']
 		}
 	}
@@ -58,24 +58,28 @@ class ConditionPage extends Component {
 		await this.setState({ tableContent: content.data });
 	}
 
-	didClick = () => {
-		this.setState({ search: 0 })
+	handleSubmit = (event) => {
+		this.props.history.push({
+			// pathname: '/conditions/',
+			pathname: '/organisms/',
+			search: `?type=${event[0]}&name=${event[1]}`
+		});
 	}
 
 	render() {
 		return (
 			<Aux>
 				<Header title="TablePage" />
-
-				<div className='container'>
-					{this.state.search ? <SearchBox
+				<HorizontalLayout content={[
+					<SearchBox
 						title='Search Condition'
 						selectionTitle='Select experiment'
 						selection={this.state.selectionData}
 						searchTitle='condition'
-						didClick={this.didClick} /> :
-					<Table content={this.state.tableContent} title='Conditions' />}
-				</div>
+						didSubmit={this.handleSubmit} />,
+					<Table content={this.state.tableContent} title='Conditions' />
+				]} contentWidth={[3, 9]} />
+
 
 			</Aux>
 		)

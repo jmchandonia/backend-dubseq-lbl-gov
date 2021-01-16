@@ -40,7 +40,7 @@ class GenomeList extends Component {
 		))
 	}
 	componentDidMount() {
-		
+
 		this.getOrganisms();
 	}
 
@@ -51,7 +51,10 @@ class GenomeList extends Component {
 	}
 
 	didClick = (index) => {
-		this.props.history.push("/genomeLandingPage/" + index);
+		this.props.history.push({
+			pathname: '/organisms/',
+			search: `?id= ${index}`
+		});
 	}
 
 	render() {
