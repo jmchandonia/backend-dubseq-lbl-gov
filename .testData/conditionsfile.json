@@ -1,16 +1,37 @@
 [
   {
-    "organism": "Aluminium",
-    "division": "Metal",
+    "organism": "Ecoli",
+    "division": "Betaproteobacteria",
     "experiments": 10,
-    "info":"info",
-    "updatedAnnotations": "Aluminium test"
+    "info": "info",
+    "updatedAnnotations": 10
   },
   {
-    "organism": "Sodiumm chloride",
-    "division": "salt",
+    "organism": "Burkholderia phytofirmans PsJN",
+    "division": "Gammaproteobacteria",
     "experiments": 20,
-    "info":"info",
-    "updatedAnnotations": "salt test"
+    "info": "info",
+    "updatedAnnotations": 80
+  },
+  {
+    "organism": "Caulobacter crescentus NA1000",
+    "division": "Alphaproteobacteria",
+    "experiments": 20,
+    "info": "info",
+    "updatedAnnotations": 80
+  },
+  {
+    "organism": "Cupriavidus basilensis FW507-4G11",
+    "division": "Alphaproteobacteria",
+    "experiments": 20,
+    "info": "info",
+    "updatedAnnotations": 80
+  },
+  {
+    "organism": "Dechlorosoma suillum PS",
+    "division": "Betaproteobacteria",
+    "experiments": 20,
+    "info": "info",
+    "updatedAnnotations": 80
   }
 ]

@@ -7,7 +7,7 @@ const Footer = () => (
 			<div className='row'>
 				<div className='col-sm-4'>
 					<p>this is the left portion of the footer</p>
-					<small class="d-block mb-3 text-muted">© 2020</small>
+					<small className="d-block mb-3 text-muted">© 2020</small>
 				</div>
 				<div className='col-sm-4'>
 					<p>this is the middle portion of the footer</p>
