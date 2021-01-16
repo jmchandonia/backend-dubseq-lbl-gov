@@ -74,12 +74,12 @@ class LandingPage extends Component {
 
 		return (
 			<Aux>
-				<Header title="LandingPage" />
 				<div className='wrapper'>
+					<Header title="LandingPage" />
 					<div className='container'>
 						<VerticalLayout content={pageContent_V} />
 					</div>
-					<div className='push'/>
+					<div className='push' />
 				</div>
 				<Footer />
 			</Aux>

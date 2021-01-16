@@ -20,9 +20,6 @@ class GenomeList extends Component {
 	}
 
 
-	// conditional formating to have a search bar
-
-
 	getKeys(obj) {
 		return Object.keys(obj)
 	}
@@ -43,17 +40,19 @@ class GenomeList extends Component {
 		))
 	}
 	componentDidMount() {
-		// let which = this.props.match.params.id;
-
+		
 		this.getOrganisms();
-
 	}
+
 	getOrganisms = async () => {
 
 		let content = await axios.get("/api/organisms")
 		await this.setState({ tableContent: content.data });
 	}
 
+	didClick = (index) => {
+		this.props.history.push("/genomeLandingPage/" + index);
+	}
 
 	render() {
 		return (
@@ -61,9 +60,8 @@ class GenomeList extends Component {
 				<Header title="TablePage" />
 
 				<div className='container'>
-					<Table content={this.state.tableContent} title='Organisms' links={'hi'} />
+					<Table content={this.state.tableContent} title='Organisms' onClick={this.didClick} />
 				</div>
-
 			</Aux>
 		)
 	}

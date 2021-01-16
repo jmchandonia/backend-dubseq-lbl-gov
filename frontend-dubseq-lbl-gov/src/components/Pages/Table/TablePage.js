@@ -40,7 +40,6 @@ class TablePage extends Component {
 	}
 	componentDidMount(){
 		let which = this.props.match.params.id;
-		console.log(which);
 
 		switch(which){
 			case('1'):

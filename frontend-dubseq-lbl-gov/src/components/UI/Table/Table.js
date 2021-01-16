@@ -29,7 +29,7 @@ const Table = (props) => {
 		return items.map((row, index) => (
 			<tr key={index}>
 				<RenderRow data={row} keys={keys} />
-				{props.links && <td><button>{index}</button></td>}
+				{props.onClick && <td><button className='btn btn-success'onClick={(() => props.onClick(index))}>see more</button></td>}
 			</tr>
 		))
 	}
@@ -40,7 +40,7 @@ const Table = (props) => {
 			<table className='table table-hover' id='students'>
 				<thead>
 					<tr>{getHeaders(props.content)}
-						{props.links && <th>link</th>}
+						{props.onClick && <th>LandingPage</th>}
 					</tr>
 
 				</thead>

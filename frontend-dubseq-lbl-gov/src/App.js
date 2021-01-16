@@ -8,6 +8,7 @@ import SearchPage  from './components/Pages/Search/SearchPage';
 import LandingPage from './components/Pages/Landing/LandingPage';
 import TestingPage from './components/Pages/Testing/TestingPage';
 import GenomePage  from './components/Pages/Genome/GenomeList';
+import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
 import ConditionPage from './components/Pages/Condition/ConditionPage';
 import GenePage    from './components/Pages/Gene/GenePage';
 
@@ -24,6 +25,7 @@ class App extends Component {
 					<Route path='/landingPage/:id' component={LandingPage} />
 					<Route path='/testing' component={TestingPage} />
 					<Route path='/genome' component={GenomePage} />
+					<Route path='/genomeLandingPage' component={GenomeLandingPage} />
 					<Route path='/condition' component={ConditionPage} />
 					<Route path='/gene' component={GenePage} />
 			</Router>
