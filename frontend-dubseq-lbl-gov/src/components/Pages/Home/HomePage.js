@@ -32,9 +32,9 @@ class HomeScreen extends Component {
 								rowTwoTitle={'LandingPage'}
 								rowOne={
 									<Aux>
-										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/genome' />
-										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/condition' />
-										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/gene' />
+										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/organisms' />
+										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/conditions' />
+										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/genes' />
 									</Aux>}
 								rowTwo={
 									<Aux>

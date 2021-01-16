@@ -3,6 +3,7 @@ package gov.lbl.enigma.dubseq.api;
 import gov.lbl.enigma.dubseq.model.*;
 import gov.lbl.enigma.dubseq.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,10 +51,18 @@ public class Controller {
 
     @CrossOrigin
     @GetMapping("/organisms")
-    public Collection<OrganismRecord> getOrganisms() throws IOException {
+    public Collection<OrganismRecord> getOrganisms(@RequestParam(required = false) String type) throws IOException {
 
         return organismCollector.composeOrganisms();
     }
+
+    @CrossOrigin
+    @GetMapping("/organisms/{id}")
+    public Collection<OrganismRecord> getOrganisms(@PathVariable long id) throws IOException {
+
+        return organismCollector.composeOrganisms();
+    }
+
 
     @CrossOrigin
     @GetMapping("/experiments")

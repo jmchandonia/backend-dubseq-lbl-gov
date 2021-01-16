@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,16 +16,14 @@ import java.util.List;
 public class OrganismsDaoImpl implements OrganismsDao {
 
     @Value("${apporganismsfile}")
-    private String fileName;
+    private String url;
 
     @Override
     public List<OrganismRecord> getOrganismList() throws IOException {
 
         final ObjectMapper objectMapper = new ObjectMapper();
-        OrganismRecord[] organizmRecordArray = objectMapper.readValue(new File(fileName), OrganismRecord[].class);
+        OrganismRecord[] organizmRecordArray = objectMapper.readValue(new URL(url), OrganismRecord[].class);
 
         return Arrays.asList(organizmRecordArray);
     }
 }
-
-
