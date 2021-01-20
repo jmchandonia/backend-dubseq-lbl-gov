@@ -7,9 +7,9 @@ import TablePage from './components/Pages/Table/TablePage';
 import SearchPage from './components/Pages/Search/SearchPage';
 import LandingPage from './components/Pages/Landing/LandingPage';
 import TestingPage from './components/Pages/Testing/TestingPage';
-import GenomePage from './components/Pages/Genome/GenomeList';
 import ConditionPage from './components/Pages/Condition/ConditionPage';
 import GenePage from './components/Pages/Gene/GenePage';
+import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from "./components/Pages/Genome/GenomeLandingPage";
 
 
@@ -25,6 +25,7 @@ class App extends Component {
 				<Route path='/landingPage/:id' component={LandingPage} />
 				<Route path='/testing' component={TestingPage} />
 				<Switch>
+					{/* <Route path='/organisms' component={GenomePage} /> */}
 					<Route exact strict path='/organisms' component={GenomePage} />
 					<Route path='/organisms/' component={GenomeLandingPage} />
 				</Switch>

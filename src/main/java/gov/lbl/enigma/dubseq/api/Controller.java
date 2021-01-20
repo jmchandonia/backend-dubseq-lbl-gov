@@ -1,14 +1,20 @@
 package gov.lbl.enigma.dubseq.api;
 
+import gov.lbl.enigma.dubseq.dao.GenesDao;
+import gov.lbl.enigma.dubseq.dao.GenomeDao;
 import gov.lbl.enigma.dubseq.model.*;
 import gov.lbl.enigma.dubseq.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -22,7 +28,10 @@ public class Controller {
     private GScoreCollector gScoreCollector;
 
     @Autowired
-    private OrganismCollector organismCollector;
+    private GenesDao genesDao;
+
+    @Autowired
+    private GenomeDao genomeDao;
 
     @Autowired
     private ExperimentsCollector experimentsCollector;
@@ -51,31 +60,40 @@ public class Controller {
 
     @CrossOrigin
     @GetMapping("/organisms")
-    public Collection<OrganismRecord> getOrganisms(@RequestParam(required = false) String type) throws IOException {
+    public List<Map<String, Object>> getOrganisms(@RequestParam(required = false) String id) {
 
-        return organismCollector.composeOrganisms();
+        String query = "select genome_id, name from genome";
+
+        if (id != null) {
+//            query.concat(" where genome_id = " + id);
+            query = new String(query + " where genome_id = " + id);
+        }
+
+        return jdbcTemplate.queryForList(query, new HashMap<String, Object>());
     }
 
     @CrossOrigin
     @GetMapping("/organisms/{id}")
-    public Collection<OrganismRecord> getOrganisms(@PathVariable long id) throws IOException {
+    public List<Map<String, Object>> getOrganisms(@PathVariable long id) throws IOException {
 
-        return organismCollector.composeOrganisms();
+
+        return jdbcTemplate.queryForList("select genome_id, name from genome", new HashMap<String, Object>());
     }
 
 
     @CrossOrigin
     @GetMapping("/experiments")
-    public Collection<ExperimentsRecord> getExperiments() throws IOException {
+    public Collection<BarseqExperiment> getExperiments() throws IOException {
 
         return experimentsCollector.composeExperiments();
     }
 
     @CrossOrigin
     @GetMapping("/genes")
-    public Collection<GeneRecord> getGenesList() throws IOException {
+    public Collection<Gene> getGenesList() throws IOException {
 
-        return genesCollector.composeGene();
+        return genesDao.getGeneList();
+//        return genesCollector.composeGene();
     }
 
     @CrossOrigin
@@ -83,4 +101,12 @@ public class Controller {
     public Collection<LayoutRecord> getLayoutList() throws IOException {
         return layoutCollector.composeLayout();
     }
+
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
 }

@@ -46,22 +46,19 @@ class ConditionPage extends Component {
 		))
 	}
 	componentDidMount() {
-		// let which = this.props.match.params.id;
 
 		this.getExperiments();
-
 	}
 
 	getExperiments = async () => {
 
-		let content = await axios.get("/api/layout")
+		let content = await axios.get("/api/experiments")
 		await this.setState({ tableContent: content.data });
 	}
 
 	handleSubmit = (event) => {
 		this.props.history.push({
-			// pathname: '/conditions/',
-			pathname: '/organisms/',
+			pathname: '/condition/',
 			search: `?type=${event[0]}&name=${event[1]}`
 		});
 	}
@@ -79,7 +76,6 @@ class ConditionPage extends Component {
 						didSubmit={this.handleSubmit} />,
 					<Table content={this.state.tableContent} title='Conditions' />
 				]} contentWidth={[3, 9]} />
-
 
 			</Aux>
 		)

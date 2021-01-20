@@ -43,10 +43,8 @@ class GenePage extends Component {
 		))
 	}
 	componentDidMount() {
-		// let which = this.props.match.params.id;
 
 		this.getGenes();
-
 	}
 
 	getGenes = async () => {
@@ -71,7 +69,7 @@ class GenePage extends Component {
 							selectionTitle='Select organism'
 							selection={this.state.selectionData}
 							searchTitle='gene'
-							didClick={this.didClick} /> :
+							didSubmit={this.didClick} /> :
 						<Table content={this.state.tableContent} title='Genes' />}
 				</div>
 

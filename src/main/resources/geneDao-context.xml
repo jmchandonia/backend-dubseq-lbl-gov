@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="geneDaoReadAllQuery" class="java.lang.String">
+        <constructor-arg><value><![CDATA[
+select
+	gene_id,
+	genome_id,
+	gene_index,
+	name,
+	locus_tag,
+	gene_type,
+	contig_id,
+	pos_from,
+	pos_to,
+	strand,
+	product,
+	note,
+	description
+from gene
+        ]]></value></constructor-arg>
+    </bean>
+
+</beans>
