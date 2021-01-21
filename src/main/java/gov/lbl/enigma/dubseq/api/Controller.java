@@ -60,16 +60,17 @@ public class Controller {
 
     @CrossOrigin
     @GetMapping("/organisms")
-    public List<Map<String, Object>> getOrganisms(@RequestParam(required = false) String id) {
+    public List<Map<String, Object>> getOrganisms(
+            @RequestParam(required = false) String id,
+            @RequestParam(required = false) String type) {
 
-        String query = "select genome_id, name from genome";
+        String QUERY = "select genome_id, name from genome";
 
         if (id != null) {
-//            query.concat(" where genome_id = " + id);
-            query = new String(query + " where genome_id = " + id);
+            QUERY = QUERY + " where genome_id = " + id;
         }
 
-        return jdbcTemplate.queryForList(query, new HashMap<String, Object>());
+        return jdbcTemplate.queryForList(QUERY, new HashMap<String, Object>());
     }
 
     @CrossOrigin
@@ -81,12 +82,28 @@ public class Controller {
     }
 
 
+
     @CrossOrigin
     @GetMapping("/experiments")
-    public Collection<BarseqExperiment> getExperiments() throws IOException {
+    public List<Map<String, Object>> getExperiments(
+            @RequestParam(required = false) String type
+    ){
 
-        return experimentsCollector.composeExperiments();
+        String QUERY = "select * from barseq_experiment";
+
+        if(type != null){
+            QUERY = QUERY + " where type='" + type + "'";
+        }
+
+        return jdbcTemplate.queryForList(QUERY, new HashMap<String, Object>());
     }
+
+//    @CrossOrigin
+//    @GetMapping("/experiments")
+//    public Collection<BarseqExperiment> getExperiments() throws IOException {
+//
+//        return experimentsCollector.composeExperiments();
+//    }
 
     @CrossOrigin
     @GetMapping("/genes")

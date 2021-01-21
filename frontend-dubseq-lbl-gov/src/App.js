@@ -29,7 +29,7 @@ class App extends Component {
 					<Route exact strict path='/organisms' component={GenomePage} />
 					<Route path='/organisms/' component={GenomeLandingPage} />
 				</Switch>
-				<Route path='/conditions/' component={ConditionPage} />
+				<Route path='/conditions' component={ConditionPage} />
 				<Route path='/genes' component={GenePage} />
 			</Router>
 		);

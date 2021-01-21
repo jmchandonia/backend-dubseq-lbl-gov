@@ -50,18 +50,20 @@ class GenomeList extends Component {
 		await this.setState({ tableContent: content.data });
 	}
 
-	didClick = (index) => {
+	didClick = async (index) => {
 		this.props.history.push({
 			pathname: '/organisms/',
 			search: `?id= ${index}`
 		});
+		// let content = await axios.get("/api/organisms/?id=" + index)
+		// await this.setState({ tableContent: content.data });
+		// console.log(index)
 	}
 
 	render() {
 		return (
 			<Aux>
 				<Header title="TablePage" />
-
 				<div className='container'>
 					<Table content={this.state.tableContent} title='Organisms' onClick={this.didClick} />
 				</div>

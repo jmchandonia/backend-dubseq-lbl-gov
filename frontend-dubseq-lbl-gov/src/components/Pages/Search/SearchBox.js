@@ -7,9 +7,8 @@ const SearchBox = (props) => {
 	const [input, setInput] = useState('');
 
 
-
-	const handleSubmit = () => {
-		props.didSubmit([select, input])
+	const handleSubmit = (e) => {
+		props.didSubmit(e, [select, input]);
 	}
 
 	return (
@@ -26,7 +25,7 @@ const SearchBox = (props) => {
 							</select>
 						</div>
 						<div className='md-3'>
-							<div className='form-lable'>{props.searchTitle}:</div>
+							<div className='form-lable'>{props.inputTitle}:</div>
 							<input value={input} onChange={e => setInput(e.target.value)} className='form-control'></input>
 						</div>
 						<input type='submit' value='Submit' style={{ margin: '5px 0px' }} className="btn btn-primary" />

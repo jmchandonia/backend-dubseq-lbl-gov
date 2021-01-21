@@ -68,7 +68,7 @@ class GenePage extends Component {
 							title='Search Gene'
 							selectionTitle='Select organism'
 							selection={this.state.selectionData}
-							searchTitle='gene'
+							inputTitle='gene'
 							didSubmit={this.didClick} /> :
 						<Table content={this.state.tableContent} title='Genes' />}
 				</div>

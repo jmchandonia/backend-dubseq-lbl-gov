@@ -39,13 +39,13 @@ const Table = (props) => {
 			<h2>{props.title}</h2>
 			<table className='table table-hover' id='students'>
 				<thead>
-					<tr>{getHeaders(props.content)}
+					<tr>{props.content == null ? [] : getHeaders(props.content) }
 						{props.onClick && <th>LandingPage</th>}
 					</tr>
 
 				</thead>
 				<tbody>
-					{getRowsData(props.content)}
+					{props.content == null ? [] : getRowsData(props.content)}
 				</tbody>
 			</table>
 		</Aux >
