@@ -7,22 +7,16 @@ import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';
 
-function GenomeLandingPage() {
+function BagSeqLandingPage() {
 
 	const { id } = useParams();
 	const [stats, setStats] = useState(null);
-	const [library, setLibrary] = useState(null);
-	const [experiments, setExperients] = useState(null);
 
 	useEffect(() => {
 
 		const fetchData = async () => {
-			let res1 = await axios.get(`/api/organisms/${id}/stats`);
-			setStats(res1.data);
-			let res2 = await axios.get(`/api/organisms/${id}/libraries`);
-			setLibrary(res2.data);
-			let res3 = await axios.get(`/api/organisms/${id}/experiments`);
-			setExperients(res3.data);
+			let res = await axios.get(`/api/bagseq/${id}`);
+			setStats(res.data);
 		}
 
 		fetchData();
@@ -36,15 +30,13 @@ function GenomeLandingPage() {
 			<div className='wrapper'>
 				<Header title={'GenomeLandingPage'} />
 				<div className='container'>
-					{stats   		&& <Table content={stats}  			title='Basic Statistics' />}
-					{library 		&& <Table content={library} 		title='Library' />}
-					{experiments	&& <Table content ={experiments}	title='Top 10 Experiment'/>}
+					{stats && <Table content={stats} title='Stats' />}
 					<Histogram />
 				</div>
 			</div>
-			{/* <Footer /> */}
+			<Footer />
 		</Aux>
 	)
 }
 
-export default GenomeLandingPage;
+export default BagSeqLandingPage;

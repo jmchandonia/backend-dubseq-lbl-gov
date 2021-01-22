@@ -17,7 +17,7 @@ function ConditionPage() {
 
 
 	// let query = new URLSearchParams(useLocation().search);
-	const query = new URLSearchParams(useLocation().search);
+	let query = new URLSearchParams(useLocation().search);
 	let history = useHistory();
 
 	// When change to the query parameters are made, the useEffect hook is executed.

@@ -38,7 +38,7 @@ class HomeScreen extends Component {
 									</Aux>}
 								rowTwo={
 									<Aux>
-										<Card title='Organims LandingPage' body='Organisms.' link='/landingPage/1' />
+										<Card title='BagSeqLibrary' body='BagSeq.' link='/bagseq/libraries/1' />
 										<Card title='Gene LandingPage' body='Genes.' link='/landingPage/2' />
 									</Aux>
 								} />

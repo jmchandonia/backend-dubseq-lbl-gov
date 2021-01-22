@@ -21,6 +21,13 @@ import java.util.Map;
 @RequestMapping("api")
 public class Controller {
 
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
     @Autowired
     private FScoreCollector fScoreCollector;
 
@@ -161,6 +168,20 @@ public class Controller {
         return jdbcTemplate.queryForList("select genome_id, name from genome", new HashMap<String, Object>());
     }
 
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/libraries")
+    public List<Map<String, Object>> getBagSeq(@PathVariable long id) throws IOException {
+
+        return jdbcTemplate.queryForList("select \n" +
+                "\tbl.bagseq_library_id as lib_id,\n" +
+                "\tbl.name,\n" +
+                "\tbl.host_genome_id as host_genome_id,\n" +
+                "\t(select count(*) from bagseq_fragment bf where bl.bagseq_library_id = bf.bagseq_library_id) as frag_count,\n" +
+                "\t(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) experiment_count\n" +
+                "from bagseq_library bl \n" +
+                "where bl.bagseq_library_id = " + id, new HashMap<String, Object>());
+    }
+
 
     @CrossOrigin
     @GetMapping("/experiments")
@@ -198,11 +219,8 @@ public class Controller {
         return layoutCollector.composeLayout();
     }
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
+
+
 
 }
