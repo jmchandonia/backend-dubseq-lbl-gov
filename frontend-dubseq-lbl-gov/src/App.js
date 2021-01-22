@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import GraphPage from './components/Pages/Graphs/GraphsPage';
 import HomePage from './components/Pages/Home/HomePage';
 import About from './components/Pages/About/AboutPage';
@@ -24,11 +24,8 @@ class App extends Component {
 				<Route path='/search' component={SearchPage} />
 				<Route path='/landingPage/:id' component={LandingPage} />
 				<Route path='/testing' component={TestingPage} />
-				<Switch>
-					{/* <Route path='/organisms' component={GenomePage} /> */}
-					<Route exact strict path='/organisms' component={GenomePage} />
-					<Route path='/organisms/' component={GenomeLandingPage} />
-				</Switch>
+				<Route exact path='/organisms' component={GenomePage} />
+				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
 				<Route path='/conditions' component={ConditionPage} />
 				<Route path='/genes' component={GenePage} />
 			</Router>

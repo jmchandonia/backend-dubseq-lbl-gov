@@ -42,7 +42,6 @@ const Table = (props) => {
 					<tr>{props.content == null ? [] : getHeaders(props.content) }
 						{props.onClick && <th>LandingPage</th>}
 					</tr>
-
 				</thead>
 				<tbody>
 					{props.content == null ? [] : getRowsData(props.content)}

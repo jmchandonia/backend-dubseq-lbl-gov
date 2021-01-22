@@ -32,7 +32,7 @@ class Histogram extends Component {
 	// Callback function
 	getData = () => {
 		// must return the responce for synchronization.
-		return axios.get('../records.json')
+		return axios.get('/api/organisms/1/graph')
 			.then((res) => {
 				this.setState({ data: res.data });
 			})
@@ -71,15 +71,15 @@ class Histogram extends Component {
 	updateChart = () => {
 
 		// eslint-disable-next-line
-		let minVal = min(this.state.data, d => d.age);
-		let maxVal = max(this.state.data, d => d.age);
+		let minVal = min(this.state.data, d => d.count);
+		let maxVal = max(this.state.data, d => d.count);
 
 		let yScale = scaleLinear()
 			.domain([0, maxVal])
 			.range([graphHeight, 0]);
 
 		let xScale = scaleBand()
-			.domain(this.state.data.map(i => i.name))
+			.domain(this.state.data.map(i => i.type))
 			.range([0, graphWidth])
 			.paddingInner(0.2)
 			.paddingOuter(0.2);
@@ -91,19 +91,19 @@ class Histogram extends Component {
 
 		// rewriting the already exsisting <rect> tag
 		rects.attr('width', xScale.bandwidth)
-			.attr('height', d => yScale(d.age))
+			.attr('height', d => yScale(d.count))
 			.attr('fill', 'orange')
-			.attr('x', d => xScale(d.name))
-			.attr('y', d => (graphHeight - yScale(d.age)));
+			.attr('x', d => xScale(d.type))
+			.attr('y', d => (graphHeight - yScale(d.count)));
 
 		// adding new <rect> elements to the dom
 		rects.enter()
 			.append('rect')
 			.attr('width', xScale.bandwidth)
-			.attr('height', d => (graphHeight - yScale(d.age)))
+			.attr('height', d => (graphHeight - yScale(d.count)))
 			.attr('fill', 'orange')
-			.attr('x', d => xScale(d.name))
-			.attr('y', d => (yScale(d.age)));
+			.attr('x', d => xScale(d.type))
+			.attr('y', d => (yScale(d.count)));
 
 		graph.append('text')
 			.attr('transform', `translate(${graphWidth / 2}, ${graphHeight + margin.bottom - 5})`)

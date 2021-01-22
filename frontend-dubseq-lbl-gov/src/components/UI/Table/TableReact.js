@@ -1,52 +1,10 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux';
 import { useSortBy, useTable } from 'react-table'
-import Header from '../../Header/Header';
 import classes from './TestingPage.module.css';
 
 
-
-
-function TestingPage() {
-
-	let data = [
-		{
-			col1: 'Hello',
-			col2: 'World',
-		},
-		{
-			col1: 'react-table',
-			col2: 'rocks',
-		},
-		{
-			col1: 'whatever',
-			col2: 'you want',
-		},
-	]
-
-	let columns = [
-		{
-			Header: 'Column 1',
-			accessor: 'col1', // accessor is the "key" in the data
-		},
-		{
-			Header: 'Column 2',
-			accessor: 'col2',
-		},
-	]
-
-	return (
-		<Aux>
-			<Header title="testing" />
-
-			<Table columns={columns} data={data} />
-		</Aux>
-	)
-
-}
-
-function Table({ data }) {
-	
+function TableReact({data}) {
 
 	let columns = Object.keys(data[0]).reduce((obj, val) => {
 		obj.push({Header: val, accessor: val});
@@ -107,4 +65,4 @@ function Table({ data }) {
 }
 
 
-export default TestingPage;
+export default TableReact;

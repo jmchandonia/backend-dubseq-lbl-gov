@@ -29,7 +29,7 @@ class LandingPage extends Component {
 				"avg_fitness": 20
 			}
 		]
-
+		// eslint-disable-next-line
 		let secondContent = [
 			{
 				"gene": "reca",
