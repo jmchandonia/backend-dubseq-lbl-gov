@@ -3,6 +3,7 @@ import Header from '../../Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import TableReact from '../../UI/Table/TableReact';
+import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -65,7 +66,7 @@ function ConditionPage() {
 					inputTitle='condition'
 					inputDdata={inputData}
 					didSubmit={handleSubmit} />,
-				(tableContent && <TableReact data={tableContent} />)
+				(tableContent && <Table content={tableContent} title='Conditions' />)
 				// <Table content={tableContent} title='Conditions' />
 			]} contentWidth={[3, 9]} />
 

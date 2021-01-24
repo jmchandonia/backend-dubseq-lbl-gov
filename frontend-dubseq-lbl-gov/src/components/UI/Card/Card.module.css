@@ -1,15 +1,16 @@
-.card_dynamic{
-    border-radius: 4px;
+#card_dynamic{
+	border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
-    transition: .2s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    transition: 0.5s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
 	cursor: pointer;
 	height: 100%;
+	background: rgba(255, 255, 255, 0.3);
 }
 
-.card_dynamic:hover{
-	/* transform: scale(1.05); */
-	background: rgba(235, 235, 235, 0.856);
-  	box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+#card_dynamic:hover{
+	transform: scale(1.05);
+	background: rgba(179, 254, 233, 0.8);
+	box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
 .img {

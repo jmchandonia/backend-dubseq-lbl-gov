@@ -9,6 +9,25 @@ import classes from './TestingPage.module.css';
 
 function TestingPage() {
 
+
+	return (
+		<Aux>
+			<Header title="testing" />
+
+			<Table />
+		</Aux>
+	)
+
+}
+
+function Table() {
+	
+
+	// let columns = Object.keys(data[0]).reduce((obj, val) => {
+	// 	obj.push({Header: val, accessor: val});
+	// 	return obj;
+	// }, []);
+
 	let data = [
 		{
 			col1: 'Hello',
@@ -35,23 +54,6 @@ function TestingPage() {
 		},
 	]
 
-	return (
-		<Aux>
-			<Header title="testing" />
-
-			<Table columns={columns} data={data} />
-		</Aux>
-	)
-
-}
-
-function Table({ data }) {
-	
-
-	let columns = Object.keys(data[0]).reduce((obj, val) => {
-		obj.push({Header: val, accessor: val});
-		return obj;
-	}, []);
 
 	const {
 		getTableProps,

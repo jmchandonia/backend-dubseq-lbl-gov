@@ -21,3 +21,7 @@ html, body, #root{
   height: 100%;
   margin: 0 auto -155px;
 }
+
+#root {
+  background-image:radial-gradient(#e2ffff, #c5efff)
+}
