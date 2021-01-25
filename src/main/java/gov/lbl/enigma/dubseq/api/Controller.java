@@ -65,6 +65,9 @@ public class Controller {
         return gScoreCollector.composeGene(posFrom, posTo);
     }
 
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * endpoints for landing page of Organisms
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * */
     @CrossOrigin
     @GetMapping("/organisms")
     public List<Map<String, Object>> getOrganisms(
@@ -155,7 +158,7 @@ public class Controller {
                 "from genome g\n" +
                 "inner join bagseq_library bl on g.genome_id = bl.genome_id\n" +
                 "inner join barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id\n" +
-                "where g.genome_id = " + id + "\n"+
+                "where g.genome_id = " + id + "\n" +
                 "group by be.type";
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<String, Object>());
@@ -168,9 +171,25 @@ public class Controller {
         return jdbcTemplate.queryForList("select genome_id, name from genome", new HashMap<String, Object>());
     }
 
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * endpoints for landing page of Bagseq Library
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    // the organism for which this library is made.
     @CrossOrigin
-    @GetMapping("/bagseq/{id}/libraries")
-    public List<Map<String, Object>> getBagSeq(@PathVariable long id) throws IOException {
+    @GetMapping("/bagseq/{id}/organism")
+    public List<Map<String, Object>> getBagSeqOrganism(@PathVariable long id) {
+        return jdbcTemplate.queryForList("select g.name\n" +
+                "from bagseq_library bl\n" +
+                "inner join genome g on bl.genome_id = g.genome_id \n" +
+                "where bl.bagseq_library_id = 1", new HashMap<>());
+    }
+
+    // Basic statistics for Library by id.
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/stats")
+    public List<Map<String, Object>> getBagSeq(@PathVariable long id) {
 
         return jdbcTemplate.queryForList("select \n" +
                 "\tbl.bagseq_library_id as lib_id,\n" +
@@ -180,6 +199,52 @@ public class Controller {
                 "\t(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) experiment_count\n" +
                 "from bagseq_library bl \n" +
                 "where bl.bagseq_library_id = " + id, new HashMap<String, Object>());
+    }
+
+    // List of experiments performed on this library.
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/experiments")
+    public List<Map<String, Object>> getBagSeqExperiments(@PathVariable long id) {
+
+        return jdbcTemplate.queryForList("select \n" +
+                "\tbe.barseq_experiment_id,\t\n" +
+                "\tbe.\"name\"\n" +
+                "from barseq_experiment be \n" +
+                "where be.bagseq_library_id = " + id, new HashMap<>());
+    }
+
+    // List of experiments and their max performing gene
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/maxperforminggene")
+    public List<Map<String, Object>> getBagSeqMaxGene(@PathVariable long id) {
+
+        return jdbcTemplate.queryForList("with \n" +
+                "max_scores as (\n" +
+                "\tselect \n" +
+                "\t\tbarseq_experiment_id,\n" +
+                "\t\tmax(score_cnnls) max_score\n" +
+                "\tfrom \n" +
+                "\t\tbarseq_gene_score\n" +
+                "\tgroup by barseq_experiment_id \n" +
+                "),\n" +
+                "max_scores_gene as (\n" +
+                "\tselect \n" +
+                "\t\tgs.barseq_experiment_id \n" +
+                "\t\t,gs.score_cnnls \n" +
+                "\t\t,string_agg(gene_name, ',') gene_names\n" +
+                "\tfrom barseq_gene_score gs\n" +
+                "\tinner join max_scores ms on gs.barseq_experiment_id = ms.barseq_experiment_id\n" +
+                "\tand gs.score_cnnls = ms.max_score\n" +
+                "\tgroup by \n" +
+                "\t\tgs.barseq_experiment_id,\n" +
+                "\t\tgs.score_cnnls\n" +
+                ")\n" +
+                "select \n" +
+                "\te.name,\n" +
+                "\tm.score_cnnls,\n" +
+                "\tm.gene_names\n" +
+                "from max_scores_gene m\n" +
+                "inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id;", new HashMap<>());
     }
 
 
@@ -218,9 +283,6 @@ public class Controller {
     public Collection<LayoutRecord> getLayoutList() throws IOException {
         return layoutCollector.composeLayout();
     }
-
-
-
 
 
 }

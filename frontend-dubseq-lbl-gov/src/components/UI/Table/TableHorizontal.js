@@ -24,8 +24,8 @@ const TableHorizontal = (props) => {
 
 	return (
 		<Aux>
-			<h2>{props.title}</h2>
 			<table className='table table-hover'>
+				<h2>{props.title}</h2>
 				<div className={classes.table_background}>
 					<tbody>
 						{props.content && renderRow(props.content[0])}
