@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../../Header/Header';
+import Header from '../../UI/Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import TableReact from '../../UI/Table/TableReact';

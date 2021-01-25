@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../../Header/Header';
+import Header from '../../UI/Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';

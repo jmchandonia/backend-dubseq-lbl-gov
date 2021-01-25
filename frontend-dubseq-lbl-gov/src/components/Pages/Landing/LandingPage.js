@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
 import VerticalLayout from '../../Layouts/VerticalLayout';
-import Header from '../../Header/Header';
+import Header from '../../UI/Header/Header';
 import Table from '../../UI/Table/Table';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Histogram from '../../D3Components/Histogram';
-import Footer from '../../Footer/Footer';
+import Footer from '../../UI/Footer/Footer';
 import Content from '../../../hoc/Content/Content';
 
 

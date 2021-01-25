@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Aux from '../../../hoc/Aux';
-import Header from '../../Header/Header';
-import Footer from '../../Footer/Footer';
+import Header from '../../UI/Header/Header';
+import Footer from '../../UI/Footer/Footer';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';

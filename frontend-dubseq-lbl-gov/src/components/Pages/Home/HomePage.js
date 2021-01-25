@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
-import Header from '../../Header/Header';
-import Footer from '../../Footer/Footer';
+import Header from '../../UI/Header/Header';
+import Footer from '../../UI/Footer/Footer';
 import SideBarLayout from '../../Layouts/SideBarLayout';
 import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
-import Content from '../../UI/Content/Content';
+import Content from '../../../hoc/Content/Content';
 
 class HomeScreen extends Component {
 

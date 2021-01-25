@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
-import Header from '../../Header/Header';
+import Header from '../../UI/Header/Header';
 import Footer from '../../UI/Footer/Footer';
 import Content from '../../../hoc/Content/Content';
 
