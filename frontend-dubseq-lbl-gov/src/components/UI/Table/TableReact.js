@@ -1,7 +1,7 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux';
 import { useSortBy, useTable } from 'react-table'
-import classes from './TestingPage.module.css';
+import classes from './Table.module.css';
 
 
 function TableReact() {

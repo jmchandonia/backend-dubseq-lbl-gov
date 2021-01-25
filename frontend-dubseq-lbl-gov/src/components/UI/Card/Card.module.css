@@ -8,8 +8,8 @@
 }
 
 #card_dynamic:hover{
-	transform: scale(1.05);
-	background: rgba(179, 254, 233, 0.8);
+	transform: scale(1.01);
+	background: rgba(206, 252, 239, 0.8);
 	box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 

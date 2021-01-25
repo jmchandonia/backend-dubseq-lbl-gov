@@ -3,15 +3,14 @@
 }
 
 .footer {
-	padding-top: 45px;
-	background: linear-gradient(170deg,	rgba(255, 255, 255, 0), rgba(129, 129, 129, 0.9));
+	padding-top: 20px;
+	background: radial-gradient( rgba(255, 255, 255, 1), rgb(233, 233, 233));
 	flex-shrink: none;
 	font-family: "Audiowide", sans-serif;
-
 }
 
 .footer, .push {
-    height: 155px; /* .push must be the same height as .footer */
+    height: 125px; /* .push must be the same height as .footer */
 }
 
 ul {

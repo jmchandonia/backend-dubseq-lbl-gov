@@ -7,7 +7,7 @@ const sideBar = (props) => (
 		<ul>
 			{props.content.map((data, index) =>
 				<li key={index} className={classes.link}>
-					<Link className={classes.link} to={data.path}>
+					<Link id={classes.link_button} to={data.path}>
 						{data.name}
 					</Link>
 				</li>)

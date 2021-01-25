@@ -3,6 +3,7 @@ import Aux from '../../../hoc/Aux';
 import { useSortBy, useTable } from 'react-table'
 import Header from '../../Header/Header';
 import classes from './TestingPage.module.css';
+import TableHorizontal from '../../UI/Table/TableHorizontal';
 
 
 
@@ -11,17 +12,20 @@ function TestingPage() {
 
 
 	return (
-		<Aux>
-			<Header title="testing" />
+		// <Aux>
+		// 	<Header title="testing" />
 
-			<Table />
+		// 	<Table />
+		// </Aux>
+		<Aux>
+			<TableHorizontal />
 		</Aux>
 	)
 
 }
 
 function Table() {
-	
+
 
 	// let columns = Object.keys(data[0]).reduce((obj, val) => {
 	// 	obj.push({Header: val, accessor: val});
@@ -65,6 +69,7 @@ function Table() {
 
 
 	return (
+		// ------ TESTGIN TABLE-REACT
 		<Aux>
 			<div className={classes.center}>
 				<table {...getTableProps()} className='table'>

@@ -6,6 +6,7 @@ import Footer from '../../Footer/Footer';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';
+import TableHorizontal from '../../UI/Table/TableHorizontal';
 
 function GenomeLandingPage() {
 
@@ -36,7 +37,7 @@ function GenomeLandingPage() {
 			<div className='wrapper'>
 				<Header title={'GenomeLandingPage'} />
 				<div className='container'>
-					{stats   		&& <Table content={stats}  			title='Basic Statistics' />}
+					{stats   		&& <TableHorizontal content={stats} title='Basic Statistics' />}
 					{library 		&& <Table content={library} 		title='Library' />}
 					{experiments	&& <Table content ={experiments}	title='Top 10 Experiment'/>}
 					<Histogram />

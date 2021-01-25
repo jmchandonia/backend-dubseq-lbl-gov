@@ -19,3 +19,10 @@
 .table_header {
 	background-color: #55608f;
 }
+
+.table_background {
+	width: 300px; 
+	border: solid 2px black; 
+	border-radius: 10px; 
+	background-color: rgba(255, 255, 255, 0.5);
+}
