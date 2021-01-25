@@ -7,6 +7,7 @@ import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
+import Content from '../../../hoc/Content/Content';
 
 function GenomeLandingPage() {
 
@@ -34,16 +35,16 @@ function GenomeLandingPage() {
 
 	return (
 		<Aux>
-			<div className='wrapper'>
-				<Header title={'GenomeLandingPage'} />
+			<Header title={'GenomeLandingPage'} />
+			<Content>
 				<div className='container'>
-					{stats   		&& <TableHorizontal content={stats} title='Basic Statistics' />}
-					{library 		&& <Table content={library} 		title='Library' />}
-					{experiments	&& <Table content ={experiments}	title='Top 10 Experiment'/>}
+					{stats && <TableHorizontal content={stats} title='Basic Statistics' />}
+					{library && <Table content={library} title='Library' />}
+					{experiments && <Table content={experiments} title='Top 10 Experiment' />}
 					<Histogram />
 				</div>
-			</div>
-			{/* <Footer /> */}
+			</Content>
+			<Footer />
 		</Aux>
 	)
 }

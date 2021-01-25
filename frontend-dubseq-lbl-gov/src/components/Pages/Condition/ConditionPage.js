@@ -7,6 +7,8 @@ import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import { useLocation, useHistory } from 'react-router-dom';
+import Content from '../../../hoc/Content/Content';
+import Footer from '../../UI/Footer/Footer';
 
 
 
@@ -57,19 +59,20 @@ function ConditionPage() {
 	return (
 		<Aux>
 			<Header title="TablePage" />
-
-			<HorizontalLayout content={[
-				<SearchBox
-					title='Search Condition'
-					selectionTitle='Select experiment'
-					selection={selectionData}
-					inputTitle='condition'
-					inputDdata={inputData}
-					didSubmit={handleSubmit} />,
-				(tableContent && <Table content={tableContent} title='Conditions' />)
-				// <Table content={tableContent} title='Conditions' />
-			]} contentWidth={[3, 9]} />
-
+			<Content>
+				<HorizontalLayout content={[
+					<SearchBox
+						title='Search Condition'
+						selectionTitle='Select experiment'
+						selection={selectionData}
+						inputTitle='condition'
+						inputDdata={inputData}
+						didSubmit={handleSubmit} />,
+					(tableContent && <Table content={tableContent} title='Conditions' />)
+					// <Table content={tableContent} title='Conditions' />
+				]} contentWidth={[3, 9]} />
+			</Content>
+			<Footer />
 		</Aux>
 
 	)

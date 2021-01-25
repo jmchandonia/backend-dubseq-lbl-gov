@@ -6,22 +6,23 @@ import SideBarLayout from '../../Layouts/SideBarLayout';
 import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
+import Content from '../../UI/Content/Content';
 
 class HomeScreen extends Component {
 
 	render() {
 		return (
 			<Aux>
-				<div className='wrapper'>
-					<Header title='HomePage' />
+				<Header title='HomePage' />
+				<Content>
 					<SideBarLayout
 						navbarContent={
 							<SideBar
 								content={[
-									{path: '/search', name: 'Search'},
-									{path: '/graphPage', name: 'Graphs'},
-									{path: '/about', name: 'About'},
-									{path: '/testing', name: 'Testing'}
+									{ path: '/search', name: 'Search' },
+									{ path: '/graphPage', name: 'Graphs' },
+									{ path: '/about', name: 'About' },
+									{ path: '/testing', name: 'Testing' }
 								]}
 							/>
 						}
@@ -44,8 +45,7 @@ class HomeScreen extends Component {
 								} />
 						}
 					/>
-					<div className='push' />
-				</div>
+				</Content>
 				<Footer />
 			</Aux>
 		)

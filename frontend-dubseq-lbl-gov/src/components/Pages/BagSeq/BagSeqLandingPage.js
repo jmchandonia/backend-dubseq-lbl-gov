@@ -7,6 +7,7 @@ import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
+import Content from '../../../hoc/Content/Content';
 
 function BagSeqLandingPage() {
 
@@ -19,7 +20,7 @@ function BagSeqLandingPage() {
 	useEffect(() => {
 
 		const fetchData = async () => {
-			let res =  await axios.get(`/api/bagseq/${id}/stats`);
+			let res = await axios.get(`/api/bagseq/${id}/stats`);
 			setStats(res.data);
 			let res1 = await axios.get(`/api/bagseq/${id}/organism`);
 			setOrganism(res1.data);
@@ -35,15 +36,15 @@ function BagSeqLandingPage() {
 
 	return (
 		<Aux>
-			<div className='wrapper'>
-				<Header title={!organism ? '' : organism[0]['name']} />
+			<Header title={!organism ? '' : organism[0]['name']} />
+			<Content>
 				<div className='container'>
-					{stats && 				<TableHorizontal content={stats} title='Basic Stats'/>}
-					{experiments && 		<Table content={experiments} title='experiments'/>}
-					{topPerformingGenes && 	<Table content={topPerformingGenes} title='Top Genes'/>}
+					{stats && <TableHorizontal content={stats} title='Basic Stats' />}
+					{experiments && <Table content={experiments} title='experiments' />}
+					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Genes' />}
 					<Histogram />
 				</div>
-			</div>
+			</Content>
 			<Footer />
 		</Aux>
 	)

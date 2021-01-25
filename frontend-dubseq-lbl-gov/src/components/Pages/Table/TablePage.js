@@ -3,6 +3,8 @@ import Header from '../../Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
+import Content from '../../../hoc/Content/Content';
+import Footer from '../../UI/Footer/Footer';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
@@ -77,10 +79,13 @@ class TablePage extends Component {
 		return (
 			<Aux>
 				<Header title="TablePage" />
+				<Content>
 				<h2>{this.props.match.params.id}</h2>
 				<div className='container'>
 					<Table content={this.state.tableContent} title='Table'/>
 				</div>
+				</Content>
+				<Footer />
 			</Aux>
 		)
 	}

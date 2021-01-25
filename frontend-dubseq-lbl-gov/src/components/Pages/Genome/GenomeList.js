@@ -4,6 +4,8 @@ import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import { generatePath } from 'react-router-dom';
+import Content from '../../../hoc/Content/Content';
+import Footer from '../../UI/Footer/Footer';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
@@ -52,7 +54,7 @@ class GenomeList extends Component {
 	}
 
 	didClick = async (index) => {
-		
+
 		this.props.history.push({
 			pathname: generatePath("/organisms/:id", {
 				id: index
@@ -64,9 +66,12 @@ class GenomeList extends Component {
 		return (
 			<Aux>
 				<Header title="TablePage" />
-				<div className='container'>
-					<Table content={this.state.tableContent} title='Organisms' onClick={this.didClick} />
-				</div>
+				<Content>
+					<div className='container'>
+						<Table content={this.state.tableContent} title='Organisms' onClick={this.didClick} />
+					</div>
+				</Content>
+				<Footer />
 			</Aux>
 		)
 	}

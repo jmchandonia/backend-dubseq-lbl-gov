@@ -5,6 +5,7 @@ import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
 import Footer from '../../Footer/Footer';
+import Content from '../../../hoc/Content/Content';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
@@ -61,9 +62,8 @@ class GenePage extends Component {
 	render() {
 		return (
 			<Aux>
-				<div className="wrapper">
-					<Header title="TablePage" />
-
+				<Header title="TablePage" />
+				<Content>
 					<div className='container'>
 						{this.state.search ?
 							<SearchBox
@@ -75,7 +75,7 @@ class GenePage extends Component {
 							<Table content={this.state.tableContent} title='Genes' />}
 
 					</div>
-				</div>
+				</Content>
 				<Footer />
 			</Aux>
 		)

@@ -5,12 +5,8 @@
 .footer {
 	padding-top: 20px;
 	background: radial-gradient( rgba(255, 255, 255, 1), rgb(233, 233, 233));
-	flex-shrink: none;
+	flex-shrink: 0;
 	font-family: "Audiowide", sans-serif;
-}
-
-.footer, .push {
-    height: 125px; /* .push must be the same height as .footer */
 }
 
 ul {

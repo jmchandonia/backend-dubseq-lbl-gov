@@ -6,6 +6,7 @@ import Table from '../../UI/Table/Table';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Histogram from '../../D3Components/Histogram';
 import Footer from '../../Footer/Footer';
+import Content from '../../../hoc/Content/Content';
 
 
 
@@ -73,13 +74,13 @@ class LandingPage extends Component {
 
 		return (
 			<Aux>
-				<div className='wrapper'>
-					<Header title="LandingPage" />
+				<Header title="LandingPage" />
+				<Content>
 					<div className='container'>
 						<VerticalLayout content={pageContent_V} />
 					</div>
 					<div className='push' />
-				</div>
+				</Content>
 				<Footer />
 			</Aux>
 		)
