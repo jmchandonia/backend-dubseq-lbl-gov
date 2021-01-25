@@ -37,12 +37,11 @@ const Table = (props) => {
 	return (
 		<Aux>
 			<h2>{props.title}</h2>
-			<table className='table table-hover' id='students'>
+			<table className='table table-hover'>
 				<thead>
 					<tr>{props.content == null ? [] : getHeaders(props.content) }
 						{props.onClick && <th>LandingPage</th>}
 					</tr>
-
 				</thead>
 				<tbody>
 					{props.content == null ? [] : getRowsData(props.content)}

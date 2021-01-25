@@ -1,49 +1,52 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Aux from '../../../hoc/Aux';
-import VerticalLayout from '../../Layouts/VerticalLayout';
-import Histogram from '../../D3Components/Histogram';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
-import { useLocation } from "react-router-dom";
+import axios from 'axios';
+import Table from '../../UI/Table/Table';
+import Histogram from '../../D3Components/Histogram';
+import TableHorizontal from '../../UI/Table/TableHorizontal';
+import Content from '../../../hoc/Content/Content';
+
+function GenomeLandingPage() {
+
+	const { id } = useParams();
+	const [stats, setStats] = useState(null);
+	const [library, setLibrary] = useState(null);
+	const [experiments, setExperients] = useState(null);
+
+	useEffect(() => {
+
+		const fetchData = async () => {
+			let res1 = await axios.get(`/api/organisms/${id}/stats`);
+			setStats(res1.data);
+			let res2 = await axios.get(`/api/organisms/${id}/libraries`);
+			setLibrary(res2.data);
+			let res3 = await axios.get(`/api/organisms/${id}/experiments`);
+			setExperients(res3.data);
+		}
+
+		fetchData();
+		console.log("Update");
+	}, [])
 
 
-function useQuery(){
-	return new URLSearchParams(useLocation().search);
-}
 
-
-function QueryScreen() {
-
-	let query = useQuery();
 	return (
-		<div>
-			<h1>{query.get("id")}</h1>
-		</div>
-	)
-}
-
-class GenomeLandingPage extends Component {
-
-
-	render() {
-
-		return (
-			<Aux>
-
-				<div className='wrapper'>
-					<Header title={'GenomeLandingPage'} />
-					<div className='container'>
-						{/* <h2>{this.props.match.params.id}</h2> */}
-						<QueryScreen />
-						<VerticalLayout content={[<Histogram />]} />
-						<div className='push' />
-					</div>
+		<Aux>
+			<Header title={'GenomeLandingPage'} />
+			<Content>
+				<div className='container'>
+					{stats && <TableHorizontal content={stats} title='Basic Statistics' />}
+					{library && <Table content={library} title='Library' />}
+					{experiments && <Table content={experiments} title='Top 10 Experiment' />}
+					<Histogram />
 				</div>
-				<Footer />
-			</Aux>
-		)
-	}
-
+			</Content>
+			<Footer />
+		</Aux>
+	)
 }
 
 export default GenomeLandingPage;

@@ -1,31 +1,11 @@
 import React from 'react'
 import Aux from '../../../hoc/Aux';
 import { useSortBy, useTable } from 'react-table'
-import Header from '../../Header/Header';
-import classes from './TestingPage.module.css';
-import TableHorizontal from '../../UI/Table/TableHorizontal';
+import classes from './Table.module.css';
 
 
-
-
-function TestingPage() {
-
-
-	return (
-		// <Aux>
-		// 	<Header title="testing" />
-
-		// 	<Table />
-		// </Aux>
-		<Aux>
-			<TableHorizontal />
-		</Aux>
-	)
-
-}
-
-function Table() {
-
+function TableReact() {
+	// function TableReact({data}) {
 
 	// let columns = Object.keys(data[0]).reduce((obj, val) => {
 	// 	obj.push({Header: val, accessor: val});
@@ -69,7 +49,6 @@ function Table() {
 
 
 	return (
-		// ------ TESTGIN TABLE-REACT
 		<Aux>
 			<div className={classes.center}>
 				<table {...getTableProps()} className='table'>
@@ -114,4 +93,4 @@ function Table() {
 }
 
 
-export default TestingPage;
+export default TableReact;

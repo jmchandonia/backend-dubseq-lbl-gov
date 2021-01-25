@@ -3,6 +3,7 @@ import classes from './SearchBox.module.css';
 
 const SearchBox = (props) => {
 
+	// eslint-disable-next-line
 	const [select, setSelect] = useState(0);
 	const [input, setInput] = useState('');
 

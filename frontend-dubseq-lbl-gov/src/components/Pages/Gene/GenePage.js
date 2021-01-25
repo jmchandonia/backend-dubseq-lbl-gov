@@ -4,6 +4,8 @@ import Aux from '../../../hoc/Aux';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
+import Footer from '../../Footer/Footer';
+import Content from '../../../hoc/Content/Content';
 
 const RenderRow = (props) => {
 	return props.keys.map((key, index) => (
@@ -61,18 +63,20 @@ class GenePage extends Component {
 		return (
 			<Aux>
 				<Header title="TablePage" />
+				<Content>
+					<div className='container'>
+						{this.state.search ?
+							<SearchBox
+								title='Search Gene'
+								selectionTitle='Select organism'
+								selection={this.state.selectionData}
+								inputTitle='gene'
+								didSubmit={this.didClick} /> :
+							<Table content={this.state.tableContent} title='Genes' />}
 
-				<div className='container'>
-					{this.state.search ?
-						<SearchBox
-							title='Search Gene'
-							selectionTitle='Select organism'
-							selection={this.state.selectionData}
-							inputTitle='gene'
-							didSubmit={this.didClick} /> :
-						<Table content={this.state.tableContent} title='Genes' />}
-				</div>
-
+					</div>
+				</Content>
+				<Footer />
 			</Aux>
 		)
 	}

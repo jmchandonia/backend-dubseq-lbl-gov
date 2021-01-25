@@ -1,13 +1,20 @@
 .link {
-	background-color: transparent;
-	border: 0cm;
-	color: #d14d19;
-	width: 100%;
+	border-bottom: 1px solid;
+	border-color: #616161;
 	text-align: left;
-	overflow-wrap: normal;
+	padding: 10px 10px 10px 10px;
+}
+
+#link_button {
+	color:black;
+	text-decoration: unset;
+	text-transform: uppercase;
+}
+#link_button:hover {
+	font-weight: 550;
 }
 .nav_content {
 	margin: 40px 0px;
 	padding: 20px 0px;
-	border: solid red 1px;
+	/* border: solid red 1px; */
 }

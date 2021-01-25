@@ -5,8 +5,8 @@ import classes from './Card.module.css';
 
 const card = (props) => (
 
-	<div className='card'>
-		<div className={classes.card_dynamic}>
+	<div className='card' id={classes.card_dynamic}>
+			{/* <div className={classes.card_dynamic}> */}
 			<div className='container'>
 				<h5 className="card-title">{props.title}</h5>
 				<div className={classes.img}>
@@ -18,7 +18,7 @@ const card = (props) => (
 				</div>
 			</div>
 
-		</div>
+		{/* </div> */}
 	</div>
 
 

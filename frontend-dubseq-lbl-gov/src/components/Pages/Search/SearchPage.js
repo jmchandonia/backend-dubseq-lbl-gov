@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../Header/Header';
+import Footer from '../../UI/Footer/Footer';
+import Content from '../../../hoc/Content/Content';
 
 
 
@@ -11,6 +13,7 @@ class SearchPage extends Component {
 		return (
 			<Aux>
 				<Header title='Search' />
+				<Content>
 				<div className='container'>
 					<div className='card'>
 						<div className='card-body'>
@@ -42,6 +45,8 @@ class SearchPage extends Component {
 						</div>
 					</div>
 				</div>
+				</Content>
+				<Footer />
 			</Aux>
 		)
 	}

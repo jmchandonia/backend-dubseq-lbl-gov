@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import GraphPage from './components/Pages/Graphs/GraphsPage';
 import HomePage from './components/Pages/Home/HomePage';
 import About from './components/Pages/About/AboutPage';
@@ -10,7 +10,8 @@ import TestingPage from './components/Pages/Testing/TestingPage';
 import ConditionPage from './components/Pages/Condition/ConditionPage';
 import GenePage from './components/Pages/Gene/GenePage';
 import GenomePage from './components/Pages/Genome/GenomeList';
-import GenomeLandingPage from "./components/Pages/Genome/GenomeLandingPage";
+import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
+import BagSeqLandingPage from './components/Pages/BagSeq/BagSeqLandingPage';
 
 
 class App extends Component {
@@ -24,13 +25,11 @@ class App extends Component {
 				<Route path='/search' component={SearchPage} />
 				<Route path='/landingPage/:id' component={LandingPage} />
 				<Route path='/testing' component={TestingPage} />
-				<Switch>
-					{/* <Route path='/organisms' component={GenomePage} /> */}
-					<Route exact strict path='/organisms' component={GenomePage} />
-					<Route path='/organisms/' component={GenomeLandingPage} />
-				</Switch>
+				<Route exact path='/organisms' component={GenomePage} />
+				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
 				<Route path='/conditions' component={ConditionPage} />
 				<Route path='/genes' component={GenePage} />
+				<Route path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
 			</Router>
 		);
 	}
