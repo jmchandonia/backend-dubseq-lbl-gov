@@ -38,9 +38,10 @@ function GenomeLandingPage() {
 			<Header title={'GenomeLandingPage'} />
 			<Content>
 				<div className='container'>
-					{stats && <TableHorizontal content={stats} title='Basic Statistics' />}
-					{library && <Table content={library} title='Library' />}
-					{experiments && <Table content={experiments} title='Top 10 Experiment' />}
+					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}><span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span> - Landing Page</h1>}
+					{stats && <TableHorizontal content={stats} title='Organims Information:' />}
+					{library && <Table content={library} title='Libraries Created:' />}
+					{experiments && <Table content={experiments} title='Top Conditions Performed:' />}
 					<Histogram />
 				</div>
 			</Content>

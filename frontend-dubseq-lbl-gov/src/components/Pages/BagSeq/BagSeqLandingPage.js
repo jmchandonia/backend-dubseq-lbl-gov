@@ -36,12 +36,13 @@ function BagSeqLandingPage() {
 
 	return (
 		<Aux>
-			<Header title={!organism ? '' : organism[0]['name']} />
+			<Header title='Library LandingPage' />
 			<Content>
 				<div className='container'>
-					{stats && <TableHorizontal content={stats} title='Basic Stats' />}
-					{experiments && <Table content={experiments} title='experiments' />}
-					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Genes' />}
+					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}><span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span> - Landing Page</h1>}
+					{stats && <TableHorizontal content={stats} title='Library Information:' />}
+					{experiments && <Table content={experiments} title='Conditions:' />}
+					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Performing Genes:' />}
 					<Histogram />
 				</div>
 			</Content>

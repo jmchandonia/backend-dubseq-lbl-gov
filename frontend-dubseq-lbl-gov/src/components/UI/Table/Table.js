@@ -36,8 +36,8 @@ const Table = (props) => {
 
 	return (
 		<Aux>
-			<h2>{props.title}</h2>
-			<table className='table table-hover'>
+			<h4>{props.title}</h4>
+			<table className='table table-hover' style={{backgroundColor: 'rgba(255, 255, 255, 0.4)'}}>
 				<thead>
 					<tr>{props.content == null ? [] : getHeaders(props.content) }
 						{props.onClick && <th>LandingPage</th>}
