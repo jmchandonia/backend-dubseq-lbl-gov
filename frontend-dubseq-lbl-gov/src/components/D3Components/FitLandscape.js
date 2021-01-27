@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { scaleLinear } from 'd3-scale';
 import { max, min } from 'd3-array';
-import { select} from 'd3-selection';
+import { select } from 'd3-selection';
 import { axisBottom, axisLeft } from 'd3-axis';
 
 class ScoreGraph extends Component {
@@ -15,9 +15,7 @@ class ScoreGraph extends Component {
             fragments: [],
             genes: [],
         }
-        // this.updateChart = this.updateChart.bind(this);
     }
-
 
     update = async (evt) => {
 
@@ -105,7 +103,6 @@ class ScoreGraph extends Component {
         const margin = { top: 100, right: 20, bottom: 50, left: 50 };
         const graphWidth = wWidth - margin.left - margin.right;
         const graphHeight = wHeight - margin.top - margin.bottom;
-
 
         // MIN-MAX for x axis
         const minGenePos = min(this.state.fragments, d => d.posFrom);
