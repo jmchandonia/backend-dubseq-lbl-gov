@@ -135,13 +135,13 @@ public class Controller {
         String QUERY = "select \n" +
                 "\tbe.\"name\",\n" +
                 "\tbe.\"type\",\n" +
-                "\tbgs.score_cnnls as \"cnnls score\"\n" +
+                "\tround(cast(bgs.score_cnnls as numeric), 2) as \"max gene score\"\n" +
                 "from genome g \n" +
                 "\tinner join bagseq_library bl on g.genome_id = bl.genome_id \n" +
                 "\tinner join barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id \n" +
                 "\tinner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id \n" +
                 "where g.genome_id = " + id + "\n" +
-                "order by bgs.score_ridge desc limit 10";
+                "order by bgs.score_cnnls desc limit 10";
 
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
@@ -209,13 +209,14 @@ public class Controller {
     public List<Map<String, Object>> getBagSeqExperiments(@PathVariable long id) {
 
         return jdbcTemplate.queryForList("select \n" +
-                "\tbe.\"name\" as \"Name\",\t\n" +
-                "\tbe.barseq_experiment_id as \"Experiment id\",\n" +
-                "\tsum(case when bgs.score_cnnls > 4 then 1 else 0 end) as \"High Scoring Genes\"\n" +
+                "\tbe.\"name\" as \"Condition\",\t\n" +
+                "\tbe.itnum as \"itnum\",\n" +
+                "\tsum(case when bgs.score_cnnls >= 4 then 1 else 0 end) as \"High Scoring Genes\"\n" +
                 "from barseq_experiment be \n" +
                 "inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id \n" +
                 "where be.bagseq_library_id = " + id + "\n" +
-                "group by be.\"name\", be.barseq_experiment_id", new HashMap<>());
+                "group by be.\"name\", be.barseq_experiment_id\n" +
+                "order by 3 desc, 1", new HashMap<>());
     }
 
     // List of experiments and their max performing gene
@@ -248,7 +249,7 @@ public class Controller {
                 ")\n" +
                 "select \n" +
                 "\tm.gene_names as \"Gene name\",\n" +
-                "\tm.score_cnnls as \"Score cnnls\",\n" +
+                "\tround(cast(m.score_cnnls as numeric), 2) as \"Gene score\",\n" +
                 "\te.name as \"Condition\"\n" +
                 "from max_scores_gene m\n" +
                 "inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id\n" +
@@ -312,7 +313,15 @@ public class Controller {
             @RequestParam(required = false) String type
     ) {
 
-        String QUERY = "select * from barseq_experiment";
+        String QUERY = "select \n" +
+                "\tbe.\"name\" as \"Condition\",\n" +
+                "\tbe.barseq_experiment_id as \"id\",\n" +
+                "\tbe.type as \"type\",\n" +
+                "\tbe.itnum as \"itnum\",\n" +
+                "\tbl.name as \"Library name\",\n" +
+                "\tbl.bagseq_library_id as \"Library id\"\n" +
+                "from barseq_experiment be \n" +
+                "inner join bagseq_library bl using(bagseq_library_id)";
 
         if (type != null) {
             QUERY = QUERY + " where type='" + type + "'";

@@ -1,5 +1,5 @@
 #card_dynamic{
-	border-radius: 1px;
+	border-radius: 25px;
     box-shadow: 0 3px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
     transition: 0.5s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
 	height: 100%;
@@ -13,6 +13,23 @@
 }
 
 .img {
-	width: 100px;
-	margin: 0px 20px 0px ;
+	width: 150px;	
+	margin: auto;
 }  
+.img_large {
+	width: 800px;	
+	margin: auto;
+}
+
+.card_title {
+	padding: 10px;
+	font-size: 2rem;
+	text-align: center;
+	font-weight: 600;
+}
+
+.card_text {
+	padding: 10px;
+	font-size: 1.7rem;
+	text-align: center;
+}

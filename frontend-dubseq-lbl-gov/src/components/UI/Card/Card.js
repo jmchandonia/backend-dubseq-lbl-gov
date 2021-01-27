@@ -6,19 +6,16 @@ import classes from './Card.module.css';
 const card = (props) => (
 
 	<div className='card' id={classes.card_dynamic}>
-			{/* <div className={classes.card_dynamic}> */}
-			<div className='container'>
-				<h5 className="card-title">{props.title}</h5>
-				<div className={classes.img}>
-					{props.image == null ? <div>"def img"</div> : <img className="card-img-top" src={props.image} alt="Card cap" />}
-				</div>
-				<div className="card-body">
-					<div className='card-text'>{props.body}</div>
-					<Link to={props.link} className='stretched-link' />
-				</div>
-			</div>
-
-		{/* </div> */}
+		<div className="card-title">
+			<div className={classes.card_title}>{props.title}</div>
+		</div>
+		<div className={`${props.imageClass ? classes[props.imageClass] : classes.img}`}>
+			{props.image ? <img className="card-img-top" src={props.image} alt="Card cap" /> : ""}
+		</div>
+		<div className="card-body">
+			<div className={classes.card_text}>{props.body}</div>
+			<Link to={props.link} className='stretched-link' />
+		</div>
 	</div>
 
 

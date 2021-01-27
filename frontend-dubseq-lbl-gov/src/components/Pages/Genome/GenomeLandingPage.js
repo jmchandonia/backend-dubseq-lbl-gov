@@ -8,6 +8,7 @@ import Table from '../../UI/Table/Table';
 import Histogram from '../../D3Components/Histogram';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
 import Content from '../../../hoc/Content/Content';
+import {Link} from 'react-router-dom';
 
 function GenomeLandingPage() {
 
@@ -22,6 +23,11 @@ function GenomeLandingPage() {
 			let res1 = await axios.get(`/api/organisms/${id}/stats`);
 			setStats(res1.data);
 			let res2 = await axios.get(`/api/organisms/${id}/libraries`);
+			// console.log(res2.data);
+			res2.data = res2.data.map(e => {
+				e.Name=<Link to={`/bagseq/libraries/${e.id}`}>{e.Name}</Link>;
+				return e;
+			})
 			setLibrary(res2.data);
 			let res3 = await axios.get(`/api/organisms/${id}/experiments`);
 			setExperients(res3.data);
@@ -38,10 +44,12 @@ function GenomeLandingPage() {
 			<Header title={'GenomeLandingPage'} />
 			<Content>
 				<div className='container'>
-					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}><span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span> - Landing Page</h1>}
-					{stats && <TableHorizontal content={stats} title='Organims Information:' />}
-					{library && <Table content={library} title='Libraries Created:' />}
-					{experiments && <Table content={experiments} title='Top Conditions Performed:' />}
+					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}> Organism - <span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span></h1>}
+					{stats && <TableHorizontal content={stats} title='General Information' />}
+					<br/>
+					{library && <Table content={library} title='Libraries Created' />}
+					<br/>
+					{experiments && <Table content={experiments} title='Top Conditions Performed' />}
 					<Histogram />
 				</div>
 			</Content>
