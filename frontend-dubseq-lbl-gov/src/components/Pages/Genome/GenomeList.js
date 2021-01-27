@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../UI/Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
@@ -6,54 +6,29 @@ import Table from '../../UI/Table/Table';
 import { generatePath } from 'react-router-dom';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
+import {Link} from 'react-router-dom';
 
-const RenderRow = (props) => {
-	return props.keys.map((key, index) => (
-		<td key={props.data[key]}>{props.data[key]}</td>
-	))
-}
+function GenomeList() {
 
-class GenomeList extends Component {
+	const [genomeList, setGenomeList] = useState(null);
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			tableContent: [{ first: 1, second: 2 }],
+	useEffect(() => {
+
+		const fetchData = async () => {
+			let res = await axios(`/api/organisms`);
+			res.data = res.data.map(e => {
+				e['Link']=<Link to={`/organisms/${e.genome_id}`}>SeeMore</Link>;
+				return e
+			})
+			setGenomeList(res.data);
 		}
-	}
+
+		fetchData();
+		console.log('Update');
+	}, [])
 
 
-	getKeys(obj) {
-		return Object.keys(obj)
-	}
-
-	getHeaders(obj) {
-
-		return this.getKeys(obj[0])
-			.map((key, index) => (
-				<th key={key}>{key.toUpperCase()}</th>
-			))
-	}
-
-	getRowsData(obj) {
-		var items = obj;
-		var keys = this.getKeys(obj[0]);
-		return items.map((row, index) => (
-			<tr key={index}><RenderRow key={index} data={row} keys={keys} /></tr>
-		))
-	}
-	componentDidMount() {
-
-		this.getOrganisms();
-	}
-
-	getOrganisms = async () => {
-
-		let content = await axios.get("/api/organisms")
-		this.setState({ tableContent: content.data });
-	}
-
-	didClick = async (index) => {
+	const didClick = async (index) => {
 
 		this.props.history.push({
 			pathname: generatePath("/organisms/:id", {
@@ -62,20 +37,20 @@ class GenomeList extends Component {
 		});
 	}
 
-	render() {
-		return (
-			<Aux>
-				<Header title="TablePage" />
-				<Content>
-					<div className='container'>
-						<Table content={this.state.tableContent} title='Organisms' onClick={this.didClick} />
-					</div>
-				</Content>
-				<Footer />
-			</Aux>
-		)
-	}
+	return (
+		<Aux>
+			<Header title="TablePage" />
+			<Content>
+				<div className='container'>
+					<Table content={genomeList} title='Organisms' />
+				</div>
+			</Content>
+			<Footer />
+		</Aux>
+	)
+
 }
+
 
 
 export default GenomeList;

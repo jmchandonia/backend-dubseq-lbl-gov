@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../UI/Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
-import TableReact from '../../UI/Table/TableReact';
 import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import { useLocation, useHistory } from 'react-router-dom';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
+import { Link } from 'react-router-dom'
 
 
+const libraryIdLink = '/bagseq/libraries/${id}';
 
 function ConditionPage() {
 	const [tableContent, setTableContent] = useState(null);
@@ -27,21 +28,28 @@ function ConditionPage() {
 	useEffect(() => {
 
 		const fetchData = async () => {
-			const result = await axios("/api/experiments", {
+			const res = await axios("/api/experiments", {
 				params: {
 					...(type != null ? { type: type } : {}),
 					// ...(query.get("condition") != null ? { condition: query.get("condition") } : {})
 				}
 			})
-			setTableContent(result.data);
+			setTableContent(addLink(res.data, 'Library name', 'Library id', libraryIdLink));
 		}
 
 		setType(query.get("type"));
 		fetchData();
-		console.log("execute");
-
 	}, [type]);
 
+	function addLink(data, LinkCol, idCol, path) {
+		return data.map(e => {
+			// eslint-disable-next-line
+			let id = e[idCol];
+			let newPath = eval('`' + path + '`');
+			e[LinkCol] = <Link to={newPath}>{e[LinkCol]}</Link>;
+			return e;
+		})
+	}
 
 	// When submit button is pushed, the url path gets altered
 	function handleSubmit(e, formValues) {
@@ -60,6 +68,7 @@ function ConditionPage() {
 		<Aux>
 			<Header title="TablePage" />
 			<Content>
+				<h5>{type}</h5>
 				<HorizontalLayout content={[
 					<SearchBox
 						title='Search Condition'

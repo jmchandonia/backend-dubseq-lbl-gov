@@ -3,6 +3,7 @@
 }
 
 .footer {
+	margin-top: 50px;
 	padding-top: 20px;
 	background: radial-gradient( rgba(255, 255, 255, 1), rgb(233, 233, 233));
 	flex-shrink: 0;

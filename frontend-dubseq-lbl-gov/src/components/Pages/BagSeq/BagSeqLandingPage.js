@@ -13,17 +13,14 @@ function BagSeqLandingPage() {
 
 	const { id } = useParams();
 	const [stats, setStats] = useState(null);
-	const [organism, setOrganism] = useState(null);
 	const [experiments, setExperients] = useState(null);
 	const [topPerformingGenes, setTopPerformingGenes] = useState(null);
 
 	useEffect(() => {
 
 		const fetchData = async () => {
-			let res = await axios.get(`/api/bagseq/${id}/stats`);
-			setStats(res.data);
-			let res1 = await axios.get(`/api/bagseq/${id}/organism`);
-			setOrganism(res1.data);
+			let res1 = await axios.get(`/api/bagseq/${id}/stats`);
+			setStats(res1.data);
 			let res2 = await axios.get(`/api/bagseq/${id}/experiments`);
 			setExperients(res2.data);
 			let res3 = await axios.get(`/api/bagseq/${id}/maxperforminggene`);
@@ -36,12 +33,15 @@ function BagSeqLandingPage() {
 
 	return (
 		<Aux>
-			<Header title={!organism ? '' : organism[0]['name']} />
+			<Header title='Library LandingPage' />
 			<Content>
 				<div className='container'>
-					{stats && <TableHorizontal content={stats} title='Basic Stats' />}
-					{experiments && <Table content={experiments} title='experiments' />}
-					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Genes' />}
+					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}>BAGSeq Library - <span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span></h1>}
+					{stats && <TableHorizontal content={stats} title='General Information' />}
+					<br/>
+					{experiments && <Table content={experiments} title='Experiments (high scoring genes - genes scored above 4)' />}
+					<br/>
+					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Performing Genes' />}
 					<Histogram />
 				</div>
 			</Content>

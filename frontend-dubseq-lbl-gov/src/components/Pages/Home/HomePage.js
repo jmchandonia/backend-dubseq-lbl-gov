@@ -13,13 +13,13 @@ class HomeScreen extends Component {
 	render() {
 		return (
 			<Aux>
-				<Header title='HomePage' />
+				<Header title='DubSeq Browser' />
 				<Content>
 					<SideBarLayout
 						navbarContent={
 							<SideBar
 								content={[
-									{ path: '/search', name: 'Search' },
+									// { path: '/search', name: 'Search' },
 									{ path: '/graphPage', name: 'Graphs' },
 									{ path: '/about', name: 'About' },
 									{ path: '/testing', name: 'Testing' }
@@ -29,20 +29,20 @@ class HomeScreen extends Component {
 						mainContent={
 							<HomePageLayout
 								className='content'
-								rowOneTitle={'Search'}
-								rowTwoTitle={'LandingPage'}
+								// rowOneTitle={'Search'}
+								// rowTwoTitle={'LandingPage'}
 								rowOne={
 									<Aux>
-										<Card title='By Organism' image={'/images/genome.svg'} body='Link to list of organisms.' link='/organisms' />
-										<Card title='By Condition' image={'/images/experiment.svg'} body='Link to list of condition.' link='/conditions' />
-										<Card title='By Gene' image={'/images/gene.svg'} body='Link to list of genes.' link='/genes' />
+										<Card title='Fitness Landscape' image={'/images/fitnes.png'} imageClass={'img_large'} link='/graphPage'/>
 									</Aux>}
 								rowTwo={
 									<Aux>
-										<Card title='BagSeqLibrary' body='BagSeq.' link='/bagseq/libraries/1' />
-										<Card title='Gene LandingPage' body='Genes.' link='/landingPage/2' />
+										<Card title='Organisms' image={'/images/genome.svg'} link='/organisms' />
+										<Card title='Conditions' image={'/images/experiment.svg'} link='/conditions' />
+										<Card title='Genes' image={'/images/gene.svg'} link='/genes' />
 									</Aux>
-								} />
+								}
+								 />
 						}
 					/>
 				</Content>

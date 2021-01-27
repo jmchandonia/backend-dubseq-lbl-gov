@@ -12,7 +12,7 @@ import Footer from '../../UI/Footer/Footer';
 class GraphsPage extends Component {
 
 	state = {
-		vis: 'home'
+		vis: 'Fitness Landscape'
 	}
 
 	changeGraph = (e) => {
@@ -22,20 +22,20 @@ class GraphsPage extends Component {
 	render() {
 		return (
 			<Aux>
-				<Header title='Graphs' />
+				<Header title={this.state.vis} />
 				<Content>
 					<Layout
 						navbarContent={
 							<ol>
 								<li><button className={classes.link} data-value='heatMap' onClick={this.changeGraph}>Heat Map</button></li>
-								<li><button className={classes.link} data-value='fitLayout' onClick={this.changeGraph}>Fit Landscape</button></li>
+								<li><button className={classes.link} data-value='Fitness Landscape' onClick={this.changeGraph}>Fit Landscape</button></li>
 								<li><button className={classes.link} data-value='compareExperiments' onClick={this.changeGraph}>Compare Experiments</button></li>
 								<li><button className={classes.link} data-value='compareGenes' onClick={this.changeGraph}>Compare Genes</button></li>
 							</ol>
 						}
 						mainContent={<Aux>
 							{this.state.vis === 'home' && <h1>Page for graphs</h1>}
-							{this.state.vis === 'fitLayout' && <ScoreGraph />}
+							{this.state.vis === 'Fitness Landscape' && <ScoreGraph />}
 							{this.state.vis === 'heatMap' && <HeatMap />}
 						</Aux>
 						}
