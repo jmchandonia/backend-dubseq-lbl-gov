@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { select } from 'd3-selection';
 import Aux from '../../hoc/Aux';
+import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { max, min } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
@@ -24,47 +24,67 @@ function FitnessLandscapeD3(props) {
 			initialize();
 			initialized.current = true;
 		}
-	},[props.data])
+	}, [props.data])
 
 	function initialize() {
 
 		let svg = select('.canvas')
-            .append('svg')
-            .attr("width", props.width)
+			.append('svg')
+			.attr("width", props.width)
 			.attr("height", props.height);
-			
+
+		svg.append('defs')
+			.append('marker')
+			.attr('id', 'arrow')
+			.attr('viewBox', [0, 0, 5, 5])
+			.attr('refX', 5)
+			.attr('refY', 2.5)
+			.attr('markerWidth', 5)
+			.attr('markerHeight', 5)
+			.attr('orient', 'auto-start-reverse')
+			.append('path')
+			.attr('d', 'M0,0L5,2.5L0,5')
+			.attr('stroke', 'red')
+			.style('fill', 'none');
+
 		let geneChart = svg.append('g')
 			.attr('class', 'geneChart')
 			.attr('width', graphWidth)
 			.attr('height', margin.top)
 			.attr('transform', `translate(${margin.left}, 50)`);
 
-		let fragmentChart = svg.append('g')
-            .attr('class', 'fragmentChart')
-            .attr('width', graphWidth)
-            .attr('height', graphHeight)
+		let lables = svg.append('g')
+			.attr('width', graphWidth)
+			.attr('height', graphHeight)
 			.attr('transform', `translate(${margin.left}, ${margin.top})`);
-			
-		fragmentChart.append('g')
-            .attr('class', 'xAxisGroup')
+
+		svg.append('g')
+			.attr('class', 'fragmentChart')
+			.attr('width', graphWidth)
+			.attr('height', graphHeight)
+			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+		lables.append('g')
+			.attr('class', 'xAxisGroup')
 			.attr('transform', `translate(0, ${graphHeight})`);
-		
-		fragmentChart.append('g')
-            .attr('class', 'yAxisGroup')
+
+		lables.append('g')
+			.attr('class', 'yAxisGroup')
 			.attr('transfrom', `translate(${graphWidth}, 0)`);
-			
-		fragmentChart.append("text")
-            .attr("transform", `translate(${graphWidth / 2}, ${graphHeight + margin.bottom - 5})`)
-            .style("text-anchor", "middle")
+
+		lables.append("text")
+			.attr("transform", `translate(${graphWidth / 2}, ${graphHeight + margin.bottom - 5})`)
+			.style("text-anchor", "middle")
 			.text(props.xAxisLable);
-			
-		fragmentChart.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
-            .attr("x", 0 - (graphHeight / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text(props.yAxisLable);
+
+		lables.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 0 - margin.left)
+			.attr("x", 0 - (graphHeight / 2))
+			.attr("dy", "1em")
+			.style("text-anchor", "middle")
+			.text(props.yAxisLable);
+
 	}
 
 	function updateGraph() {
@@ -73,72 +93,76 @@ function FitnessLandscapeD3(props) {
 
 		let minGenePos = min(props.data.fragmentData, d => d.posFrom);
 		let maxGenePos = max(props.data.fragmentData, d => d.posTo);
-		
+
 		let minScore = min(props.data.fragmentData, d => d.score);
 		let maxScore = max(props.data.fragmentData, d => d.score);
-		
+
 		let xScale = scaleLinear()
-            .domain([minGenePos, maxGenePos])
+			.domain([minGenePos, maxGenePos])
 			.range([0, graphWidth]);
-			
+
 		let yScale = scaleLinear()
-            .domain([minScore, maxScore])
+			.domain([minScore, maxScore])
 			.range([graphHeight, 0]);
-			
-		let xAxis = axisBottom(xScale);
+
+		// Suggest the number of ticks with axis().ticks(#)
+		let xAxis = axisBottom(xScale).ticks(6);
 		select('.xAxisGroup').call(xAxis);
 		let yAxis = axisLeft(yScale);
 		select('.yAxisGroup').call(yAxis);
 
-		select('.fragmentChart').selectAll('rect')
-            .data(props.data.fragmentData)
-            .enter()
-            .append('rect');
 
-		select('.fragmentChart').selectAll('rect')
-            .data(props.data.fragmentData)
-            .exit()
+		let fragmentChart = select('.fragmentChart');
+
+		// Removing all from unused remove selection
+		fragmentChart.selectAll('line').remove();
+
+		// Adding fragments
+		fragmentChart.selectAll('line')
+			.data(props.data.fragmentData)
+			.enter()
+			.append('line')
+			.attr('x1', d => xScale(d.posFrom))
+			.attr('x2', d => xScale(d.posTo))
+			.attr('y1', d => yScale(d.score))
+			.attr('y2', d => yScale(d.score))
+			.style('stroke', 'gray')
+			.style('stroke-width', 2);
+
+		let geneChart = select('.geneChart')
+
+		// Remove all children of the 'g' being updated
+		geneChart.selectAll('g').remove();
+
+		// Adding blocks to hold gene and names
+		geneChart.selectAll('g')
+			.data(props.data.geneData)
+			.enter()
+			.append('g')
+			.attr('class', 'geneTag')
+			.attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
+			.attr('transform', d => `translate(${xScale(d.posFrom)}, 0)`);
+
+		// adding gene lines
+		geneChart.selectAll('g')
+			.append('line')
+			.attr('x2', d => (xScale(d.posTo) - xScale(d.posFrom)))
+			.style('stroke', 'red')
+			.style('stroke-width', 2)
+			.attr('marker-start', d => ((d.strand === '+') ? '' : 'url(#arrow)'))
+			.attr('marker-end', d => ((d.strand === '-') ? '' : 'url(#arrow)'));
+
+		// adding gene name
+		geneChart.selectAll('g')
+			.append('text')
+			.attr('y', -4)
+			.text(d => d.name);
+
+		// remove genetags that are no longer in selection 
+		geneChart.selectAll('g')
+			.data(props.data.geneData)
+			.exit()
 			.remove();
-			
-		select('.fragmentChart').selectAll('rect')
-            .data(props.data.fragmentData)
-            .attr('x', d => xScale(d.posFrom))
-            .attr('y', d => yScale(d.score))
-            .attr('height', 2)
-            .attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
-			.attr('fill', 'grey');
-			
-		select('.geneChart').selectAll('rect')
-            .data(props.data.geneData)
-            .enter()
-			.append("rect");
-			
-		select('.geneChart').selectAll('rect')
-            .data(props.data.geneData)
-            .exit()
-			.remove();
-			
-		select('.geneChart').selectAll('rect')
-            .data(props.data.geneData)
-            .attr('x', d => xScale(d.posFrom))
-            .attr('height', 2)
-            .attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
-			.attr('fill', 'red');
-			
-		select('.geneChart').selectAll('text')
-            .data(props.data.geneData)
-            .enter()
-			.append('text');
-			
-		select('.geneChart').selectAll('text')
-            .data(props.data.geneData)
-            .exit()
-			.remove();
-			
-		select('.geneChart').selectAll('text')
-            .data(props.data.geneData)
-            .attr('x', d => xScale(d.posFrom))
-            .text(d => d.name);
 	}
 
 	return (
