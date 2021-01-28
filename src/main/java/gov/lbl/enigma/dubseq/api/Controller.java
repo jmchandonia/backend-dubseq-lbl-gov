@@ -49,22 +49,6 @@ public class Controller {
     @Autowired
     private LayoutCollector layoutCollector;
 
-    @CrossOrigin
-    @GetMapping("/fragview")
-    public Collection<FragView> getFragmenrs(
-            @RequestParam int posFrom,
-            @RequestParam int posTo) throws IOException {
-        return fScoreCollector.composeFragment(posFrom, posTo);
-    }
-
-    @CrossOrigin
-    @GetMapping("/geneview")
-    public Collection<GeneView> getGenes(
-            @RequestParam int posFrom,
-            @RequestParam int posTo) throws IOException {
-        return gScoreCollector.composeGene(posFrom, posTo);
-    }
-
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
      * endpoints for landing page of Organisms
      * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -351,5 +335,38 @@ public class Controller {
         return layoutCollector.composeLayout();
     }
 
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * endpoints for landing page of all expriments.
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    @CrossOrigin
+    @GetMapping("/fragview")
+    public Collection<FragView> getFragmenrs(
+            @RequestParam int posFrom,
+            @RequestParam int posTo) throws IOException {
+        return fScoreCollector.composeFragment(posFrom, posTo);
+    }
+
+    @CrossOrigin
+    @GetMapping("/geneview")
+    public Collection<GeneView> getGenes(
+            @RequestParam int posFrom,
+            @RequestParam int posTo) throws IOException {
+        return gScoreCollector.composeGene(posFrom, posTo);
+    }
+
+    @CrossOrigin
+    @GetMapping("/genes/{id}/position")
+    public List<Map<String, Object>> getGene(@PathVariable long id) {
+
+        return jdbcTemplate.queryForList("select \n" +
+                "\tg.name, \n" +
+                "\tmin(g.pos_from) as pos_from,\n" +
+                "\tmin(g.pos_to) as pos_to\n" +
+                "from gene g\n" +
+                "where g.gene_id = " + id + "\n" +
+                "group by g.name", new HashMap<>());
+    }
 
 }

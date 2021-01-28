@@ -148,40 +148,41 @@ class ScoreGraph extends Component {
             .attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
             .attr('fill', 'grey');
 
-        // adding genes lines.
-        select('.geneChart').selectAll('rect')
+
+        // Adding blocks to hold gene and names
+        let geneChar = select('.geneChart')
+        
+        // Remove all children of the 'g' being updated
+        geneChar.selectAll('g').selectAll('*').remove();
+
+        geneChar.selectAll('g')
             .data(this.state.genes)
             .enter()
-            .append("rect");
-
-        select('.geneChart').selectAll('rect')
-            .data(this.state.genes)
-            .exit()
-            .remove();
-
-        select('.geneChart').selectAll('rect')
-            .data(this.state.genes)
-            .attr('x', d => xScale(d.posFrom))
-            .attr('height', 2)
+            .append('g')
+            .attr('class', 'geneTag')
             .attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
-            .attr('fill', 'red');
+            .attr('transform',d => `translate(${xScale(d.posFrom)}, 0)`);
 
-        // adding genes lables.
-        select('.geneChart').selectAll('text')
-            .data(this.state.genes)
-            .enter()
-            .append('text');
+        // adding gene lines
+        geneChar.selectAll('g')
+            .append('line')
+            .style('stroke', 'green')
+            .style('stroke-width', 2)
+            .attr('x2', d => (xScale(d.posTo) - xScale(d.posFrom)));
 
-        select('.geneChart').selectAll('text')
+        // adding gene name
+        geneChar.selectAll('g')
+            .append('text')
+            .attr('y', -4)
+            .text(d => d.name);
+        
+        // remove genetags that are no longer in selection 
+        geneChar.selectAll('g')
             .data(this.state.genes)
             .exit()
             .remove();
-
-        select('.geneChart').selectAll('text')
-            .data(this.state.genes)
-            .attr('x', d => xScale(d.posFrom))
-            .text(d => d.name);
     }
+
 
     render() {
         return (
