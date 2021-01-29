@@ -14,6 +14,7 @@ const card = (props) => (
 		</div>
 		<div className="card-body">
 			<div className={classes.card_text}>{props.body}</div>
+			<div className={classes.center}>{props.children}</div>
 			<Link to={props.link} className='stretched-link' />
 		</div>
 	</div>

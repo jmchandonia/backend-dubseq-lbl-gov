@@ -128,6 +128,7 @@ function FitnessLandscapeD3(props) {
 			.attr('y2', d => yScale(d.score))
 			.style('stroke', 'gray')
 			.style('stroke-width', 2);
+		
 
 		let geneChart = select('.geneChart')
 
