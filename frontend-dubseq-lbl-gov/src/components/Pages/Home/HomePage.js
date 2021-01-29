@@ -7,6 +7,7 @@ import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
 import Content from '../../../hoc/Content/Content';
+import FitnessLandscapeScreener from '../../Graphs/FitnessLandscapeScreener';
 
 class HomeScreen extends Component {
 
@@ -19,7 +20,6 @@ class HomeScreen extends Component {
 						navbarContent={
 							<SideBar
 								content={[
-									// { path: '/search', name: 'Search' },
 									{ path: '/graphPage', name: 'Graphs' },
 									{ path: '/about', name: 'About' },
 									{ path: '/testing', name: 'Testing' }
@@ -29,11 +29,12 @@ class HomeScreen extends Component {
 						mainContent={
 							<HomePageLayout
 								className='content'
-								// rowOneTitle={'Search'}
-								// rowTwoTitle={'LandingPage'}
+
 								rowOne={
 									<Aux>
-										<Card title='Fitness Landscape' image={'/images/fitnes.png'} imageClass={'img_large'} link='/graphPage'/>
+										<Card title='Fitness Landscape' link='/graphPage'>
+											<FitnessLandscapeScreener seed={2168} timeInterval={5}/>
+										</Card>
 									</Aux>}
 								rowTwo={
 									<Aux>
@@ -42,7 +43,7 @@ class HomeScreen extends Component {
 										<Card title='Genes' image={'/images/gene.svg'} link='/genes' />
 									</Aux>
 								}
-								 />
+							/>
 						}
 					/>
 				</Content>

@@ -194,14 +194,69 @@ public class Controller {
 
         return jdbcTemplate.queryForList("select \n" +
                 "\tbe.\"name\" as \"Condition\",\t\n" +
+                "\tsum(case when bgs.score_cnnls >= 4 then 1 else 0 end) as \"High Scoring Genes\",\n" +
                 "\tbe.itnum as \"itnum\",\n" +
-                "\tsum(case when bgs.score_cnnls >= 4 then 1 else 0 end) as \"High Scoring Genes\"\n" +
+                "\tbe.barseq_experiment_id \"experiment id\"\n" +
                 "from barseq_experiment be \n" +
                 "inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id \n" +
                 "where be.bagseq_library_id = " + id + "\n" +
                 "group by be.\"name\", be.barseq_experiment_id\n" +
-                "order by 3 desc, 1", new HashMap<>());
+                "order by \"High Scoring Genes\" desc, 1", new HashMap<>());
     }
+
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     * endpoints for Experiment Landing Page
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/experiments/{id_experiment}")
+    public List<Map<String, Object>> getBagSeqExperiment(@PathVariable long id,
+                                                         @PathVariable long id_experiment) {
+
+        return jdbcTemplate.queryForList("select \n" +
+                "\tbe.name as \"Name:\",\n" +
+                "\tbe.barseq_experiment_id as \"Experiment id:\",\n" +
+                "\tbe.itnum as \"Itnum:\",\n" +
+                "\t(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as \"Gene count:\",\n" +
+                "\t(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as \"Fragment count:\"\n" +
+                "from barseq_experiment be \n" +
+                "where be.bagseq_library_id = " + id + "\n" +
+                "and be.barseq_experiment_id = " + id_experiment + "", new HashMap<>());
+    }
+
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/experiments/{id_experiment}/genes")
+    public List<Map<String, Object>> getBagSeqExperimentTopGenes(@PathVariable long id,
+                                                                 @PathVariable long id_experiment) {
+        return jdbcTemplate.queryForList("select \n" +
+                "\tbgs.gene_name as \"name\",\n" +
+                "\tbgs.gene_id as \"gene id\",\n" +
+                "\tbgs.score_cnnls as \"gene score\"\n" +
+                "from barseq_gene_score bgs\n" +
+                "inner join barseq_experiment be using(barseq_experiment_id)\n" +
+                "where be.barseq_experiment_id = " + id_experiment + "\n" +
+                "and be.bagseq_library_id = " + id + "\n" +
+                "order by (bgs.score_cnnls) desc\n" +
+                "limit 20", new HashMap<>());
+    }
+
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/experiments/{id_experiment}/fragments")
+    public List<Map<String, Object>> getBagSeqExperimentTopFragments(@PathVariable long id,
+                                                                     @PathVariable long id_experiment) {
+        return jdbcTemplate.queryForList("select \n" +
+                "\tbfs.barcode as \"barcode\",\n" +
+                "\tbfs.bagseq_fragment_id as \"fragment id\",\n" +
+                "\tavg(bfs.score) as \"average score\"\n" +
+                "from barseq_fragment_score bfs \n" +
+                "inner join barseq_experiment be using(barseq_experiment_id)\n" +
+                "where bfs.barseq_experiment_id = " + id_experiment + "\n" +
+                "and be.bagseq_library_id = " + id + "\n" +
+                "group by bfs.barcode, bfs.bagseq_fragment_id\n" +
+                "order by \"average score\" desc\n" +
+                "limit 100", new HashMap<>());
+    }
+
 
     // List of experiments and their max performing gene
     @CrossOrigin
@@ -326,7 +381,7 @@ public class Controller {
     public Collection<Gene> getGenesList() throws IOException {
 
         return genesDao.getGeneList();
-//        return genesCollector.composeGene();
+
     }
 
     @CrossOrigin
@@ -368,5 +423,16 @@ public class Controller {
                 "where g.gene_id = " + id + "\n" +
                 "group by g.name", new HashMap<>());
     }
+
+    @CrossOrigin
+    @GetMapping("/genes/id")
+    public List<Map<String, Object>> getGenes() {
+
+        return jdbcTemplate.queryForList("select \n" +
+                "\tg.name,\n" +
+                "\tg.gene_id\n" +
+                "from gene g", new HashMap<>());
+    }
+
 
 }
