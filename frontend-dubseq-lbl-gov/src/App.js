@@ -12,6 +12,7 @@ import GenePage from './components/Pages/Gene/GenePage';
 import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
 import BagSeqLandingPage from './components/Pages/BagSeq/BagSeqLandingPage';
+import ExperiemntLandingPage from './components/Pages/Condition/ExperimentLandingPage';
 
 
 class App extends Component {
@@ -29,7 +30,8 @@ class App extends Component {
 				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
 				<Route path='/conditions' component={ConditionPage} />
 				<Route path='/genes' component={GenePage} />
-				<Route path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
+				<Route exact path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
+				<Route exact path='/bagseq/libraries/:id/experiments/:id_experiment' component={ExperiemntLandingPage} />
 			</Router>
 		);
 	}

@@ -195,7 +195,8 @@ public class Controller {
         return jdbcTemplate.queryForList("select \n" +
                 "\tbe.\"name\" as \"Condition\",\t\n" +
                 "\tsum(case when bgs.score_cnnls >= 4 then 1 else 0 end) as \"High Scoring Genes\",\n" +
-                "\tbe.itnum as \"itnum\"\n" +
+                "\tbe.itnum as \"itnum\",\n" +
+                "\tbe.barseq_experiment_id \"experiment id\"\n" +
                 "from barseq_experiment be \n" +
                 "inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id \n" +
                 "where be.bagseq_library_id = " + id + "\n" +
@@ -213,11 +214,11 @@ public class Controller {
                                                          @PathVariable long id_experiment) {
 
         return jdbcTemplate.queryForList("select \n" +
-                "\tbe.barseq_experiment_id as \"experiment id\",\n" +
-                "\tbe.itnum as \"itnum\",\n" +
-                "\tbe.name as \"name\",\n" +
-                "\t(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as \"gene count\",\n" +
-                "\t(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as \"fragment count\"\n" +
+                "\tbe.name as \"Name:\",\n" +
+                "\tbe.barseq_experiment_id as \"Experiment id:\",\n" +
+                "\tbe.itnum as \"Itnum:\",\n" +
+                "\t(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as \"Gene count:\",\n" +
+                "\t(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as \"Fragment count:\"\n" +
                 "from barseq_experiment be \n" +
                 "where be.bagseq_library_id = " + id + "\n" +
                 "and be.barseq_experiment_id = " + id_experiment + "", new HashMap<>());

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header';
 import Footer from '../../UI/Footer/Footer';
@@ -22,7 +22,7 @@ function BagSeqLandingPage() {
 			let res1 = await axios.get(`/api/bagseq/${id}/stats`);
 			setStats(res1.data);
 			let res2 = await axios.get(`/api/bagseq/${id}/experiments`);
-			setExperients(res2.data);
+			setExperients(addLink(res2.data, 'itnum', 'experiment id', '/bagseq/libraries/${id}/experiments/${id_experiment}'));
 			let res3 = await axios.get(`/api/bagseq/${id}/maxperforminggene`);
 			setTopPerformingGenes(res3.data);
 		}
@@ -30,6 +30,18 @@ function BagSeqLandingPage() {
 		fetchData();
 		console.log("Update");
 	}, [])
+
+	function addLink(data, LinkCol, idCol, path) {
+		return data.map(e => {
+			// eslint-disable-next-line
+			let id_experiment = e[idCol];
+			console.log('THIS IS WRONG!!! fix!!!');
+			let newPath = eval('`' + path + '`');
+			e[LinkCol] = <Link to={newPath}>{e[LinkCol]}</Link>;
+			return e;
+		})
+	}
+
 
 	return (
 		<Aux>
