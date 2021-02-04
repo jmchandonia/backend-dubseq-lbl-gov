@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Aux from '../../hoc/Aux';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
@@ -24,6 +24,7 @@ function FitnessLandscapeD3(props) {
 			initialize();
 			initialized.current = true;
 		}
+		// eslint-disable-next-line
 	}, [props.data])
 
 	function initialize() {
@@ -47,6 +48,7 @@ function FitnessLandscapeD3(props) {
 			.attr('stroke', 'red')
 			.style('fill', 'none');
 
+		// eslint-disable-next-line
 		let geneChart = svg.append('g')
 			.attr('class', 'geneChart')
 			.attr('width', graphWidth)
@@ -128,7 +130,7 @@ function FitnessLandscapeD3(props) {
 			.attr('y2', d => yScale(d.score))
 			.style('stroke', 'gray')
 			.style('stroke-width', 2);
-		
+
 
 		let geneChart = select('.geneChart')
 

@@ -23,7 +23,6 @@ function GenomeLandingPage() {
 			let res1 = await axios.get(`/api/organisms/${id}/stats`);
 			setStats(res1.data);
 			let res2 = await axios.get(`/api/organisms/${id}/libraries`);
-			// console.log(res2.data);
 			res2.data = res2.data.map(e => {
 				e.Name=<Link to={`/bagseq/libraries/${e.id}`}>{e.Name}</Link>;
 				return e;
@@ -35,6 +34,8 @@ function GenomeLandingPage() {
 
 		fetchData();
 		console.log("Update");
+
+		// eslint-disable-next-line
 	}, [])
 
 

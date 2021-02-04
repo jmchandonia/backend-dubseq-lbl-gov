@@ -10,27 +10,26 @@ function FitnessGraph() {
 
 	const [data, setData] = useState(null);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
+	const [options, setOptions] = useState(null);
 	const currentGeneId = useRef(0);
 	const initialied = useRef(false);
-	const options = useRef([]);
+	
 
 
-	useEffect(async () => {
+	useEffect(() => {
 		if (!initialied.current) {
-			await initialieSelection();
-			console.log(options.current);
+			initialieSelection();
 			initialied.current = true;
 		}
 
 		fetchGraphData();
-		console.log('update')
-
+		// eslint-disable-next-line
 	}, [position]);
 
 
 	async function initialieSelection() {
 		let res = await axios('/genes/id');
-		options.current = res.data.map((e) => ({ value: `${e['gene_id']}`, label: e['name'] }))
+		setOptions(res.data.map((e) => ({ value: `${e['gene_id']}`, label: e['name'] })));
 	}
 
 	async function fetchGraphData() {
@@ -87,7 +86,8 @@ function FitnessGraph() {
 	return (
 		<Aux>
 			<Select
-				options={options.current}
+				// options={options.current}
+				options={options}
 				onChange={handleSelect}
 			/>
 			<div><b>From: </b>{position.start}</div>

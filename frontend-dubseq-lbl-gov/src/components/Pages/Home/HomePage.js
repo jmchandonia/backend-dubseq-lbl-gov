@@ -7,7 +7,6 @@ import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
 import Content from '../../../hoc/Content/Content';
-import FitnessLandscapeScreener from '../../Graphs/FitnessLandscapeScreener';
 import HomePageCarousel from '../../UI/HomePageCarousel/HomePageCarousel';
 
 class HomeScreen extends Component {
