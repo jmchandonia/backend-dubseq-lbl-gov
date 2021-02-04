@@ -8,6 +8,7 @@ import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
 import Content from '../../../hoc/Content/Content';
 import FitnessLandscapeScreener from '../../Graphs/FitnessLandscapeScreener';
+import HomePageCarousel from '../../UI/HomePageCarousel/HomePageCarousel';
 
 class HomeScreen extends Component {
 
@@ -33,7 +34,8 @@ class HomeScreen extends Component {
 								rowOne={
 									<Aux>
 										<Card title='Fitness Landscape' link='/graphPage'>
-											<FitnessLandscapeScreener seed={2168} timeInterval={5}/>
+											{/* <FitnessLandscapeScreener seed={2168} timeInterval={5}/> */}
+											<HomePageCarousel />
 										</Card>
 									</Aux>}
 								rowTwo={

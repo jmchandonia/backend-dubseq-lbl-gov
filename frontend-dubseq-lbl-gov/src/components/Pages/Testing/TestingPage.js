@@ -10,7 +10,7 @@ function TestingPage() {
 
 
 	return (
-		
+
 		<Aux>
 			<Header />
 			{/* <FitnessLandscapeScreener seed={2168}/> */}
