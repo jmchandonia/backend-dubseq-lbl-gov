@@ -27,10 +27,10 @@ function ConditionPage() {
 	// When change to the query parameters are made, the useEffect hook is executed.
 	useEffect(() => {
 
-		const fetchData = async () => {
+		async function fetchData(){
 			const res = await axios("/api/experiments", {
 				params: {
-					...(type != null ? { type: type } : {}),
+					...(type != null ? { type: type } : {})
 					// ...(query.get("condition") != null ? { condition: query.get("condition") } : {})
 				}
 			})
@@ -39,10 +39,13 @@ function ConditionPage() {
 
 		setType(query.get("type"));
 		fetchData();
+		
+		// eslint-disable-next-line
 	}, [type]);
 
 	function addLink(data, LinkCol, idCol, path) {
 		return data.map(e => {
+			console.log("if update more than once then wrong");
 			// eslint-disable-next-line
 			let id = e[idCol];
 			let newPath = eval('`' + path + '`');

@@ -15,10 +15,8 @@ export default function ExperiemntLandingPage() {
 	const [genes, setGenes] = useState(null);
 	const [fragments, setFragments] = useState(null);
 
-
-
-	useEffect(async () => {
-		const fetchData = async () => {
+	useEffect(() => {
+		async function fetchData() {
 			let res1 = await axios(`/bagseq/${id}/experiments/${id_experiment}`);
 			setStats(res1.data);
 			let res2 = await axios(`/bagseq/${id}/experiments/${id_experiment}/genes`);
@@ -34,12 +32,12 @@ export default function ExperiemntLandingPage() {
 			<Header title='Experiment LandingPage' />
 			<Content>
 				<div className='container'>
-				{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}>Experiment - <span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span></h1>}
-					<TableHorizontal content={stats} title="General Information"/>
-					<br/>
-					<Table content={genes} title="Top Scoring Genes (top 20 highest scores)"/>
-					<br/>
-					<Table content={fragments} title="Top Sscoring Fragments"/>
+					{stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}>Experiment - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>}
+					<TableHorizontal content={stats} title="General Information" />
+					<br />
+					<Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />
+					<br />
+					<Table content={fragments} title="Top Sscoring Fragments" />
 				</div>
 			</Content>
 			<Footer />

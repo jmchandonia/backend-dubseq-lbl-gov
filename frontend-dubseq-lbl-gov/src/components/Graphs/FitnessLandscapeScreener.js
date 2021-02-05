@@ -18,6 +18,7 @@ export default function FitnessLandscapeScreener(props) {
 		console.log('useEffect');
 		console.log('start: ' + position.start);
 		console.log('end: ' + position.end);
+		// eslint-disable-next-line
 	}, [position])
 
 
