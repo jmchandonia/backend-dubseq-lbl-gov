@@ -135,14 +135,32 @@ public class Controller {
     @GetMapping("/organisms/{id}/graph")
     public List<Map<String, Object>> getOrganismGraph(@PathVariable long id) {
 
-        String QUERY = "select\n" +
-                "be.type,\n" +
-                "count(*)\n" +
-                "from genome g\n" +
-                "inner join bagseq_library bl on g.genome_id = bl.genome_id\n" +
-                "inner join barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id\n" +
-                "where g.genome_id = " + id + "\n" +
-                "group by be.type";
+        String QUERY = "with \n" +
+                "t as (\n" +
+                "\tselect \n" +
+                "\t\t*\n" +
+                "\tfrom gene g\n" +
+                "\tjoin barseq_gene_score bgs using(gene_id)\n" +
+                "\twhere g.genome_id = " + id + "\n" +
+                ")\n" +
+                ",ranges as (\n" +
+                "select '-2' as name, -999999 as min, -2 as max union all\n" +
+                "select '-1' as name, -2 as min, -1 as max union all\n" +
+                "select '-0.5' as name, -1 as min, -0.5 as max union all\n" +
+                "select '0' as name, -0.5 as min, 0 as max union all\n" +
+                "select '1' as name, 0 as min, 1 as max union all\n" +
+                "select '2' as name, 1 as min, 2 as max union all\n" +
+                "select '4' as name, 2 as min, 4 as max union all\n" +
+                "select '6' as name, 4 as min, 6 as max union all\n" +
+                "select '9' as name, 6 as min, 999999 as max \n" +
+                ")\n" +
+                "select \n" +
+                "\tr.name,\n" +
+                "\tcount(*) as cnt\n" +
+                "from ranges r\n" +
+                "left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max\n" +
+                "group by r.name\n" +
+                "order by cast(r.name as float)";
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<String, Object>());
     }
@@ -294,6 +312,40 @@ public class Controller {
                 "inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id\n" +
                 "order by m.score_cnnls desc", new HashMap<>());
     }
+
+    @CrossOrigin
+    @GetMapping("/bagseq/{id}/experiments/{id_experiment}/graph")
+    public List<Map<String, Object>> getBagSeqExperimentGRaph(@PathVariable long id,
+                                                              @PathVariable long id_experiment) {
+        return jdbcTemplate.queryForList("with \n" +
+                "t as (\n" +
+                "\tselect \n" +
+                "\t\t*\n" +
+                "\tfrom gene g\n" +
+                "\tinner join barseq_gene_score bgs on g.gene_id = bgs.gene_id\n" +
+                "\tinner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id \n" +
+                "\twhere g.genome_id = " + id + " and be.barseq_experiment_id = " + id_experiment + "\n" +
+                ")\n" +
+                ",ranges as (\n" +
+                "select '-2' as name, -999999 as min, -2 as max union all\n" +
+                "select '-1' as name, -2 as min, -1 as max union all\n" +
+                "select '-0.5' as name, -1 as min, -0.5 as max union all\n" +
+                "select '0' as name, -0.5 as min, 0 as max union all\n" +
+                "select '1' as name, 0 as min, 1 as max union all\n" +
+                "select '2' as name, 1 as min, 2 as max union all\n" +
+                "select '4' as name, 2 as min, 4 as max union all\n" +
+                "select '6' as name, 4 as min, 6 as max union all\n" +
+                "select '9' as name, 6 as min, 999999 as max \n" +
+                ")\n" +
+                "select \n" +
+                "\tr.name,\n" +
+                "\tcount(*) as cnt\n" +
+                "from ranges r\n" +
+                "left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max\n" +
+                "group by r.name\n" +
+                "order by cast(r.name as float)", new HashMap<>());
+    }
+
 
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * *

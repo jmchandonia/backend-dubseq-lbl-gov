@@ -15,14 +15,13 @@ function HistogramD3(props) {
 
 	const initialized = useRef(false);
 
-	useEffect(async () => {
-		if (initialized.current) {
-			updateGraph();
-		} else {
+	useEffect(() => {
+		if (!initialized.current) {
 
 			initialize();
 			initialized.current = true;
 		}
+		updateGraph();
 	})
 
 
@@ -33,7 +32,7 @@ function HistogramD3(props) {
 			.attr("width", svgWidth)
 			.attr("height", svgHeight);
 
-		const graph = svg.append('g')
+		let graph = svg.append('g')
 			.attr('class', 'histogramGraph')
 			.attr('width', graphWidth)
 			.attr('height', graphHeight)

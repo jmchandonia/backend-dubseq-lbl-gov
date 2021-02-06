@@ -5,10 +5,11 @@ import Header from '../../UI/Header/Header';
 import Footer from '../../UI/Footer/Footer';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
-import Histogram from '../../D3Components/Histogram';
+import HistogramD3 from '../../D3Components/HistogramD3';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
+import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Content from '../../../hoc/Content/Content';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function GenomeLandingPage() {
 
@@ -16,20 +17,23 @@ function GenomeLandingPage() {
 	const [stats, setStats] = useState(null);
 	const [library, setLibrary] = useState(null);
 	const [experiments, setExperients] = useState(null);
+	const [histData, setHistData] = useState(null);
 
 	useEffect(() => {
 
 		const fetchData = async () => {
-			let res1 = await axios.get(`/api/organisms/${id}/stats`);
+			let res1 = await axios(`/api/organisms/${id}/stats`);
 			setStats(res1.data);
-			let res2 = await axios.get(`/api/organisms/${id}/libraries`);
+			let res2 = await axios(`/api/organisms/${id}/libraries`);
 			res2.data = res2.data.map(e => {
-				e.Name=<Link to={`/bagseq/libraries/${e.id}`}>{e.Name}</Link>;
+				e.Name = <Link to={`/bagseq/libraries/${e.id}`}>{e.Name}</Link>;
 				return e;
 			})
 			setLibrary(res2.data);
-			let res3 = await axios.get(`/api/organisms/${id}/experiments`);
+			let res3 = await axios(`/api/organisms/${id}/experiments`);
 			setExperients(res3.data);
+			let res4 = await axios(`/api/organisms/${id}/graph`);
+			setHistData(res4.data);
 		}
 
 		fetchData();
@@ -38,20 +42,20 @@ function GenomeLandingPage() {
 		// eslint-disable-next-line
 	}, [])
 
-
-
 	return (
 		<Aux>
 			<Header title={'GenomeLandingPage'} />
 			<Content>
 				<div className='container'>
-					{stats && <h1 style={{margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black'}}> Organism - <span style={{color: 'red', fontWeight: 300}}>{stats[0]['Name:']}</span></h1>}
-					{stats && <TableHorizontal content={stats} title='General Information' />}
-					<br/>
+					{stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}> Organism - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>}
+					{stats && histData && <HorizontalLayout content={[
+						<TableHorizontal content={stats} title='General Information' />,
+						<HistogramD3 data={histData} mountingId={`class_${1}`} />
+					]} contentWidth={[6, 6]} />}
+					<br />
 					{library && <Table content={library} title='Libraries Created' />}
-					<br/>
+					<br />
 					{experiments && <Table content={experiments} title='Top Conditions Performed' />}
-					<Histogram />
 				</div>
 			</Content>
 			<Footer />
