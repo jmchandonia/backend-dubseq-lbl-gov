@@ -32,7 +32,7 @@ function GenomeLandingPage() {
 			setLibrary(res2.data);
 			let res3 = await axios(`/api/organisms/${id}/experiments`);
 			setExperients(res3.data);
-			let res4 = await axios(`/api/organisms/${id}/graph`);
+			let res4 = await axios(`/api/organisms/${id}/graphs`);
 			setHistData(res4.data);
 		}
 

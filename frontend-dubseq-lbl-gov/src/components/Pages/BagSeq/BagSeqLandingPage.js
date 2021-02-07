@@ -21,14 +21,14 @@ function BagSeqLandingPage() {
 	useEffect(() => {
 
 		async function fetchData() {
-			let res1 = await axios.get(`/api/bagseq/${id}/stats`);
+			let res1 = await axios.get(`/api/libraries/${id}/stats`);
 			setStats(res1.data);
-			let res2 = await axios.get(`/api/bagseq/${id}/experiments`);
+			let res2 = await axios.get(`/api/libraries/${id}/experiments`);
 			res2.data = addLink(res2.data, 'itnum', 'experiment id', '/bagseq/libraries/${id}/experiments/${id_experiment}')
 			setExperients(res2.data);
-			let res3 = await axios.get(`/api/bagseq/${id}/maxperforminggene`);
+			let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
 			setTopPerformingGenes(res3.data);
-			let res4 = await axios(`/api/bagseq/${id}/experiments/1/graph`);
+			let res4 = await axios(`/api/libraries/${id}/experiments/1/graphs`);
 			setHistData(res4.data);
 		}
 

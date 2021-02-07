@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+>
+
+    <bean id="getLibraryStatsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	bl.name as "Name:",
+	bl.bagseq_library_id as "Library id:",
+	(select g.name from genome g where bl.genome_id = g.genome_id) as "Host Name:",
+	bl.host_genome_id as "Host id:",
+	(select count(*) from bagseq_fragment bf where bl.bagseq_library_id = bf.bagseq_library_id) as "Fragment count:",
+	(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) as "Experiment count:"
+from bagseq_library bl
+where bl.bagseq_library_id = %d
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+<!--    <bean id="getLibraryOrganismsQuery" class="java.lang.String">-->
+<!--        <constructor-arg>-->
+<!--            <value><![CDATA[-->
+<!--select-->
+<!--    g.name-->
+<!--from bagseq_library bl-->
+<!--inner join genome g on bl.genome_id = g.genome_id-->
+<!--where bl.bagseq_library_id = %d-->
+<!--       ]]></value>-->
+<!--        </constructor-arg>-->
+<!--    </bean>-->
+
+
+    <bean id="getLibraryExperimentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	be."name" as "Condition",
+	sum(case when bgs.score_cnnls >= 4 then 1 else 0 end) as "High Scoring Genes",
+	be.itnum as "itnum",
+	be.barseq_experiment_id "experiment id"
+from barseq_experiment be
+inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
+where be.bagseq_library_id = %d
+group by be."name", be.barseq_experiment_id
+order by "High Scoring Genes" desc, 1
+
+       ]]></value>
+        </constructor-arg>
+    </bean>
+
+</beans>

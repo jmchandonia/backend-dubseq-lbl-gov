@@ -51,7 +51,7 @@ class GenePage extends Component {
 
 	getGenes = async () => {
 
-		let content = await axios.get("/api/genes")
+		let content = await axios("/api/genes")
 		await this.setState({ tableContent: content.data });
 	}
 
@@ -73,7 +73,6 @@ class GenePage extends Component {
 								inputTitle='gene'
 								didSubmit={this.didClick} /> :
 							<Table content={this.state.tableContent} title='Genes' />}
-
 					</div>
 				</Content>
 				<Footer />
