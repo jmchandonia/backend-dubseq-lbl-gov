@@ -4,8 +4,9 @@ import Carousel from 'react-bootstrap/Carousel'
 function HomePageCarousel() {
 
 	return (
-		<Carousel>
-			<Carousel.Item interval={1000}>
+		<Carousel slide={false} fade={false}>
+		 {/* <Carousel> */}
+			<Carousel.Item interval={2500}>
 				<img
 					className="d-block rounded mx-auto"
 					src="/images/fitnes.png"
@@ -16,7 +17,7 @@ function HomePageCarousel() {
 					<p style={{ color: "black" }}>rcnA</p>
 				</Carousel.Caption>
 			</Carousel.Item>
-			<Carousel.Item interval={1000}>
+			<Carousel.Item interval={2500}>
 				<img
 					className="d-block rounded mx-auto"
 					src="/images/ecoli.png"

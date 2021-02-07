@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+>
+
+
+    <bean id="getAllExperimentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	be."name" as "Condition",
+	be.barseq_experiment_id as "id",
+	be.type as "type",
+	be.itnum as "itnum",
+	bl.name as "Library name",
+	bl.bagseq_library_id as "Library id"
+from barseq_experiment be
+inner join bagseq_library bl using(bagseq_library_id)
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getExperimentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	be.name,
+	be.type
+from barseq_experiment be
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getLibraryExperimentStatsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	be.name as "Name:",
+	be.barseq_experiment_id as "Experiment id:",
+	be.itnum as "Itnum:",
+	(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as "Gene count:",
+	(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as "Fragment count:"
+from barseq_experiment be
+where 1=1
+and be.bagseq_library_id = %d
+and be.barseq_experiment_id = %d
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getLibraryExperimentTopGenesQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	bgs.gene_name as "name",
+	bgs.gene_id as "gene id",
+	bgs.score_cnnls as "gene score"
+from barseq_gene_score bgs
+inner join barseq_experiment be using(barseq_experiment_id)
+where be.bagseq_library_id = %d
+and be.barseq_experiment_id = %d
+order by (bgs.score_cnnls) desc
+limit 20
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getLibraryExperimentsTopFragmentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+	bfs.barcode as "barcode",
+	bfs.bagseq_fragment_id as "fragment id",
+	avg(bfs.score) as "average score"
+from barseq_fragment_score bfs
+inner join barseq_experiment be using(barseq_experiment_id)
+where be.bagseq_library_id = %d
+and bfs.barseq_experiment_id = %d
+group by bfs.barcode, bfs.bagseq_fragment_id
+order by "average score" desc
+limit 100
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getTopPerformingGenesInExperimentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+with
+max_scores as (
+	select
+		s.barseq_experiment_id,
+		max(s.score_cnnls) max_score
+	from
+		barseq_gene_score s
+	inner join barseq_experiment e using (barseq_experiment_id)
+	where e.bagseq_library_id = 1
+	group by s.barseq_experiment_id
+),
+max_scores_gene as (
+	select
+		gs.barseq_experiment_id
+		,gs.score_cnnls
+		,string_agg(gene_name, ',') gene_names
+	from barseq_gene_score gs
+	inner join max_scores ms on gs.barseq_experiment_id = ms.barseq_experiment_id
+	and gs.score_cnnls = ms.max_score
+	group by
+		gs.barseq_experiment_id,
+		gs.score_cnnls
+)
+select
+	m.gene_names as "Gene name",
+	round(cast(m.score_cnnls as numeric), 2) as "Gene score",
+	e.name as "Condition"
+from max_scores_gene m
+inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id
+order by m.score_cnnls desc
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getExperimentConditionQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+with
+max_scores as (
+	select
+		barseq_experiment_id,
+		max(score_cnnls) max_score
+	from
+		barseq_gene_score
+	group by barseq_experiment_id
+),
+max_scores_gene as (
+	select
+		gs.barseq_experiment_id
+		,gs.score_cnnls
+		,string_agg(gene_name, ',') gene_names
+	from barseq_gene_score gs
+	inner join max_scores ms on gs.barseq_experiment_id = ms.barseq_experiment_id
+	and gs.score_cnnls = ms.max_score
+	group by
+		gs.barseq_experiment_id,
+		gs.score_cnnls
+)
+select
+	e.name,
+	m.gene_names,
+	m.score_cnnls
+from max_scores_gene m
+inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getExperimentHistogramQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+with
+t as (
+	select
+		*
+	from gene g
+	inner join barseq_gene_score bgs on g.gene_id = bgs.gene_id
+	inner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id
+	where g.genome_id = %d and be.barseq_experiment_id = %d
+)
+,ranges as (
+select '-2' as name, -999999 as min, -2 as max union all
+select '-1' as name, -2 as min, -1 as max union all
+select '-0.5' as name, -1 as min, -0.5 as max union all
+select '0' as name, -0.5 as min, 0 as max union all
+select '1' as name, 0 as min, 1 as max union all
+select '2' as name, 1 as min, 2 as max union all
+select '4' as name, 2 as min, 4 as max union all
+select '6' as name, 4 as min, 6 as max union all
+select '9' as name, 6 as min, 999999 as max
+)
+select
+	r.name,
+	count(*) as cnt
+from ranges r
+left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max
+group by r.name
+order by cast(r.name as float)
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+</beans>

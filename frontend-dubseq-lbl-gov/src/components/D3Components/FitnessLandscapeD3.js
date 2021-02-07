@@ -103,12 +103,13 @@ function FitnessLandscapeD3(props) {
 			.domain([minGenePos, maxGenePos])
 			.range([0, graphWidth]);
 
+		// HardCode the minimum and the maximum of possible fragment scores.
 		let yScale = scaleLinear()
-			.domain([minScore, maxScore])
+			.domain([-5, 12])
 			.range([graphHeight, 0]);
 
 		// Suggest the number of ticks with axis().ticks(#)
-		let xAxis = axisBottom(xScale).ticks(6);
+		let xAxis = axisBottom(xScale).ticks(10);
 		select('.xAxisGroup').call(xAxis);
 		let yAxis = axisLeft(yScale);
 		select('.yAxisGroup').call(yAxis);

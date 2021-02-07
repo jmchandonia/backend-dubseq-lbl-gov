@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header'
-import ScoreGraph from '../../D3Components/FitLandscape';
+import ScoreGraph from '../../D3Components/FitLandscapeClass';
 import HeatMap from '../../D3Components/HeatMap';
 import Layout from '../../Layouts/SideBarLayout';
 import classes from './GraphsPage.module.css';

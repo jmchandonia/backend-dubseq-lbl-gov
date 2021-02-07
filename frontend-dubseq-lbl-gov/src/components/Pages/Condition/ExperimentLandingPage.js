@@ -17,11 +17,11 @@ export default function ExperiemntLandingPage() {
 
 	useEffect(() => {
 		async function fetchData() {
-			let res1 = await axios(`/bagseq/${id}/experiments/${id_experiment}`);
+			let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
 			setStats(res1.data);
-			let res2 = await axios(`/bagseq/${id}/experiments/${id_experiment}/genes`);
+			let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
 			setGenes(res2.data);
-			let res3 = await axios(`/bagseq/${id}/experiments/${id_experiment}/fragments`);
+			let res3 = await axios(`/libraries/${id}/experiments/${id_experiment}/fragments`);
 			setFragments(res3.data);
 		}
 		fetchData();
@@ -33,11 +33,11 @@ export default function ExperiemntLandingPage() {
 			<Content>
 				<div className='container'>
 					{stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}>Experiment - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>}
-					<TableHorizontal content={stats} title="General Information" />
+					{stats && <TableHorizontal content={stats} title="General Information" />}
 					<br />
-					<Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />
+					{genes && <Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />}
 					<br />
-					<Table content={fragments} title="Top Sscoring Fragments" />
+					{fragments && <Table content={fragments} title="Top Scoring Fragments" />}
 				</div>
 			</Content>
 			<Footer />
