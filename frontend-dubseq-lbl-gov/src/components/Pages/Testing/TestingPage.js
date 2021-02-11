@@ -4,6 +4,7 @@ import Header from '../../UI/Header/Header';
 import FitnessGraph from '../../Graphs/FitnessGraph';
 import HistogramD3 from '../../D3Components/HistogramD3';
 import HistogramGraph from '../../Graphs/HistogramGraph';
+import GenomeRadialD3 from '../../D3Components/GenomeRadialD3';
 
 
 
@@ -18,11 +19,15 @@ function TestingPage() {
 
 
 			{/* testgin new graph */}
-			<FitnessGraph />
+			{/* <FitnessGraph /> */}
 
 
 			{/* testing new Histogram. */}
 			{/* <HistogramGraph /> */}
+
+
+			{/* testing Radial Graph */}
+			<GenomeRadialD3 />
 		</Aux>
 	)
 
