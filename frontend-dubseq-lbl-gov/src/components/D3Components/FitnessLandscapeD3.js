@@ -13,13 +13,11 @@ let graphHeight = 0;
 function FitnessLandscapeD3(props) {
 
 	const initialized = useRef(false);
+
 	useEffect(() => {
 		if (initialized.current) {
 			updateGraph();
 		} else {
-
-			graphWidth = props.width - margin.left - margin.right;
-			graphHeight = props.height - margin.top - margin.bottom;
 
 			initialize();
 			initialized.current = true;
@@ -28,6 +26,9 @@ function FitnessLandscapeD3(props) {
 	}, [props.data])
 
 	function initialize() {
+
+		graphWidth = props.width - margin.left - margin.right;
+		graphHeight = props.height - margin.top - margin.bottom;
 
 		let svg = select('.canvas')
 			.append('svg')
