@@ -22,6 +22,7 @@ select
 	(select count(*)
 	from barseq_experiment e join bagseq_library b using(bagseq_library_id) where b.genome_id = g.genome_id) as experiment_count
 from genome g
+order by g.genome_id
         ]]></value>
         </constructor-arg>
     </bean>

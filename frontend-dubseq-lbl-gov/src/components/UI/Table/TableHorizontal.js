@@ -14,24 +14,26 @@ const TableHorizontal = (props) => {
 
 		let keys = getKeys(data);
 
-		return keys.map(e =>
-		(<tr>
-			<th>{e}</th>
-			<td>{data[e]}</td>
+		return keys.map((d, i) =>
+		(<tr key={i}>
+			<th>{d}</th>
+			<td>{data[d]}</td>
 		</tr>)
 		)
 	}
 
 	return (
 		<Aux>
-			<table className='table table-hover'>
-				<h4>{props.title}</h4>
-				<div className={classes.table_background}>
+			<h4>{props.title}</h4>
+			<div className={classes.table_background}>
+				<table className='table table-hover'>
 					<tbody>
+
 						{props.content && renderRow(props.content[0])}
+
 					</tbody>
-				</div>
-			</table>
+				</table>
+			</div>
 		</Aux >
 	)
 

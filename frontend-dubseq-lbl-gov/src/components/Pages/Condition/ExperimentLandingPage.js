@@ -7,6 +7,7 @@ import Header from '../../UI/Header/Header';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import Table from '../../UI/Table/Table';
+import Title from '../../UI/Title/Title';
 
 export default function ExperiemntLandingPage() {
 
@@ -32,7 +33,7 @@ export default function ExperiemntLandingPage() {
 			<Header title='Experiment LandingPage' />
 			<Content>
 				<div className='container'>
-					{stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}>Experiment - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>}
+					{stats && <Title title='Experiment' specific={stats[0]['Name:']} />}
 					{stats && <TableHorizontal content={stats} title="General Information" />}
 					<br />
 					{genes && <Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />}

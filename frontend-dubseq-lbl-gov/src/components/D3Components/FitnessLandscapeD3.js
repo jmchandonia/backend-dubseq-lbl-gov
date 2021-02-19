@@ -97,7 +97,9 @@ function FitnessLandscapeD3(props) {
 		let minGenePos = min(props.data.fragmentData, d => d.posFrom);
 		let maxGenePos = max(props.data.fragmentData, d => d.posTo);
 
+		// eslint-disable-next-line
 		let minScore = min(props.data.fragmentData, d => d.score);
+		// eslint-disable-next-line
 		let maxScore = max(props.data.fragmentData, d => d.score);
 
 		let xScale = scaleLinear()
