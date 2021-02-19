@@ -56,4 +56,12 @@ order by "High Scoring Genes" desc, 1
         </constructor-arg>
     </bean>
 
+    <bean id="getFragmnetCountQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select * from fragment_count;
+            ]]></value>
+        </constructor-arg>
+    </bean>
+
 </beans>

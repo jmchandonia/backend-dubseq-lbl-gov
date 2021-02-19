@@ -5,6 +5,7 @@ import FitnessGraph from '../../Graphs/FitnessGraph';
 import HistogramD3 from '../../D3Components/HistogramD3';
 import HistogramGraph from '../../Graphs/HistogramGraph';
 import GenomeRadialD3 from '../../D3Components/GenomeRadialD3';
+import RadialGraph from '../../Graphs/RadialGraph';
 
 
 
@@ -27,7 +28,7 @@ function TestingPage() {
 
 
 			{/* testing Radial Graph */}
-			<GenomeRadialD3 />
+			<RadialGraph />
 		</Aux>
 	)
 

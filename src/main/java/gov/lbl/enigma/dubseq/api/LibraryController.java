@@ -26,11 +26,15 @@ public class LibraryController {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     @Autowired
     @Qualifier("getLibraryStatsQuery")
-    private String getLibraryStats;
+    private String getLibraryStatsQuery;
 
     @Autowired
     @Qualifier("getTopPerformingGenesInExperimentsQuery")
     private String getTopPerformingGenesInExperimentsQuery;
+
+    @Autowired
+    @Qualifier("getFragmnetCountQuery")
+    private String getFragmnetCountQuery;
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
@@ -39,7 +43,7 @@ public class LibraryController {
     @GetMapping("/libraries/{id}/stats")
     public List<Map<String, Object>> getLibraryStats(@PathVariable long id) {
 
-        String QUERY = String.format(getLibraryStats, id);
+        String QUERY = String.format(getLibraryStatsQuery, id);
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }
@@ -49,6 +53,15 @@ public class LibraryController {
     public List<Map<String, Object>> getTopPerformingGenesInExperiments(@PathVariable long id) {
 
         String QUERY = String.format(getTopPerformingGenesInExperimentsQuery, id);
+
+        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+    }
+
+    @CrossOrigin
+    @GetMapping("/libraries/{id}/fragmentcount")
+    public List<Map<String, Object>> getFragmentCount(@PathVariable long id) {
+
+        String QUERY = getFragmnetCountQuery;
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }

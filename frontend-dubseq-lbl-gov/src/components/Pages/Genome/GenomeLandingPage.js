@@ -5,11 +5,12 @@ import Header from '../../UI/Header/Header';
 import Footer from '../../UI/Footer/Footer';
 import axios from 'axios';
 import Table from '../../UI/Table/Table';
-import HistogramD3 from '../../D3Components/HistogramD3';
+import RadialGraph from '../../Graphs/RadialGraph';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Content from '../../../hoc/Content/Content';
 import { Link } from 'react-router-dom';
+import Title from '../../UI/Title/Title';
 
 function GenomeLandingPage() {
 
@@ -17,7 +18,7 @@ function GenomeLandingPage() {
 	const [stats, setStats] = useState(null);
 	const [library, setLibrary] = useState(null);
 	const [experiments, setExperients] = useState(null);
-	const [histData, setHistData] = useState(null);
+	// const [histData, setHistData] = useState(null);
 
 	useEffect(() => {
 
@@ -32,8 +33,8 @@ function GenomeLandingPage() {
 			setLibrary(res2.data);
 			let res3 = await axios(`/api/organisms/${id}/experiments`);
 			setExperients(res3.data);
-			let res4 = await axios(`/api/organisms/${id}/graphs`);
-			setHistData(res4.data);
+			// let res4 = await axios(`/api/organisms/${id}/graphs`);
+			// setHistData(res4.data);
 		}
 
 		fetchData();
@@ -47,10 +48,11 @@ function GenomeLandingPage() {
 			<Header title={'GenomeLandingPage'} />
 			<Content>
 				<div className='container'>
-					{stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}> Organism - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>}
-					{stats && histData && <HorizontalLayout content={[
+					{/* {stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}> Organism - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>} */}
+					{stats && <Title title={'Organism'} specific={stats[0]['Name:']} />}
+					{stats && <HorizontalLayout content={[
 						<TableHorizontal content={stats} title='General Information' />,
-						<HistogramD3 data={histData} mountingId={`class_${1}`} />
+						<RadialGraph />
 					]} contentWidth={[6, 6]} />}
 					<br />
 					{library && <Table content={library} title='Libraries Created' />}

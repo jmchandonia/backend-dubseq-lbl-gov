@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Aux from '../../hoc/Aux';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
@@ -6,58 +6,46 @@ import { max, min } from 'd3-array';
 import { pointRadial, lineRadial, curveLinearClosed } from 'd3-shape';
 import { uid } from 'react-uid';
 
+let margin = 10;
+let width = 500;
+let height = width;
+let innerRadius = width / 3;
+let outerRadius = width / 2 - margin;
 
 function GenomeRadialD3(props) {
 
-	let data = [
-		{ x: 1, y: 50.0 },
-		{ x: 2, y: 49.0 },
-		{ x: 3, y: 50.5 },
-		{ x: 4, y: 50.75 },
-		{ x: 5, y: 51.0 },
-		{ x: 6, y: 50.0 },
-		{ x: 7, y: 51.0 },
-		{ x: 8, y: 52.75 },
-		{ x: 9, y: 52.75 },
-		{ x: 10, y: 53.25 },
-		{ x: 11, y: 51.0 },
-		{ x: 12, y: 50.0 },
-		{ x: 13, y: 51.75 },
-		{ x: 14, y: 50.0 },
-		{ x: 15, y: 52.0 },
-		{ x: 16, y: 52.0 },
-		{ x: 17, y: 52.0 },
-		{ x: 18, y: 52.25 },
-		{ x: 19, y: 52.3 },
-		{ x: 20, y: 51.5 }
-	]
-
+	const initialized = useRef(false);
 
 	useEffect(() => {
-		initialize();
-	})
+		if (initialized.current) {
+			updateGraph();
+		} else {
+			initialize();
+			initialized.current = true;
+		}
+		// eslint-disable-next-line
+	}, [props.content])
+
 
 	function initialize() {
 
-		let margin = 10;
-		let width = 954;
-		let height = width;
-		let innerRadius = width / 5;
-		let outerRadius = width / 2 - margin;
-
-
-		let svg = select('.canvas')
+		select('.canvas')
 			.append('svg')
 			.attr("viewBox", [-width / 2, -height / 2, width, height])
 			.attr("stroke-linejoin", "round")
 			.attr("stroke-linecap", "round");;
+	}
+
+	function updateGraph() {
+
+		let svg = select('.canvas').select('svg');
 
 		let xScale = scaleLinear()
-			.domain([min(data, d => d.x), max(data, d => d.x) - 1])
+			.domain([min(props.content, d => d.position), max(props.content, d => d.position) - 1])
 			.range([0, 2 * Math.PI]);
 
 		let yScale = scaleLinear()
-			.domain([min(data, d => d.y), max(data, d => d.y)])
+			.domain([min(props.content, d => d.count), max(props.content, d => d.count)])
 			.range([innerRadius, outerRadius]);
 
 		let xAxis = (g) => g
@@ -79,17 +67,17 @@ function GenomeRadialD3(props) {
 				.call(g => g.append('path')
 					.attr('id', d => d.id)
 					.attr('fill', 'red')
-					// Fix the way A is seeing the previous tick
+					// Creates a path with d attr that draws an area from current x val to pevious
+					// Find a better way to find the the previus x val.
 					.attr('d', (d, i) => (`
 							M${pointRadial(xScale(d.tickval), innerRadius)}
-							A${innerRadius}, ${innerRadius} 0, 0, 1 ${pointRadial(xScale(d.tickval - 1), innerRadius)}
+							A${innerRadius}, ${innerRadius} 0, 0, 1 ${pointRadial(xScale(d.tickval - 200000), innerRadius)}
 						`)
 					)
 				)
 				.call(g => g.append('text')
 					.append('textPath')
 					.attr('startOffset', 6)
-					.each(d => console.log(d.id.href))
 					.attr('xlink:href', d => '#' + uid(d))
 					.text(d => d.tickval))
 
@@ -100,7 +88,7 @@ function GenomeRadialD3(props) {
 			.attr("font-family", "sans-serif")
 			.attr("font-size", 10)
 			.call(g => g.selectAll("g")
-				.data(yScale.ticks(4).reverse())
+				.data(yScale.ticks(2).reverse())
 				.join("g")
 				.attr("fill", "none")
 				.call(g => g.append("circle")
@@ -120,21 +108,35 @@ function GenomeRadialD3(props) {
 					.attr("fill", "currentColor")
 					.attr("stroke", "none")))
 
+		let innerCirumfrance = (g) => g
+			.append('circle')
+			.attr('stroke', 'blue')
+			.attr('stroke-width', 5)
+			.attr('fill', 'none')
+			.attr('r', 9 * innerRadius / 10);
+
+		let title = svg.append('g')
+			.attr('transform', 'translate(-60, -10)');
+
+		title.append('text').text('Escherichia coli');
+		title.append('text').attr('transform', 'translate(0, 15)').text('BW25113');
+		title.append('text').attr('transform', 'translate(0, 30)').text('Dub-seq library');
+
 		svg.append('g').call(xAxis);
 		svg.append('g').call(yAxis);
+		svg.append('g').call(innerCirumfrance);
 
 		let line = lineRadial()
 			.curve(curveLinearClosed)
-			.angle(d => xScale(d.x))
+			.angle(d => xScale(d.position))
+			.radius(d => yScale(d.count));
+
 
 		svg.append("path")
 			.attr("fill", "none")
 			.attr("stroke", "steelblue")
-			.attr("stroke-width", 1.5)
-			.attr("d", line
-				.radius(d => yScale(d.y))
-				(data));
-
+			.attr("stroke-width", 0.5)
+			.attr("d", line(props.content))
 	}
 
 
