@@ -29,11 +29,38 @@ function GenomeRadialD3(props) {
 
 	function initialize() {
 
-		select('.canvas')
+		let svg = select('.canvas')
 			.append('svg')
 			.attr("viewBox", [-width / 2, -height / 2, width, height])
 			.attr("stroke-linejoin", "round")
-			.attr("stroke-linecap", "round");;
+			.attr("stroke-linecap", "round");
+
+		let innerCirumfranceBlue = (g) => g
+			.append('circle')
+			.attr('stroke', 'blue')
+			.attr('stroke-width', 2)
+			.attr('fill', 'none')
+			.attr('r', 9 * innerRadius / 10);
+
+		svg.append('g').call(innerCirumfranceBlue);
+
+		let innerCirumfranceRed = (g) => g
+			.append('circle')
+			.attr('stroke', 'red')
+			.attr('stroke-width', 1)
+			.attr('fill', 'none')
+			.attr('r', 9 * innerRadius / 12);
+
+		svg.append('g').call(innerCirumfranceRed);
+
+		let title = svg.append('g')
+			.attr('transform', 'translate(-60, -10)');
+
+		title.append('text').text('Escherichia coli');
+		title.append('text').attr('transform', 'translate(0, 15)').text('BW25113');
+		title.append('text').attr('transform', 'translate(0, 30)').text('Dub-seq library');
+
+
 	}
 
 	function updateGraph() {
@@ -66,7 +93,7 @@ function GenomeRadialD3(props) {
 				)
 				.call(g => g.append('path')
 					.attr('id', d => d.id)
-					.attr('fill', 'red')
+					.attr('fill', 'none')
 					// Creates a path with d attr that draws an area from current x val to pevious
 					// Find a better way to find the the previus x val.
 					.attr('d', (d, i) => (`
@@ -77,7 +104,7 @@ function GenomeRadialD3(props) {
 				)
 				.call(g => g.append('text')
 					.append('textPath')
-					.attr('startOffset', 6)
+					.attr('startOffset', 3)
 					.attr('xlink:href', d => '#' + uid(d))
 					.text(d => d.tickval))
 
@@ -108,23 +135,9 @@ function GenomeRadialD3(props) {
 					.attr("fill", "currentColor")
 					.attr("stroke", "none")))
 
-		let innerCirumfrance = (g) => g
-			.append('circle')
-			.attr('stroke', 'blue')
-			.attr('stroke-width', 5)
-			.attr('fill', 'none')
-			.attr('r', 9 * innerRadius / 10);
-
-		let title = svg.append('g')
-			.attr('transform', 'translate(-60, -10)');
-
-		title.append('text').text('Escherichia coli');
-		title.append('text').attr('transform', 'translate(0, 15)').text('BW25113');
-		title.append('text').attr('transform', 'translate(0, 30)').text('Dub-seq library');
 
 		svg.append('g').call(xAxis);
 		svg.append('g').call(yAxis);
-		svg.append('g').call(innerCirumfrance);
 
 		let line = lineRadial()
 			.curve(curveLinearClosed)
