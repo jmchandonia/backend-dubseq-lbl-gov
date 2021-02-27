@@ -15,6 +15,11 @@ function RadialGraph() {
 	async function fetchData() {
 
 		let res = await axios('/api/libraries/1/fragmentcount');
+
+		// let data = res.data.map(row => ({
+		// 	position: row.position/100000,
+		// 	count: row.count
+		// }))
 		setData(res.data);
 	}
 

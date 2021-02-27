@@ -6,7 +6,9 @@ import HeatMap from '../../D3Components/HeatMap';
 import Layout from '../../Layouts/SideBarLayout';
 import classes from './GraphsPage.module.css';
 import Content from '../../../hoc/Content/Content';
+import FintessGraph from '../../Graphs/FitnessGraph';
 import Footer from '../../UI/Footer/Footer';
+import FitnessGraph from '../../Graphs/FitnessGraph';
 
 
 class GraphsPage extends Component {
@@ -35,7 +37,7 @@ class GraphsPage extends Component {
 						}
 						mainContent={<Aux>
 							{this.state.vis === 'home' && <h1>Page for graphs</h1>}
-							{this.state.vis === 'Fitness Landscape' && <ScoreGraph />}
+							{this.state.vis === 'Fitness Landscape' && <FitnessGraph />}
 							{this.state.vis === 'heatMap' && <HeatMap />}
 						</Aux>
 						}

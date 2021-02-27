@@ -7,15 +7,16 @@ import HomePageLayout from '../../Layouts/HomeLayout';
 import Card from '../../UI/Card/Card';
 import SideBar from '../../UI/SideBar/SideBar';
 import Content from '../../../hoc/Content/Content';
-import HomePageCarousel from '../../UI/HomePageCarousel/HomePageCarousel';
+import HomePageCarousel from '../../UI/HomePageCarousel/HomePageCarousel2';
 
-class HomeScreen extends Component {
+class HomePage extends Component {
 
 	render() {
 		return (
 			<Aux>
 				<Header title='DubSeq Browser' />
 				<Content>
+					<HomePageCarousel />
 					<SideBarLayout
 						navbarContent={
 							<SideBar
@@ -26,27 +27,46 @@ class HomeScreen extends Component {
 								]}
 							/>
 						}
-						mainContent={
-							<HomePageLayout
-								className='content'
-
-								rowOne={
-									<Aux>
-										<Card title='Fitness Landscape' link='/graphPage'>
-											{/* <FitnessLandscapeScreener seed={2168} timeInterval={5}/> */}
-											<HomePageCarousel />
-										</Card>
-									</Aux>}
-								rowTwo={
-									<Aux>
+						mainContent={<div className='container'>
+							<hr style={{ margin: '5rem' }} />
+							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+								<div className='row'>
+									<div className='col-7'>
+										<h2>Browse Organisms</h2>
+										<p style={{ color: 'gray', fontWeight: '600' }}>As a demonstration of this approach, we generate an Escherichia coli (E. coli) Dub-seq library and assayed the phe- notypic consequences of overexpressing nearly all genes on E. coli fitness under dozens of experimental conditions.</p>
+									</div>
+									<div className='col-5'>
 										<Card title='Organisms' image={'/images/genome.svg'} link='/organisms' />
-										<Card title='Conditions' image={'/images/experiment.svg'} link='/conditions' />
-										<Card title='Genes' image={'/images/gene.svg'} link='/genes' />
-									</Aux>
-								}
-							/>
-						}
+									</div>
+								</div>
+							</div>
+							<hr style={{ margin: '5rem' }} />
+							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+								<div className='row'>
+									<div className='col-5'>
+										<Card title='Experiments' image={'/images/experiment.svg'} link='/organisms' />
+									</div>
+									<div className='col-7'>
+										<h2>Browse Experiments</h2>
+										<p style={{ color: 'gray', fontWeight: '600' }}>In these pooled fitness experiments, the barcode abundance changes depending upon the fitness pheno- type imparted by the barcode-associated genome fragments.</p>
+									</div>
+								</div>
+							</div>
+							<hr style={{ margin: '5rem' }} />
+							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+								<div className='row'>
+									<div className='col-7'>
+										<h2>Browse Genes</h2>
+										<p style={{ color: 'gray', fontWeight: '600' }}>We show that Dub-seq yields gene fitness data that is consistent with known biology and also provides novel gene function insights. We vali- date some of these new findings by overexpressing individual genes and quantifying these strains’ fittness</p>
+									</div>
+									<div className='col-5'>
+										<Card title='Genes' image={'/images/gene.svg'} link='/organisms' />
+									</div>
+								</div>
+							</div>
+						</div>}
 					/>
+
 				</Content>
 				<Footer />
 			</Aux>
@@ -54,4 +74,4 @@ class HomeScreen extends Component {
 	}
 }
 
-export default HomeScreen;
+export default HomePage;
