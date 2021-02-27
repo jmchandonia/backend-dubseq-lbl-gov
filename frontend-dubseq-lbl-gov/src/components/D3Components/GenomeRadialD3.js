@@ -44,14 +44,13 @@ function GenomeRadialD3(props) {
 
 		svg.append('g').call(innerCirumfranceBlue);
 
-		let innerCirumfranceRed = (g) => g
-			.append('circle')
-			.attr('stroke', 'red')
-			.attr('stroke-width', 1)
-			.attr('fill', 'none')
-			.attr('r', 9 * innerRadius / 12);
-
-		svg.append('g').call(innerCirumfranceRed);
+		// let innerCirumfranceRed = (g) => g
+		// 	.append('circle')
+		// 	.attr('stroke', 'red')
+		// 	.attr('stroke-width', 1)
+		// 	.attr('fill', 'none')
+		// 	.attr('r', 9 * innerRadius / 12);
+		// svg.append('g').call(innerCirumfranceRed);
 
 		let title = svg.append('g')
 			.attr('transform', 'translate(-60, -10)');
@@ -79,7 +78,7 @@ function GenomeRadialD3(props) {
 			.attr("font-family", "sans-serif")
 			.attr("font-size", 10)
 			.call(g => g.selectAll('g')
-				.data(xScale.ticks(20).map(d => ({ "tickval": d })))
+				.data(xScale.ticks(10).map(d => ({ "tickval": d })))
 				.join('g')
 				.each(d => d.id = uid(d))
 				.call(g => g.append('path')
@@ -104,9 +103,9 @@ function GenomeRadialD3(props) {
 				)
 				.call(g => g.append('text')
 					.append('textPath')
-					.attr('startOffset', 3)
+					// .attr('startOffset', )
 					.attr('xlink:href', d => '#' + uid(d))
-					.text(d => d.tickval))
+					.text(d => d.tickval/1000000 + 'Mb'))
 
 			)
 
@@ -147,8 +146,8 @@ function GenomeRadialD3(props) {
 
 		svg.append("path")
 			.attr("fill", "none")
-			.attr("stroke", "steelblue")
-			.attr("stroke-width", 0.5)
+			.attr("stroke", "red")
+			.attr("stroke-width", 3)
 			.attr("d", line(props.content))
 	}
 
