@@ -1,20 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './Header.module.css';
+import { Navbar, Form, FormControl, Button } from 'react-bootstrap';
 
-const Header = (props) => (
-	// <header className="navbar navbar-expnad-lg navbar-dark bg-dark">
-
+const Header = () => (
 	<div className={classes.header}>
-		<header className="d-flex flex-row p-4 mb-3 bg-dark border-bottom shadow-sm">
-
-			<div className="mr-auto">
-				<Link className={classes.logo} to='/'>DubSeq Brower</Link>
-			</div>
-			<div>
-				<Link to='/about'>About</Link>
-			</div>
-		</header>
+		<Navbar bg="dark" className="d-flex flex-row p-4 bg-dark border-bottom shadow-sm, justify-content-between">
+			<Link className={classes.logo} to='/'>DubSeq Brower</Link>
+			<Form inline>
+				<FormControl type="text" placeholder="Search" className=" mr-sm-2" />
+				<Button type="submit" >Search</Button>
+			</Form>
+		</Navbar>
 	</div >
 )
 

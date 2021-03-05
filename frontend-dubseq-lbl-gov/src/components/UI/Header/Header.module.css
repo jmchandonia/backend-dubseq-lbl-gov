@@ -8,11 +8,14 @@
 	text-transform: uppercase;
 	font-weight: 700;
 	font-size: 1.3rem;
+
 }
 .logo:hover{
 	text-decoration: none; 
+	color:  rgb(206, 252, 239);
 }
 
 .header{
 	color: #2CAEBE;
+	margin-bottom: -1px;
 }

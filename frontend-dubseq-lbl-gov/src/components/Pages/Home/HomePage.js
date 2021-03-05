@@ -15,8 +15,8 @@ class HomePage extends Component {
 		return (
 			<Aux>
 				<Header title='DubSeq Browser' />
+				<HomePageCarousel />
 				<Content>
-					<HomePageCarousel />
 					<SideBarLayout
 						navbarContent={
 							<SideBar
@@ -27,9 +27,8 @@ class HomePage extends Component {
 								]}
 							/>
 						}
-						mainContent={<div className='container'>
-							<hr style={{ margin: '5rem' }} />
-							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+						mainContent={
+							<div className='container'>
 								<div className='row'>
 									<div className='col-7'>
 										<h2>Browse Organisms</h2>
@@ -39,32 +38,28 @@ class HomePage extends Component {
 										<Card title='Organisms' image={'/images/genome.svg'} link='/organisms' />
 									</div>
 								</div>
-							</div>
-							<hr style={{ margin: '5rem' }} />
-							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+								<hr style={{ margin: '5rem' }} />
 								<div className='row'>
 									<div className='col-5'>
-										<Card title='Experiments' image={'/images/experiment.svg'} link='/organisms' />
+										<Card title='Experiments' image={'/images/experiment.svg'} link='/experiments' />
 									</div>
 									<div className='col-7'>
 										<h2>Browse Experiments</h2>
 										<p style={{ color: 'gray', fontWeight: '600' }}>In these pooled fitness experiments, the barcode abundance changes depending upon the fitness pheno- type imparted by the barcode-associated genome fragments.</p>
 									</div>
 								</div>
-							</div>
-							<hr style={{ margin: '5rem' }} />
-							<div style={{ backgroundColor: 'while', opacity: '0.9' }}>
+								<hr style={{ margin: '5rem' }} />
 								<div className='row'>
 									<div className='col-7'>
 										<h2>Browse Genes</h2>
 										<p style={{ color: 'gray', fontWeight: '600' }}>We show that Dub-seq yields gene fitness data that is consistent with known biology and also provides novel gene function insights. We vali- date some of these new findings by overexpressing individual genes and quantifying these strains’ fittness</p>
 									</div>
 									<div className='col-5'>
-										<Card title='Genes' image={'/images/gene.svg'} link='/organisms' />
+										<Card title='Genes' image={'/images/gene.svg'} link='/genes' />
 									</div>
 								</div>
 							</div>
-						</div>}
+						}
 					/>
 
 				</Content>
