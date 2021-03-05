@@ -11,6 +11,7 @@ import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Content from '../../../hoc/Content/Content';
 import { Link } from 'react-router-dom';
 import Title from '../../UI/Title/Title';
+import TableReact from '../../UI/Table/TableReact';
 
 function GenomeLandingPage() {
 
@@ -43,6 +44,51 @@ function GenomeLandingPage() {
 		// eslint-disable-next-line
 	}, [])
 
+
+
+	let LibrariesLabels = [
+		{
+			dataField: 'Name',
+			text: 'Name',
+			sort: true
+		},
+		{
+			dataField: 'id',
+			text: 'Id',
+			sort: true
+		},
+		{
+			dataField: 'Experiments',
+			text: 'Experiments',
+			sort: true
+		},
+		{
+			dataField: 'Fragments',
+			text: 'Fragments',
+			sort: true
+		},
+	]
+
+	let TopPerformingLabels= [
+		{
+			dataField: 'name',
+			text: 'Name',
+			sort: true
+		},
+		{
+			dataField: 'type',
+			text: 'Type',
+			sort: true
+		},
+		{
+			dataField: 'max gene score',
+			text: 'MaxGeneScore',
+			sort: true
+		},
+	]
+
+
+
 	return (
 		<Aux>
 			<Header title={'GenomeLandingPage'} />
@@ -55,9 +101,9 @@ function GenomeLandingPage() {
 						<RadialGraph />
 					]} contentWidth={[6, 6]} />}
 					<br />
-					{library && <Table content={library} title='Libraries Created' />}
+					{library && <TableReact content={library} keyField='id' labels={LibrariesLabels} title='Libraries Created' />}
 					<br />
-					{experiments && <Table content={experiments} title='Top Conditions Performed' />}
+					{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Conditions Performed' />}
 				</div>
 			</Content>
 			<Footer />

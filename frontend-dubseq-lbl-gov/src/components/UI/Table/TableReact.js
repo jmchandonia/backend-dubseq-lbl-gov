@@ -15,7 +15,7 @@ function TableReact(props) {
 				{props.content && <BootstrapTable
 					keyField={props.keyField}
 					data={props.content}
-					columns={props.lables}
+					columns={props.labels}
 					bordered={false}
 					bootstrap4
 					hover

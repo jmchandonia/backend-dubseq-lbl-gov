@@ -75,7 +75,7 @@ function GenomeList() {
 			<Header title="TablePage" />
 			<Content>
 				<div className='container'>
-					{genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} lables={lables} />}
+					{genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />}
 				</div>
 			</Content>
 			<Footer />
