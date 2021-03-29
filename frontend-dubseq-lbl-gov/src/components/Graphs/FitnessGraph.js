@@ -10,6 +10,7 @@ function FitnessGraph() {
 
 	const [data, setData] = useState(null);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
+	const [current, setCurrent] = useState(null)
 	const [options, setOptions] = useState(null);
 	const currentGeneId = useRef(0);
 	const initialied = useRef(false);
@@ -54,12 +55,12 @@ function FitnessGraph() {
 	}
 
 	async function handleSelect(e) {
-	
+
 		changeCurrent(e.value);
 	}
 
 	async function handleMove(new_gene_id) {
-		
+
 		changeCurrent(new_gene_id);
 	}
 
@@ -70,6 +71,7 @@ function FitnessGraph() {
 		let res = await axios(`/api/genes/${gene_id}/position`);
 		let { s, f } = findRange(res.data[0]);
 		setPosition({ start: s, end: f })
+		setCurrent(res.data[0])
 	}
 
 	function findRange({ pos_from, pos_to }) {
@@ -93,15 +95,18 @@ function FitnessGraph() {
 			<div><b>To:</b> {position.end}</div>
 			<div>{currentGeneId.current}</div>
 
-			<button onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}>Right</button>
 			<button onClick={() => handleMove(parseInt(currentGeneId.current) - 1)}>Left</button>
-			<FitnessLandscapeD3
-				width={1000}
-				height={600}
-				xAxisLable="Position along the genome (bp)"
-				yAxisLable="Fragment Fitness Score"
-				data={data}
-			/>
+			<button onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}>Right</button>
+			<div style={{backgroundColor: 'white', width: '50%', borderRadius: '10px'}}>
+				<FitnessLandscapeD3
+					width={1000}
+					height={600}
+					xAxisLable="Position along the genome (bp)"
+					yAxisLable="Fragment Fitness Score"
+					data={data}
+					current={current}
+				/>
+			</div>
 		</Aux>
 	)
 }

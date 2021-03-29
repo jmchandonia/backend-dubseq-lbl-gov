@@ -6,11 +6,10 @@ import TableHorizontal from '../../UI/Table/TableHorizontal';
 import Header from '../../UI/Header/Header';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
-import Table from '../../UI/Table/Table';
 import Title from '../../UI/Title/Title';
 import TableReact from '../../UI/Table/TableReact';
 
-export default function ExperiemntLandingPage() {
+function ExperiemntLandingPage() {
 
 	const { id, id_experiment } = useParams();
 	const [stats, setStats] = useState(null);
@@ -27,6 +26,7 @@ export default function ExperiemntLandingPage() {
 			setFragments(res3.data);
 		}
 		fetchData();
+		console.log("in experiments")
 	})
 
 
@@ -45,8 +45,7 @@ export default function ExperiemntLandingPage() {
 			dataField: 'gene score',
 			text: 'Gene Score',
 			sort: true
-		},
-
+		}
 	]
 
 	let topScoringFragments = [
@@ -64,7 +63,7 @@ export default function ExperiemntLandingPage() {
 			dataField: 'average score',
 			text: 'Average Score',
 			sort: true
-		},
+		}
 	]
 
 	return (
@@ -88,3 +87,4 @@ export default function ExperiemntLandingPage() {
 
 }
 
+export default ExperiemntLandingPage;

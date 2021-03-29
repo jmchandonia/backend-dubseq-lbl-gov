@@ -1,7 +1,6 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Aux from '../../../hoc/Aux';
-import classes from './Table.module.css';
 
 
 function TableReact(props) {
