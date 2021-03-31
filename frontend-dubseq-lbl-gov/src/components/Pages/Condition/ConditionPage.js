@@ -9,6 +9,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom'
+import TableReact from '../../UI/Table/TableReact';
 
 
 const libraryIdLink = '/bagseq/libraries/${id}';
@@ -64,8 +65,41 @@ function ConditionPage() {
 		console.log("Submit: " + formValues[1]);
 		// e.preventDefault();
 	}
+	let labels = [
+		{
+			dataField: 'Condition',
+			text: 'Condition',
+			sort: true
+		},
+		{
+			dataField: 'Library id',
+			text: 'Library id',
+			sort: true
+		},
+		{
+			dataField: 'Library name',
+			text: 'Library name',
+			sort: true
+		},
+		{
+			dataField: 'id',
+			text: 'Id',
+			sort: true
+		},
+		{
+			dataField: 'itnum',
+			text: 'Itnum',
+			sort: true
+		},
+		{
+			dataField: 'type',
+			text: 'Type',
+			sort: true
+		},
+		
+	]
 
-
+	console.log(tableContent)
 
 	return (
 		<Aux>
@@ -80,8 +114,7 @@ function ConditionPage() {
 						inputTitle='condition'
 						inputDdata={inputData}
 						didSubmit={handleSubmit} />,
-					(tableContent && <Table content={tableContent} title='Conditions' />)
-					// <Table content={tableContent} title='Conditions' />
+					(tableContent && <TableReact title='Conditions' keyField='id' content={tableContent} labels={labels}/>)
 				]} contentWidth={[3, 9]} />
 			</Content>
 			<Footer />

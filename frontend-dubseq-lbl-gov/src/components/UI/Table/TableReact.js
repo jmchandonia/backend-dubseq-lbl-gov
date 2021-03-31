@@ -5,8 +5,6 @@ import Aux from '../../../hoc/Aux';
 
 function TableReact(props) {
 
-
-
 	return (
 		<Aux>
 			<h4>{props.title}</h4>
