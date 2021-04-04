@@ -8,7 +8,8 @@
 
 #card_dynamic:hover{
 	/* transform: scale(1.01); */
-	background: rgba(206, 252, 239, 0.8);
+	background: rgba(250, 127, 114, 0.5);
+	/* border: 1px solid rgba(250, 127, 114, 0.5); */
 	box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
 
@@ -26,6 +27,7 @@
 	font-size: 1.5rem;
 	text-align: center;
 	font-weight: 600;
+	color: #272727;
 }
 
 .card_text {

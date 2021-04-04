@@ -17,7 +17,7 @@ function GenomeList() {
 		async function fetchData() {
 			let res = await axios(`/api/organisms`);
 			res.data = res.data.map(e => {
-				e['link'] = <Link to={`/organisms/${e.genome_id}`}>SeeMore</Link>;
+				e['link'] = <Link to={`/organisms/${e.genome_id}`}>See More</Link>;
 				return e;
 			})
 			setGenomeList(res.data);
@@ -32,7 +32,7 @@ function GenomeList() {
 	const lables = [
 		{
 			dataField: 'genome_id',
-			text: 'Id',
+			text: 'ID',
 			sort: true
 		}, {
 			dataField: 'name',
@@ -44,7 +44,7 @@ function GenomeList() {
 			sort: true
 		}, {
 			dataField: 'ncbi_taxonomy_id',
-			text: 'Taxonomy id',
+			text: 'Taxonomy ID',
 			sort: true
 		}, {
 			dataField: 'phylum',
@@ -60,7 +60,7 @@ function GenomeList() {
 			sort: true
 		}, {
 			dataField: 'experiment_count',
-			text: 'Experiemnt count',
+			text: 'Experiment count',
 			sort: true
 		}, {
 			dataField: 'link',

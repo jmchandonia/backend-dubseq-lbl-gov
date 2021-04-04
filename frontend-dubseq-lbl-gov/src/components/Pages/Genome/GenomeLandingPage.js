@@ -69,7 +69,7 @@ function GenomeLandingPage() {
 		},
 	]
 
-	let TopPerformingLabels= [
+	let TopPerformingLabels = [
 		{
 			dataField: 'name',
 			text: 'Name',
@@ -93,17 +93,21 @@ function GenomeLandingPage() {
 		<Aux>
 			<Header title={'GenomeLandingPage'} />
 			<Content>
-				<div className='container'>
+				<div className='container' style={{ paddingBottom: "40px" }}>
 					{/* {stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}> Organism - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>} */}
 					{stats && <Title title={'Organism'} specific={stats[0]['Name:']} />}
 					{stats && <HorizontalLayout content={[
 						<TableHorizontal content={stats} title='General Information' />,
 						<RadialGraph />
 					]} contentWidth={[6, 6]} />}
-					<br />
-					{library && <TableReact content={library} keyField='id' labels={LibrariesLabels} title='Libraries Created' />}
-					<br />
-					{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Conditions Performed' />}
+					<div style={{ marginTop: "50px" }}>
+						{library && <TableReact content={library} keyField='id' labels={LibrariesLabels} title='Libraries Created' />}
+					</div>
+
+					<div style={{ marginTop: "70px" }}>
+						{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Conditions Performed' />}
+					</div>
+
 				</div>
 			</Content>
 			<Footer />

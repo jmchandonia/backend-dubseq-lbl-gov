@@ -1,12 +1,13 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel'
+import "./HomePage.css";
 
 function HomePageCarousel() {
 
 	return (
 		<Carousel slide={false} fade={false}>
-		 {/* <Carousel> */}
-			<Carousel.Item interval={2500}>
+		{/* <Carousel> */}
+			<Carousel.Item className="carousel-item" interval={2500}>
 				<img
 					className="d-block rounded mx-auto"
 					src="/images/fitnes.png"
