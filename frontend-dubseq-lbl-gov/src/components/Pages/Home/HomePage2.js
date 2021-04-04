@@ -40,7 +40,7 @@ class HomePage2 extends Component {
 								rowTwo={
 									<Aux>
 										<Card title='Organisms' image={'/images/genome.svg'} link='/organisms' />
-										<Card title='Conditions' image={'/images/experiment.svg'} link='/conditions' />
+										<Card title='Conditions' image={'/images/experiment.svg'} link='/experiments' />
 										<Card title='Genes' image={'/images/gene.svg'} link='/genes' />
 									</Aux>
 								}

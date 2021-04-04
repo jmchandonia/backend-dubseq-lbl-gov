@@ -19,7 +19,7 @@ const Table = (props) => {
 
 		return getKeys(obj[0])
 			.map((key, index) => (
-				<th key={key}>{key.toUpperCase()}</th>
+				<th key={key}>{key}</th>
 			))
 	}
 

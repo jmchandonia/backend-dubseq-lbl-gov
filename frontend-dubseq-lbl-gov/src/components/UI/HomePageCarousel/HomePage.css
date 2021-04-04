@@ -1,0 +1,22 @@
+.carousel-wrapper{
+	background-color: #ffffff;
+}
+
+.carousel-item{
+	background-color: #ffffff;
+
+}
+
+.carousel-text-title{
+	color: #272727;
+	font-weight: 600;
+}
+
+.carousel-content{
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.carousel-image{
+	border-radius: 5px;
+}

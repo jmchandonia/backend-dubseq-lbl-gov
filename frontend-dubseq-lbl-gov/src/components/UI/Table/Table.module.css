@@ -6,9 +6,10 @@
 
 .table {
 	width: 800px;
-	border-collapse: collapse;
+	border-collapse: collapse; 
 	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+	/* box-shadow: 0 0 20px rgba(0,0,0,0.1); */
+	margin-bottom: 0px;
 }
 
 .tr {
@@ -17,12 +18,17 @@
 }
 
 .table_header {
-	background-color: #55608f;
+	/* background-color: #55608f; */
+	color: #389393;
+}
+
+.table_title{
+	margin-bottom: 20px;
 }
 
 .table_background {
 	width: 400px; 
-	border: solid 2px black; 
-	border-radius: 10px; 
+	border: solid 1px #e0e0e0; 
+	border-radius: 2px; 
 	background-color: rgba(255, 255, 255, 0.4);
 }

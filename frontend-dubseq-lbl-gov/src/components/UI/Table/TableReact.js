@@ -1,96 +1,27 @@
-import React from 'react'
+import React from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
 import Aux from '../../../hoc/Aux';
-import { useSortBy, useTable } from 'react-table'
-import classes from './Table.module.css';
+import "./Table.css";
 
 
-function TableReact() {
-	// function TableReact({data}) {
-
-	// let columns = Object.keys(data[0]).reduce((obj, val) => {
-	// 	obj.push({Header: val, accessor: val});
-	// 	return obj;
-	// }, []);
-
-	let data = [
-		{
-			col1: 'Hello',
-			col2: 'World',
-		},
-		{
-			col1: 'react-table',
-			col2: 'rocks',
-		},
-		{
-			col1: 'whatever',
-			col2: 'you want',
-		},
-	]
-
-	let columns = [
-		{
-			Header: 'Column 1',
-			accessor: 'col1', // accessor is the "key" in the data
-		},
-		{
-			Header: 'Column 2',
-			accessor: 'col2',
-		},
-	]
-
-
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		rows,
-		prepareRow,
-	} = useTable({ columns, data }, useSortBy)
-
+function TableReact(props) {
 
 	return (
 		<Aux>
-			<div className={classes.center}>
-				<table {...getTableProps()} className='table'>
-					<thead>
-						{headerGroups.map(headerGroup => (
-							<tr  {...headerGroup.getHeaderGroupProps()}>
-								{headerGroup.headers.map(column => (
-									<th {...column.getHeaderProps(column.getSortByToggleProps())} >
-										{column.render('Header')}
-										<span>
-											{column.isSorted
-												? column.isSortedDesc
-													? ' 🔽'
-													: ' 🔼'
-												: ''}
-										</span>
-									</th>
-								))}
-							</tr>
-						))}
-					</thead>
-					<tbody {...getTableBodyProps()} >
-						{rows.map(row => {
-							prepareRow(row)
-							return (
-								<tr {...row.getRowProps()}>
-									{row.cells.map(cell => {
-										return (
-											<td  {...cell.getCellProps()} >
-												{cell.render('Cell')}
-											</td>
-										)
-									})}
-								</tr>
-							)
-						})}
-					</tbody>
-				</table>
+			<h4 style={{fontWeight: "700", marginBottom: "30px"}}>{props.title}</h4>
+			<div style={{ backgroundColor: "white", borderRadius: '1rem' }}>
+				{props.content && <BootstrapTable
+					keyField={props.keyField}
+					data={props.content}
+					columns={props.labels}
+					bordered={false}
+					bootstrap4
+					hover
+					wrapperClasses="table-responsive"
+				/>}
 			</div>
 		</Aux>
 	)
 }
-
 
 export default TableReact;

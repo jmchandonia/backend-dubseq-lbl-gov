@@ -29,7 +29,18 @@ const SearchBox = (props) => {
 							<div className='form-lable'>{props.inputTitle}:</div>
 							<input value={input} onChange={e => setInput(e.target.value)} className='form-control'></input>
 						</div>
-						<input type='submit' value='Submit' style={{ margin: '5px 0px' }} className="btn btn-primary" />
+						<div className="d-flex justify-content-left">
+							<input type='submit' value='Submit' style={{ margin: '5px 0px' }} className="btn btn-primary" />
+							<div style={{ marginLeft: "20px" }}>
+								{props.isLoadingData && (
+									<div style={{height: "20px", width: "20px", marginTop: "10px"}}class="spinner-border" role="status">
+										<span class="sr-only">Loading...</span>
+									</div>
+								)}
+							</div>
+
+						</div>
+
 					</form>
 
 				</div>

@@ -4,11 +4,15 @@ import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { max, min } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
+import './FitnessGraph.css'
 
 const margin = { top: 100, right: 20, bottom: 50, left: 50 };
 
 let graphWidth = 0;
 let graphHeight = 0;
+
+const totalGraphWidth = 1000
+const totalGraphHeight = 600
 
 function FitnessLandscapeD3(props) {
 
@@ -18,7 +22,6 @@ function FitnessLandscapeD3(props) {
 		if (initialized.current) {
 			updateGraph();
 		} else {
-
 			initialize();
 			initialized.current = true;
 		}
@@ -27,18 +30,17 @@ function FitnessLandscapeD3(props) {
 
 	function initialize() {
 
-		graphWidth = props.width - margin.left - margin.right;
-		graphHeight = props.height - margin.top - margin.bottom;
+		graphWidth = totalGraphWidth - margin.left - margin.right;
+		graphHeight = totalGraphHeight - margin.top - margin.bottom;
 
 		let svg = select('.canvas')
 			.append('svg')
-			.attr("width", props.width)
-			.attr("height", props.height);
+			.attr('viewBox', `0 0 ${totalGraphWidth} ${totalGraphHeight}`)
 
 		svg.append('defs')
 			.append('marker')
 			.attr('id', 'arrow')
-			.attr('viewBox', [0, 0, 5, 5])
+			.attr('viewBox', '0 0 5 5')
 			.attr('refX', 5)
 			.attr('refY', 2.5)
 			.attr('markerWidth', 5)
@@ -46,7 +48,7 @@ function FitnessLandscapeD3(props) {
 			.attr('orient', 'auto-start-reverse')
 			.append('path')
 			.attr('d', 'M0,0L5,2.5L0,5')
-			.attr('stroke', 'red')
+			.attr('stroke', 'black')
 			.style('fill', 'none');
 
 		// eslint-disable-next-line
@@ -77,7 +79,7 @@ function FitnessLandscapeD3(props) {
 
 		lables.append("text")
 			.attr("transform", `translate(${graphWidth / 2}, ${graphHeight + margin.bottom - 5})`)
-			.style("text-anchor", "middle")
+			.attr('class', 'label')
 			.text(props.xAxisLable);
 
 		lables.append("text")
@@ -85,9 +87,23 @@ function FitnessLandscapeD3(props) {
 			.attr("y", 0 - margin.left)
 			.attr("x", 0 - (graphHeight / 2))
 			.attr("dy", "1em")
-			.style("text-anchor", "middle")
+			.attr('class', 'label')
 			.text(props.yAxisLable);
 
+	}
+
+	function colorFrags(posFrom, posTo){
+		if ((posTo > props.current.pos_to) && (posFrom < props.current.pos_from)){
+			return "red"
+		}
+		return 'gray'
+	}
+
+	function colorGenes(name){
+		if (name == props.current.name){
+			return 'red'
+		}
+		return 'gray'
 	}
 
 	function updateGraph() {
@@ -117,7 +133,6 @@ function FitnessLandscapeD3(props) {
 		let yAxis = axisLeft(yScale);
 		select('.yAxisGroup').call(yAxis);
 
-
 		let fragmentChart = select('.fragmentChart');
 
 		// Removing all from unused remove selection
@@ -132,7 +147,7 @@ function FitnessLandscapeD3(props) {
 			.attr('x2', d => xScale(d.posTo))
 			.attr('y1', d => yScale(d.score))
 			.attr('y2', d => yScale(d.score))
-			.style('stroke', 'gray')
+			.style('stroke', d => colorFrags(d.posFrom, d.posTo))
 			.style('stroke-width', 2);
 
 
@@ -154,7 +169,7 @@ function FitnessLandscapeD3(props) {
 		geneChart.selectAll('g')
 			.append('line')
 			.attr('x2', d => (xScale(d.posTo) - xScale(d.posFrom)))
-			.style('stroke', 'red')
+			.style('stroke', d => colorGenes(d.name))
 			.style('stroke-width', 2)
 			.attr('marker-start', d => ((d.strand === '+') ? '' : 'url(#arrow)'))
 			.attr('marker-end', d => ((d.strand === '-') ? '' : 'url(#arrow)'));
@@ -162,6 +177,7 @@ function FitnessLandscapeD3(props) {
 		// adding gene name
 		geneChart.selectAll('g')
 			.append('text')
+			.style("text-anchor", 'middle')
 			.attr('y', -4)
 			.text(d => d.name);
 

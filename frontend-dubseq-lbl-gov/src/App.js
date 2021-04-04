@@ -28,7 +28,7 @@ class App extends Component {
 				<Route path='/testing' component={TestingPage} />
 				<Route exact path='/organisms' component={GenomePage} />
 				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
-				<Route path='/conditions' component={ConditionPage} />
+				<Route path='/experiments' component={ConditionPage} />
 				<Route path='/genes' component={GenePage} />
 				<Route exact path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
 				<Route exact path='/bagseq/libraries/:id/experiments/:id_experiment' component={ExperiemntLandingPage} />

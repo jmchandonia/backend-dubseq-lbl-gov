@@ -19,8 +19,9 @@ class GenePage extends Component {
 		super(props)
 		this.state = {
 			tableContent: [{ first: 1, second: 2 }],
-			search: 1,
-			selectionData: ['one', 'two', 'three']
+			search: true,
+			selectionData: ['one', 'two', 'three'],
+			isLoadingData: false
 		}
 	}
 
@@ -45,19 +46,22 @@ class GenePage extends Component {
 		))
 	}
 	componentDidMount() {
-
-		this.getGenes();
 	}
 
-	getGenes = async () => {
+	getGenes = async (event) => {
+		event.preventDefault();
 
+
+		console.log("Getting data")
+		this.setState({isLoadingData: true})
 		let content = await axios("/api/genes")
-		await this.setState({ tableContent: content.data });
+		console.log("DONE Getting data")
+		this.setState({isLoadingData: false})
+		this.setState({ tableContent: content.data });
+		this.setState({ search: false })
 	}
 
-	didClick = () => {
-		this.setState({ search: 0 })
-	}
+
 
 	render() {
 		return (
@@ -71,7 +75,8 @@ class GenePage extends Component {
 								selectionTitle='Select organism'
 								selection={this.state.selectionData}
 								inputTitle='gene'
-								didSubmit={this.didClick} /> :
+								didSubmit={this.getGenes} 
+								isLoadingData={this.state.isLoadingData}/> :
 							<Table content={this.state.tableContent} title='Genes' />}
 					</div>
 				</Content>

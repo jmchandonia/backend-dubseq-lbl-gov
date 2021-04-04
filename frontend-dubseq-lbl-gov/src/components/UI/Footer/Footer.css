@@ -1,0 +1,36 @@
+.menu-footer {
+	display: flex;
+}
+
+.footer-link a{
+	color: #ffffff;
+	font-weight: 300;
+}
+
+.footer-link a:hover{
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.footer-copyright{
+	color: #ffffff;
+}
+
+.footer {
+	padding-top: 40px;
+	padding-bottom: 20px;
+	background-color: #389393;
+}
+
+ul {
+	list-style-type: none;
+}
+
+div {
+	display: block;
+}
+
+p {
+	/* color: rgb(0, 0, 180); */
+}

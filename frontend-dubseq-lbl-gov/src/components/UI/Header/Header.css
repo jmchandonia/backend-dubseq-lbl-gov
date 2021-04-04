@@ -1,0 +1,48 @@
+.navbar-wrapper{
+	background-color: #389393;
+}
+
+.title{
+	text-align: center;
+	font-size: 1.5rem;
+	margin: 10px 0px 10px 0px;
+}
+
+.logo{
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 1.3rem;
+	color: #ffffff;
+}
+
+.logo:hover{
+	text-decoration: none; 
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.navbar-search-button{
+	background-color: #52d7e0;
+	color: #ffffff;
+}
+
+.header{
+	color: #2CAEBE;
+	margin-bottom: -1px;
+}
+
+.navbar-links-wrapper{
+	margin-left: 60px;
+}
+
+.navbar-links-wrapper a{
+	color: #ffffff;
+	padding-left: 30px;
+	font-weight: 300;
+}
+
+.navbar-links-wrapper a:hover{
+	font-weight: 500;
+	color: #ffffff;
+	text-decoration: none;
+}

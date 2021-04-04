@@ -10,6 +10,7 @@ import TableHorizontal from '../../UI/Table/TableHorizontal';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Content from '../../../hoc/Content/Content';
 import Title from '../../UI/Title/Title';
+import TableReact from '../../UI/Table/TableReact';
 
 function BagSeqLandingPage() {
 
@@ -51,6 +52,49 @@ function BagSeqLandingPage() {
 	}
 
 
+
+	let ExperimentLabels = [
+		{
+			dataField: 'Condition',
+			text: 'Condition',
+			sort: true
+		},
+		{
+			dataField: 'High Scoring Genes',
+			text: 'Fragments',
+			sort: true
+		},
+		{
+			dataField: 'itnum',
+			text: 'itnum',
+			sort: true
+		},
+		{
+			dataField: 'experiment id',
+			text: 'Experiment Id',
+			sort: true
+		},
+	]
+
+	let TopPerformingLabels = [
+		{
+			dataField: 'Gene name',
+			text: 'Gene Name',
+			sort: true
+		},
+		{
+			dataField: 'Gene score',
+			text: 'Gene Score',
+			sort: true
+		},
+		{
+			dataField: 'Condition',
+			text: 'Condition',
+			sort: true
+		},
+	]
+
+
 	return (
 		<Aux>
 			<Header title='Library LandingPage' />
@@ -62,9 +106,9 @@ function BagSeqLandingPage() {
 						<HistogramD3 data={histData} mountingId={`class_${1}`} />
 					]} contentWidth={[6, 6]} />}
 					<br />
-					{experiments && <Table content={experiments} title='Experiments (high scoring genes - genes scored above 4)' />}
+					{experiments && <TableReact content={experiments} keyField='id' labels={ExperimentLabels} title='Experiments (high scoring genes - genes scored above 4)' />}
 					<br />
-					{topPerformingGenes && <Table content={topPerformingGenes} title='Top Performing Genes' />}
+					{topPerformingGenes && <TableReact content={topPerformingGenes} keyField='id' labels={TopPerformingLabels} title='Top Performing Genes' />}
 				</div>
 			</Content>
 			<Footer />
