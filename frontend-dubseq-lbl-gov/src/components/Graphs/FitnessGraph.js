@@ -86,21 +86,27 @@ function FitnessGraph() {
 
 	return (
 		<Aux>
-			<Select
-				// options={options.current}
-				options={options}
-				onChange={handleSelect}
-			/>
-			<div><b>From: </b>{position.start}</div>
-			<div><b>To:</b> {position.end}</div>
-			<div>{currentGeneId.current}</div>
 
-			<button onClick={() => handleMove(parseInt(currentGeneId.current) - 1)}>Left</button>
-			<button onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}>Right</button>
-			<div style={{backgroundColor: 'white', width: '50%', borderRadius: '10px'}}>
+			{/* <div><b>From: </b>{position.start}</div>
+			<div><b>To:</b> {position.end}</div>
+			<div>{currentGeneId.current}</div> */}
+
+			<div className='d-flex justify-content-between'>
+				<button className='btn w-25'
+					onClick={() => handleMove(parseInt(currentGeneId.current) - 1)}
+					style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >←</button>
+				<div style={{ width: '400px' }}>
+					<Select
+						options={options}
+						onChange={handleSelect}
+					/>
+				</div>
+				<button className='btn w-25'
+					onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}
+					style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >→</button>
+			</div>
+			<div style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
 				<FitnessLandscapeD3
-					width={1000}
-					height={600}
 					xAxisLable="Position along the genome (bp)"
 					yAxisLable="Fragment Fitness Score"
 					data={data}

@@ -50,9 +50,8 @@ function FitnessLandscapeD3(props) {
 			.attr('d', 'M0,0L5,2.5L0,5')
 			.attr('stroke', 'black')
 			.style('fill', 'none');
-
-		// eslint-disable-next-line
-		let geneChart = svg.append('g')
+			
+		svg.append('g')
 			.attr('class', 'geneChart')
 			.attr('width', graphWidth)
 			.attr('height', margin.top)
@@ -101,7 +100,7 @@ function FitnessLandscapeD3(props) {
 
 	function colorGenes(name){
 		if (name == props.current.name){
-			return 'red'
+			return 'blue'
 		}
 		return 'gray'
 	}
@@ -177,7 +176,7 @@ function FitnessLandscapeD3(props) {
 		// adding gene name
 		geneChart.selectAll('g')
 			.append('text')
-			.style("text-anchor", 'middle')
+			.style("text-align", 'center')
 			.attr('y', -4)
 			.text(d => d.name);
 
