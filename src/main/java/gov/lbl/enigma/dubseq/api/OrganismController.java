@@ -1,5 +1,6 @@
 package gov.lbl.enigma.dubseq.api;
 
+import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -20,6 +21,15 @@ public class OrganismController {
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    private StringSubstitutor sub;
+
+    @Autowired
+    public void setParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put("genome_table", "_temp_genome");
+        this.sub = new StringSubstitutor(params);
     }
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

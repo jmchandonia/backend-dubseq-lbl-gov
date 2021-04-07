@@ -6,12 +6,12 @@ import "./HomePageCarousel.css";
 function HomePageCarousel2() {
 
 	return (
-		<Carousel id='homeCarousel' fade='false' >
-			<Carousel.Item interval={2500}>
+		<Carousel id='homeCarousel' >
+			<Carousel.Item interval={2500} >
 				<div className='carousel-content'>
 					<div style={{ maxWidth: '400px' }}>
 						<h3 className="carousel-text-title">Fitness Landscape</h3>
-						<p style={{ color: "#0f3057" }}>Fragment and gene fitness dual-barcoded shotgun expression library sequencing (Dub-seq) scores. a Dub-seq fragment (strain) data for region surrounding rcnA under elevated nickel stress (y axis). Each line shows a Dub-seq fragment. Those that completely cover rcnA are in red. Both the mean and regression scores re"ect the known biology of rcnA as a nickel resistance determinant.</p>
+						<p style={{ color: "#0f3057" }}>Fragment and gene fitness dual-barcoded shotgun expression library sequencing (Dub-seq) scores. a Dub-seq fragment (strain) data for region surrounding rcnA under elevated nickel stress (y axis). Each line shows a Dub-seq fragment. Those that completely cover rcnA are in red. Both the mean and regression scores respect the known biology of rcnA as a nickel resistance determinant.</p>
 						<button type="button" style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} className="btn">More</button>
 					</div>
 					<img

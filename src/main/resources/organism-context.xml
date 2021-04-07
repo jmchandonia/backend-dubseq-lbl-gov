@@ -21,7 +21,7 @@ select
 	(select count(*) from bagseq_library b where b.genome_id = g.genome_id) as library_count,
 	(select count(*)
 	from _temp_barseq_experiment e join bagseq_library b using(bagseq_library_id) where b.genome_id = g.genome_id) as experiment_count
-from _temp_genome g
+from genome g
 order by g.genome_id
         ]]></value>
         </constructor-arg>

@@ -61,7 +61,7 @@ function BagSeqLandingPage() {
 		},
 		{
 			dataField: 'High Scoring Genes',
-			text: 'Fragments',
+			text: 'High Scoring Genes',
 			sort: true
 		},
 		{

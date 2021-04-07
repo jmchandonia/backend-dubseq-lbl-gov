@@ -56,6 +56,7 @@ public class ExperimentController {
     @Qualifier("getExperimentHistogramQuery")
     private String getExperimentHistogramQuery;
 
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -64,6 +65,7 @@ public class ExperimentController {
     public List<Map<String, Object>> getExperiments(@RequestParam(required = false) String type) {
 
         String QUERY = getAllExperimentsQuery;
+
 
         if (type != null) {
             QUERY = QUERY + " where type='" + type + "'";
