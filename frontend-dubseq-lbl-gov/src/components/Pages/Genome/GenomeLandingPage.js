@@ -33,7 +33,8 @@ function GenomeLandingPage() {
 			})
 			setLibrary(res2.data);
 			let res3 = await axios(`/api/organisms/${id}/experiments`);
-			setExperients(res3.data);
+			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/?`)
+			setExperients(res3);
 			// let res4 = await axios(`/api/organisms/${id}/graphs`);
 			// setHistData(res4.data);
 		}
@@ -43,6 +44,20 @@ function GenomeLandingPage() {
 
 		// eslint-disable-next-line
 	}, [])
+
+
+	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
+	// 'bagseq/libraries/?/experiments/?'
+	function addLink(data, destLinkCol, idSrcCol, path) {
+		return data.map(e => {
+			let newPath = path;
+			idSrcCol.forEach(id => {
+				newPath = newPath.replace("?", e[id])
+			})
+			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
+			return e;
+		})
+	}
 
 
 
@@ -105,7 +120,7 @@ function GenomeLandingPage() {
 					</div>
 
 					<div style={{ marginTop: "70px" }}>
-						{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Conditions Performed' />}
+						{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Experiments Performed' />}
 					</div>
 
 				</div>

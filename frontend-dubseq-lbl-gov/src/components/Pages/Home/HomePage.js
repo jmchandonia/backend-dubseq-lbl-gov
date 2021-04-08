@@ -25,7 +25,7 @@ class HomePage extends Component {
 							<div className='row'>
 								<div className='col-7'>
 									<h1>Browse Organisms</h1>
-									<p style={{ color: "#272727", fontSize: '20px', fontWeight: '250', marginTop: "15px" }}>As a demonstration of this approach, we generate an Escherichia coli (E. coli) Dub-seq library and assayed the phe- notypic consequences of overexpressing nearly all genes on E. coli fitness under dozens of experimental conditions.</p>
+									<p style={{ color: "#272727", fontSize: '20px', fontWeight: '250', marginTop: "15px" }}>As a demonstration of this approach, we generate an Escherichia coli (E. coli) Dub-seq library and assayed the phenotypic consequences of overexpressing nearly all genes on E. coli fitness under dozens of experimental conditions.</p>
 								</div>
 								<div className='col-5'>
 									<Card title='Organisms' image={'/images/genome.svg'} link='/organisms' />
@@ -38,7 +38,7 @@ class HomePage extends Component {
 								</div>
 								<div className='col-7'>
 									<h2>Browse Experiments</h2>
-									<p style={{ color: "#272727", fontSize: '20px', fontWeight: '250', marginTop: "15px" }}>In these pooled fitness experiments, the barcode abundance changes depending upon the fitness pheno- type imparted by the barcode-associated genome fragments.</p>
+									<p style={{ color: "#272727", fontSize: '20px', fontWeight: '250', marginTop: "15px" }}>In these pooled fitness experiments, the barcode abundance changes depending upon the fitness pheno-type imparted by the barcode-associated genome fragments.</p>
 								</div>
 							</div>
 							<hr style={{ margin: '5rem' }} />

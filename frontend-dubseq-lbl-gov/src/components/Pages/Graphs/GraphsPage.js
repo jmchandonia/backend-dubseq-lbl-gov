@@ -28,12 +28,12 @@ class GraphsPage extends Component {
 				<Content>
 					<Layout
 						navbarContent={
-							<ol>
+							<ul>
 								<li><button className={classes.link} data-value='heatMap' onClick={this.changeGraph}>Heat Map</button></li>
 								<li><button className={classes.link} data-value='Fitness Landscape' onClick={this.changeGraph}>Fit Landscape</button></li>
 								<li><button className={classes.link} data-value='compareExperiments' onClick={this.changeGraph}>Compare Experiments</button></li>
 								<li><button className={classes.link} data-value='compareGenes' onClick={this.changeGraph}>Compare Genes</button></li>
-							</ol>
+							</ul>
 						}
 						mainContent={<Aux>
 							{this.state.vis === 'home' && <h1>Page for graphs</h1>}

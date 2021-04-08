@@ -74,6 +74,7 @@ where
 select
 	be."name",
 	be."type",
+	be."barseq_experiment_id",
 	round(cast(bgs.score_cnnls as numeric), 2) as "max gene score"
 from _temp_genome g
 	inner join _temp_bagseq_library bl on g.genome_id = bl.genome_id

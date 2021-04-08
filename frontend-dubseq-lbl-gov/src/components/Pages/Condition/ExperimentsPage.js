@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../UI/Header/Header';
 import Aux from '../../../hoc/Aux';
 import axios from 'axios';
-import Table from '../../UI/Table/Table';
 import SearchBox from '../Search/SearchBox';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -12,9 +11,11 @@ import { Link } from 'react-router-dom'
 import TableReact from '../../UI/Table/TableReact';
 
 
-const libraryIdLink = '/bagseq/libraries/${id}';
+// const libraryIdLink = '/bagseq/libraries/${id}';
+const libraryIdLink = '/bagseq/libraries/?';
+const experimentIdLink = 'bagseq/libraries/?/experiments/?';
 
-function ConditionPage() {
+function ExperimentsPage() {
 	const [tableContent, setTableContent] = useState(null);
 	const [selectionData] = useState(['metal', 'salt', 'antibiotics']);
 	const [inputData] = useState("");
@@ -28,29 +29,34 @@ function ConditionPage() {
 	// When change to the query parameters are made, the useEffect hook is executed.
 	useEffect(() => {
 
-		async function fetchData(){
+		async function fetchData() {
 			const res = await axios("/api/experiments", {
 				params: {
 					...(type != null ? { type: type } : {})
 					// ...(query.get("condition") != null ? { condition: query.get("condition") } : {})
 				}
 			})
-			setTableContent(addLink(res.data, 'Library name', 'Library id', libraryIdLink));
+			let links = addLink(res.data, 'Condition', ['Library id', 'id'], experimentIdLink)
+			links = addLink(links, 'Library name', ['Library id'], libraryIdLink);
+			setTableContent(links);
 		}
 
 		setType(query.get("type"));
 		fetchData();
-		
+
 		// eslint-disable-next-line
 	}, [type]);
 
-	function addLink(data, LinkCol, idCol, path) {
+
+	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
+	// 'bagseq/libraries/?/experiments/?'
+	function addLink(data, destLinkCol, idSrcCol, path) {
 		return data.map(e => {
-			console.log("if update more than once then wrong");
-			// eslint-disable-next-line
-			let id = e[idCol];
-			let newPath = eval('`' + path + '`');
-			e[LinkCol] = <Link to={newPath}>{e[LinkCol]}</Link>;
+			let newPath = path;
+			idSrcCol.forEach(id => {
+				newPath = newPath.replace("?", e[id])
+			})
+			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
 			return e;
 		})
 	}
@@ -96,26 +102,27 @@ function ConditionPage() {
 			text: 'Type',
 			sort: true
 		},
-		
-	]
 
-	console.log(tableContent)
+	]
 
 	return (
 		<Aux>
 			<Header title="TablePage" />
 			<Content>
 				<h5>{type}</h5>
-				<HorizontalLayout content={[
+				<div className='container' style={{ paddingBottom: "40px" }}>
+					{tableContent && <TableReact title='Experiments' keyField='id' content={tableContent} labels={labels} />}
+				</div>
+				{/* <HorizontalLayout content={[
 					<SearchBox
-						title='Search Condition'
+						title='Search Experiment'
 						selectionTitle='Select experiment'
 						selection={selectionData}
 						inputTitle='condition'
 						inputDdata={inputData}
 						didSubmit={handleSubmit} />,
-					(tableContent && <TableReact title='Conditions' keyField='id' content={tableContent} labels={labels}/>)
-				]} contentWidth={[3, 9]} />
+					(tableContent && <TableReact title='Experiments' keyField='id' content={tableContent} labels={labels} />)
+				]} contentWidth={[3, 9]} /> */}
 			</Content>
 			<Footer />
 		</Aux>
@@ -123,4 +130,4 @@ function ConditionPage() {
 	)
 
 }
-export default ConditionPage;
+export default ExperimentsPage;

@@ -1,18 +1,14 @@
-.table-header {
-	margin-bottom: 30px;
-}
-
-.table_header {
-	/* background-color: #55608f; */
-	color: #389393;
+.table-responsive thead th {
+	background-color: #ffffff;
+	color: #300500;
 }
 
 .table-responsive{
 	max-height: 500px;
 	overflow-y: scroll;
-	
+}
 
-	/* overflow: auto;
-	display: block;
-	table-layout: auto; */
+.table-responsive thead th { 
+	position: sticky; 
+	top: 0; 
 }

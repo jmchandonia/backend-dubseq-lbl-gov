@@ -7,7 +7,7 @@ import TablePage from './components/Pages/Table/TablePage';
 import SearchPage from './components/Pages/Search/SearchPage';
 import LandingPage from './components/Pages/Landing/LandingPage';
 import TestingPage from './components/Pages/Testing/TestingPage';
-import ConditionPage from './components/Pages/Condition/ConditionPage';
+import ExperimentsPage from './components/Pages/Condition/ExperimentsPage';
 import GenePage from './components/Pages/Gene/GenePage';
 import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
@@ -28,7 +28,7 @@ class App extends Component {
 				<Route path='/testing' component={TestingPage} />
 				<Route exact path='/organisms' component={GenomePage} />
 				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
-				<Route path='/experiments' component={ConditionPage} />
+				<Route path='/experiments' component={ExperimentsPage} />
 				<Route path='/genes' component={GenePage} />
 				<Route exact path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
 				<Route exact path='/bagseq/libraries/:id/experiments/:id_experiment' component={ExperiemntLandingPage} />
