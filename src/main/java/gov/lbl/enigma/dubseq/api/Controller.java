@@ -94,6 +94,7 @@ public class Controller {
                 "group by g.name", new HashMap<>());
     }
 
+//    TODO: Add "where" clause, to look for genes begining with some letters.
     @CrossOrigin
     @GetMapping("/genes/id")
     public List<Map<String, Object>> getGenes() {

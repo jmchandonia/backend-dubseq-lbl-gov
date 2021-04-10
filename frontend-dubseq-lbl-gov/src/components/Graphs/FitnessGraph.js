@@ -11,9 +11,10 @@ function FitnessGraph() {
 	const [data, setData] = useState(null);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
 	const [current, setCurrent] = useState(null)
-	const [options, setOptions] = useState(null);
+	const [options, setOptions] = useState([]);
 	const currentGeneId = useRef(0);
 	const initialied = useRef(false);
+	const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect(() => {
 		if (!initialied.current) {
@@ -25,9 +26,19 @@ function FitnessGraph() {
 		// eslint-disable-next-line
 	}, [position]);
 
+	useEffect(() => {
+		const fetchResults =  () => {
+			initialieSelection()
+		}
+		if (searchTerm){
+
+			fetchResults()
+		}
+	},[searchTerm])
 
 	async function initialieSelection() {
-		let res = await axios('/genes/id');
+		// let res = await axios(`/genes/id?search=${searchTerm}&limit=${5}`);
+		let res = await axios('genes/id')
 		setOptions(res.data.map((e) => ({ value: `${e['gene_id']}`, label: e['name'] })));
 	}
 
@@ -58,6 +69,13 @@ function FitnessGraph() {
 
 		changeCurrent(e.value);
 	}
+
+	function handleSearch(e) {
+
+
+		setSearchTerm(e.value);
+	}
+
 
 	async function handleMove(new_gene_id) {
 
@@ -100,6 +118,8 @@ function FitnessGraph() {
 						options={options}
 						onChange={handleSelect}
 					/>
+					{/* <input type='text' value={searchTerm} onchange={handleSearch}/> 
+					{options.map(e => <div key={e.value}>{e.label}</div>)} */}
 				</div>
 				<button className='btn w-25'
 					onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}

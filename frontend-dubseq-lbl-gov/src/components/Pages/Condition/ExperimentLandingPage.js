@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Aux from '../../../hoc/Aux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
 import Header from '../../UI/Header/Header';
@@ -8,6 +8,7 @@ import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import Title from '../../UI/Title/Title';
 import TableReact from '../../UI/Table/TableReact';
+
 
 function ExperiemntLandingPage() {
 
@@ -21,13 +22,27 @@ function ExperiemntLandingPage() {
 			let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
 			setStats(res1.data);
 			let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
-			setGenes(res2.data);
+			console.log(res2.data)
+			res2 = addLink(res2.data, 'name', ['gene id'], '/genes/?')
+			setGenes(res2);
 			let res3 = await axios(`/libraries/${id}/experiments/${id_experiment}/fragments`);
 			setFragments(res3.data);
 		}
 		fetchData();
-		console.log("in experiments")
 	})
+
+	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
+	// 'bagseq/libraries/?/experiments/?'
+	function addLink(data, destLinkCol, idSrcCol, path) {
+		return data.map(e => {
+			let newPath = path;
+			idSrcCol.forEach(id => {
+				newPath = newPath.replace("?", e[id])
+			})
+			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
+			return e;
+		})
+	}
 
 
 	let topScoringGensLabels = [

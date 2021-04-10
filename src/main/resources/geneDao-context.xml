@@ -10,21 +10,85 @@
     <bean id="geneDaoReadAllQuery" class="java.lang.String">
         <constructor-arg><value><![CDATA[
 select
-	gene_id,
-	genome_id,
-	gene_index,
-	name,
-	locus_tag,
-	gene_type,
-	contig_id,
-	pos_from,
-	pos_to,
-	strand,
-	product,
-	note,
-	description
-from gene
+    g.gene_id,
+    g.name,
+    g.gene_type,
+    g.pos_from,
+    g.pos_to,
+    g.strand,
+    g.product
+from _temp_gene g limit 100
         ]]></value></constructor-arg>
     </bean>
+
+    <bean id="getGeneQuery" class="java.lang.String">
+        <constructor-arg><value><![CDATA[
+select g.gene_id,
+       g.name,
+       g.genome_id,
+       g.locus_tag,
+       g.gene_type,
+       g.contig_id,
+       g.pos_from,
+       g.pos_to,
+       g.strand,
+       g.product
+from _temp_gene g
+where gene_id = :id;
+        ]]></value></constructor-arg>
+    </bean>
+
+    <bean id="getGeneTopExperiments" class="java.lang.String">
+        <constructor-arg><value><![CDATA[
+select
+    tbe.name,
+    tbe.type,
+    tbe.barseq_experiment_id,
+    tbgs.score_cnnls
+from _temp_gene g
+inner join _temp_barseq_gene_score tbgs on g.gene_id = tbgs.gene_id
+inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
+where g.gene_id = :id
+order by tbgs.score_cnnls desc;
+        ]]></value></constructor-arg>
+    </bean>
+
+
+    <bean id="getGeneFragmentsTopExperiments" class="java.lang.String">
+        <constructor-arg><value><![CDATA[
+select
+    tbe.name,
+    tbe.barseq_experiment_id,
+    tbe.type,
+    tbf.barcode,
+    tbf.bagseq_fragment_id,
+    tbfs.score
+from _temp_gene g
+inner join _temp_bagseq_gene_fragment_map tbgfm on g.gene_id = tbgfm.gene_id
+inner join _temp_bagseq_fragment tbf on tbgfm.bagseq_fragment_id = tbf.bagseq_fragment_id
+inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
+inner join _temp_barseq_experiment tbe on tbfs.barseq_experiment_id = tbe.barseq_experiment_id
+where g.gene_id = :id
+order by tbfs.score desc;
+
+        ]]></value></constructor-arg>
+    </bean>
+
+
+    <bean id="getFragmentCoverage" class="java.lang.String">
+        <constructor-arg><value><![CDATA[
+select
+    tbf.bagseq_fragment_id,
+    tbf.barcode,
+    tbfs.score
+from _temp_gene g
+         inner join _temp_bagseq_gene_fragment_map tbgfm on g.gene_id = tbgfm.gene_id
+         inner join _temp_bagseq_fragment tbf on tbf.bagseq_fragment_id = tbgfm.bagseq_fragment_id
+         inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
+where g.gene_id = :id;
+        ]]></value></constructor-arg>
+    </bean>
+
+
 
 </beans>

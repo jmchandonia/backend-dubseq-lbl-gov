@@ -13,6 +13,7 @@ import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
 import BagSeqLandingPage from './components/Pages/BagSeq/BagSeqLandingPage';
 import ExperiemntLandingPage from './components/Pages/Condition/ExperimentLandingPage';
+import GeneLandingPage from "./components/Pages/Gene/GeneLandingPage";
 
 
 class App extends Component {
@@ -29,7 +30,8 @@ class App extends Component {
 				<Route exact path='/organisms' component={GenomePage} />
 				<Route strict path='/organisms/:id' component={GenomeLandingPage} />
 				<Route path='/experiments' component={ExperimentsPage} />
-				<Route path='/genes' component={GenePage} />
+				<Route exact path='/genes' component={GenePage} />
+				<Route strict path='/genes/:id' component={GeneLandingPage} />
 				<Route exact path='/bagseq/libraries/:id' component={BagSeqLandingPage} />
 				<Route exact path='/bagseq/libraries/:id/experiments/:id_experiment' component={ExperiemntLandingPage} />
 			</Router>

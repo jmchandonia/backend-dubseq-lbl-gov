@@ -1,90 +1,89 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import TableReact from '../../UI/Table/TableReact';
 import Header from '../../UI/Header/Header';
-import Aux from '../../../hoc/Aux';
-import axios from 'axios';
-import Table from '../../UI/Table/Table';
-import SearchBox from '../Search/SearchBox';
-import Footer from '../../UI/Footer/Footer';
 import Content from '../../../hoc/Content/Content';
+import Aux from '../../../hoc/Aux';
+import { Link } from 'react-router-dom'
 
-const RenderRow = (props) => {
-	return props.keys.map((key, index) => (
-		<td key={props.data[key]}>{props.data[key]}</td>
-	))
-}
+function GenePage() {
 
-class GenePage extends Component {
+	const [genes, setGenes] = useState([])
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			tableContent: [{ first: 1, second: 2 }],
-			search: true,
-			selectionData: ['one', 'two', 'three'],
-			isLoadingData: false
+	useEffect(() => {
+
+		let fetchData = async () => {
+			let res = await axios('/api/getGenes')
+			res = addLink(res.data, "name", ['gene_id'], '/genes/?')
+			setGenes(res)
 		}
+
+		fetchData()
+	}, [genes])
+
+
+	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
+	// 'bagseq/libraries/?/experiments/?'
+	function addLink(data, destLinkCol, idSrcCol, path) {
+		return data.map(e => {
+			let newPath = path;
+			idSrcCol.forEach(id => {
+				newPath = newPath.replace("?", e[id])
+			})
+			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
+			return e;
+		})
 	}
 
+	let labels = [
+		{
+			dataField: 'gene_id',
+			text: 'ID',
+			sort: true
+		},
+		{
+			dataField: 'name',
+			text: 'Name',
+			sort: true
+		},
+		{
+			dataField: 'gene_type',
+			text: 'Type',
+			sort: true
+		},
+		{
+			dataField: 'pos_from',
+			text: 'Position From',
+			sort: true
+		},
+		{
+			dataField: 'pos_to',
+			text: 'Position To',
+			sort: true
+		},
+		{
+			dataField: 'strand',
+			text: 'Strand',
+			sort: true
+		},
+		{
+			dataField: 'product',
+			text: 'Product',
+			sort: true
+		}
+	]
 
-	getKeys(obj) {
-		return Object.keys(obj)
-	}
 
-	getHeaders(obj) {
-
-		return this.getKeys(obj[0])
-			.map((key, index) => (
-				<th key={key}>{key.toUpperCase()}</th>
-			))
-	}
-
-	getRowsData(obj) {
-		var items = obj;
-		var keys = this.getKeys(obj[0]);
-		return items.map((row, index) => (
-			<tr key={index}><RenderRow key={index} data={row} keys={keys} /></tr>
-		))
-	}
-	componentDidMount() {
-	}
-
-	getGenes = async (event) => {
-		event.preventDefault();
-
-
-		console.log("Getting data")
-		this.setState({isLoadingData: true})
-		let content = await axios("/api/genes")
-		console.log("DONE Getting data")
-		this.setState({isLoadingData: false})
-		this.setState({ tableContent: content.data });
-		this.setState({ search: false })
-	}
-
-
-
-	render() {
-		return (
-			<Aux>
-				<Header title="TablePage" />
-				<Content>
-					<div className='container'>
-						{this.state.search ?
-							<SearchBox
-								title='Search Gene'
-								selectionTitle='Select organism'
-								selection={this.state.selectionData}
-								inputTitle='gene'
-								didSubmit={this.getGenes} 
-								isLoadingData={this.state.isLoadingData}/> :
-							<Table content={this.state.tableContent} title='Genes' />}
-					</div>
-				</Content>
-				<Footer />
-			</Aux>
-		)
-	}
+	return (
+		<Aux>
+			<Header title='Genes' />
+			<Content>
+				<div className='container'>
+					<TableReact title="Genes" keyField="name" content={genes} labels={labels} />
+				</div>
+			</Content>
+		</Aux>
+	)
 }
-
 
 export default GenePage;
