@@ -14,6 +14,9 @@ let graphHeight = 0;
 const totalGraphWidth = 1000
 const totalGraphHeight = 600
 
+let minGenePos;
+let maxGenePos;
+
 function FitnessLandscapeD3(props) {
 
 	const initialized = useRef(false);
@@ -50,7 +53,7 @@ function FitnessLandscapeD3(props) {
 			.attr('d', 'M0,0L5,2.5L0,5')
 			.attr('stroke', 'black')
 			.style('fill', 'none');
-			
+
 		svg.append('g')
 			.attr('class', 'geneChart')
 			.attr('width', graphWidth)
@@ -91,17 +94,16 @@ function FitnessLandscapeD3(props) {
 
 	}
 
-	function colorFrags(posFrom, posTo){
-		console.log(posFrom, posTo)
-		if ((posTo > props.current.pos_to) && (posFrom < props.current.pos_from)){
-			return "red"
+	function colorFrags(posFrom, posTo) {
+		if ((posTo > props.current.pos_to) && (posFrom < props.current.pos_from)) {
+			return "blue"
 		}
 		return 'gray'
 	}
 
-	function colorGenes(name){
-		if (name == props.current.name){
-			return 'blue'
+	function colorGenes(name) {
+		if (name == props.current.name) {
+			return 'red'
 		}
 		return 'gray'
 	}
@@ -110,8 +112,8 @@ function FitnessLandscapeD3(props) {
 
 		console.log("update graph");
 
-		let minGenePos = min(props.data.fragmentData, d => d.posFrom);
-		let maxGenePos = max(props.data.fragmentData, d => d.posTo);
+		minGenePos = min(props.data.fragmentData, d => d.posFrom);
+		maxGenePos = max(props.data.fragmentData, d => d.posTo);
 
 		// eslint-disable-next-line
 		let minScore = min(props.data.fragmentData, d => d.score);
@@ -133,16 +135,42 @@ function FitnessLandscapeD3(props) {
 		let yAxis = axisLeft(yScale);
 		select('.yAxisGroup').call(yAxis);
 
+
+		// let svg = select('.canvas').select('svg')
+
 		let fragmentChart = select('.fragmentChart');
 
+		fragmentChart.selectAll('.gene_score').remove();
+
+		
+
+		if (props.current) {
+			console.log(props.current)
+			fragmentChart.selectAll('.gene_score')
+				.data([props.current])
+				.enter()
+				.append('line')
+				.attr('class', 'gene_score')
+				.attr('x1', xScale(minGenePos))
+				.attr('x2', xScale(maxGenePos))
+				.attr('y1', d => yScale(d.score_cnnls))
+				.attr('y2', d => yScale(d.score_cnnls))
+				.style('stroke', 'red')
+				.style('stroke-width', 2)
+				.style('stroke-dasharray', '5, 10')
+		}
+
+
+
 		// Removing all from unused remove selection
-		fragmentChart.selectAll('line').remove();
+		fragmentChart.selectAll('.fragment_line').remove();
 
 		// Adding fragments
 		fragmentChart.selectAll('line')
 			.data(props.data.fragmentData)
 			.enter()
 			.append('line')
+			.attr('class', 'fragment_line')
 			.attr('x1', d => xScale(d.posFrom))
 			.attr('x2', d => xScale(d.posTo))
 			.attr('y1', d => yScale(d.score))
@@ -163,7 +191,16 @@ function FitnessLandscapeD3(props) {
 			.append('g')
 			.attr('class', 'geneTag')
 			.attr('width', d => (xScale(d.posTo) - xScale(d.posFrom)))
-			.attr('transform', d => `translate(${xScale(d.posFrom)}, 0)`);
+			.style('cursor', 'pointer')
+			.attr('transform', d => `translate(${xScale(d.posFrom)}, 0)`)
+			.on('mouseover', function () {
+				select(this).style('font-weight', 600)
+			})
+			.on('mouseout', function () {
+				select(this).style('font-weight', 400)
+			})
+			.on('click', (i, d) => props.handleClickGene(d['gene_id']));
+
 
 		// adding gene lines
 		geneChart.selectAll('g')

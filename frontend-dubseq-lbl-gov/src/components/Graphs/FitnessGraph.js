@@ -8,21 +8,31 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const range = 10000;
 
+// HELPER FUNCTIONS.
+function findRange({ pos_from, pos_to }) {
+
+	let interval = (pos_to - pos_from) / 2;
+	let mid = pos_from + interval;
+	let s = Math.round(mid - (range / 2));
+	let f = Math.round(mid + (range / 2));
+	return { s, f }
+}
+
+
 function FitnessGraph() {
 
-	const [data, setData] = useState(null);
+	const [data, setData] = useState([]);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
 	const [current, setCurrent] = useState(null)
-	const [options, setOptions] = useState([]);
 	const currentGeneId = useRef(0);
 	const initialied = useRef(false);
 	const [organism, setOrganism] = useState([]);
 	const [selectedOrganism, setSelectedOrganism] = useState(1)
 	const [experiments, setExperiments] = useState([])
 	const [selectedExperiment, setSelectedExperiment] = useState(1)
-	const [genes, setGenes] = useState([])
-	// const [fragments, setFragments] = useState([])
 
+
+	// Getting organisms.
 	useEffect(() => {
 		const fetchGenome = async () => {
 			let res = await axios('organisms')
@@ -31,6 +41,7 @@ function FitnessGraph() {
 		fetchGenome();
 	}, [])
 
+	// Getting extepriments.
 	useEffect(() => {
 		const fetchExperiment = async () => {
 			let res = await axios(`organisms/${selectedOrganism}/experiments`)
@@ -41,6 +52,7 @@ function FitnessGraph() {
 	}, [selectedOrganism])
 
 
+	// Changing the graph.
 	useEffect(() => {
 
 		async function fetchGraphData() {
@@ -60,7 +72,6 @@ function FitnessGraph() {
 				e['posTo'] = e['pos_to']
 				return e
 			});
-
 			let res2 = await axios('/fragment', {
 				params: {
 					genome_id: selectedOrganism,
@@ -69,40 +80,20 @@ function FitnessGraph() {
 					pos_to: position.end
 				}
 			})
-			
+
 			data.fragmentData = res2.data.map(e => {
 				e['posFrom'] = e['pos_from']
 				e['posTo'] = e['pos_to']
 				return e
 			});
 
-			// let res2 = await axios("/api/fragview", {
-			// 	params: {
-			// 		posFrom: position.start,
-			// 		posTo: position.end
-			// 	}
-			// })
-			// data.fragmentData = res2.data;
-			// console.log(data.fragmentData)
 			setData(data);
 		}
 		fetchGraphData()
 
 	}, [position])
 
-	const changeCurrent = async (gene) => {
-
-		currentGeneId.current = gene.value;
-
-		let res = await axios(`/api/getGenes/${gene.value}`);
-
-		let { s, f } = findRange(res.data[0]);
-
-		setPosition({ start: s, end: f })
-		setCurrent(res.data[0])
-	}
-
-
+	// used to query genes.
 	let getGenes = async (start) => {
 
 		try {
@@ -114,20 +105,18 @@ function FitnessGraph() {
 		}
 	}
 
+	// change the current showing gene_id.
+	const changeCurrent = async (gene_id) => {
 
-	function findRange({ pos_from, pos_to }) {
+		currentGeneId.current = gene_id
 
-		let interval = (pos_to - pos_from) / 2;
-		let mid = pos_from + interval;
-		let s = Math.round(mid - (range / 2));
-		let f = Math.round(mid + (range / 2));
-		return { s, f }
+		let res = await axios(`/api/getGenes/${gene_id}`);
+
+		let { s, f } = findRange(res.data[0]);
+
+		setPosition({ start: s, end: f })
+		// setCurrent(res.data[0])
 	}
-
-	function handleMove() {
-		console.log("move");
-	}
-
 
 	return (
 		<Aux>
@@ -138,27 +127,37 @@ function FitnessGraph() {
 			<div className={'w-25'}>
 				<Select placeholder={"Select Organism"} defaultValue={selectedOrganism} options={organism} onChange={e => setSelectedOrganism(e.value)} />
 				<Select placeholder={"Select Experiment"} defaultValue={selectedOrganism} options={experiments} onChange={e => setSelectedExperiment(e.value)} />
-				<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={changeCurrent} />
+				<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={gene => changeCurrent(gene.value)} />
 			</div>
-			<div className='d-flex justify-content-between'>
-				<button className='btn w-25'
-					onClick={() => handleMove(parseInt(currentGeneId.current) - 1)}
-					style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >←</button>
-				<div style={{ width: '400px' }}>
-
-					{/* <input type='text' value={searchTerm} onchange={handleSearch} /> 
-					{options.map(e => <div key={e.value}>{e.label}</div>)} */}
+			<div className='d-flex justify-content-end'>
+				<div className='w-25'>
+					<button className='btn'
+						onClick={() => changeCurrent(parseInt(currentGeneId.current) - 1)}
+						style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >←</button>
+					<button className='btn'
+						onClick={() => changeCurrent(parseInt(currentGeneId.current) + 1)}
+						style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >→</button>
 				</div>
-				<button className='btn w-25'
-					onClick={() => handleMove(parseInt(currentGeneId.current) + 1)}
-					style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >→</button>
+				<div className='w-25'>
+					<button className='btn'
+						onClick={() => setPosition({ start: position.start - 100, end: position.end + 100 })}
+						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >-</button>
+					<button className='btn'
+						onClick={() => setPosition({ start: position.start + 100, end: position.end - 100 })}
+						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >+</button>
+					<button className='btn'
+						onClick={() => changeCurrent(currentGeneId.current)}
+						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >Reset</button>
+				</div>
+				
 			</div>
 			<div style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
 				<FitnessLandscapeD3
 					xAxisLable="Position along the genome (bp)"
 					yAxisLable="Fragment Fitness Score"
 					data={data}
-					current={current}
+					current={data.geneData ? data.geneData.filter(gene => (gene.gene_id == currentGeneId.current)).shift() : {}}
+					handleClickGene={changeCurrent}
 				/>
 			</div>
 		</Aux>
