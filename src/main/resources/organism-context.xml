@@ -7,6 +7,26 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
 >
+
+
+<!--genes for organism-->
+    <bean id="getGenesForOrganismQuery" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+select ge.gene_id,
+       ge.name
+from _temp_gene ge
+         inner join _temp_barseq_gene_score tbgs on ge.gene_id = tbgs.gene_id
+         inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
+where genome_id = :g_id
+  and tbe.barseq_experiment_id = :exp_id
+  and lower(ge.name) like ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+
 <!--list of organisms on first page-->
     <bean id="getOrganismsQuery" class="java.lang.String">
         <constructor-arg>
@@ -66,8 +86,8 @@ where
         </constructor-arg>
     </bean>
 
-<!--top performing genes-->
-    <bean id="getOrganismExperimentsQuery" class="java.lang.String">
+<!--top performing Experiments-->
+    <bean id="getOrganismTopExperimentsQuery" class="java.lang.String">
         <constructor-arg>
             <value>
                 <![CDATA[
@@ -82,6 +102,22 @@ from _temp_genome g
 	inner join _temp_barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
 where g.genome_id = %d
 order by bgs.score_cnnls desc limit 10
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <!--top performing Experiments-->
+    <bean id="getOrganismExperimentsQuery" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+select
+    be.*
+from _temp_genome g
+	inner join _temp_bagseq_library bl on g.genome_id = bl.genome_id
+	inner join _temp_barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
+where g.genome_id = :id
                 ]]>
             </value>
         </constructor-arg>

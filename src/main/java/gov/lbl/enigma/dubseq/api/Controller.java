@@ -94,7 +94,6 @@ public class Controller {
                 "group by g.name", new HashMap<>());
     }
 
-//    TODO: Add "where" clause, to look for genes begining with some letters.
     @CrossOrigin
     @GetMapping("/genes/id")
     public List<Map<String, Object>> getGenes() {
@@ -105,5 +104,18 @@ public class Controller {
                 "from gene g", new HashMap<>());
     }
 
+//    TODO: Add "where" clause, to look for genes begining with some letters.
+    @CrossOrigin
+    @GetMapping("/genes/{start}")
+    public List<Map<String, Object>> getGenesLike(@PathVariable String start) {
+
+        String QUERY = "select\n" +
+                "       g.name,\n" +
+                "       g.gene_id\n" +
+                "from _temp_gene g\n" +
+                "where lower(g.name) like '" + start +"%'";
+
+        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+    }
 
 }

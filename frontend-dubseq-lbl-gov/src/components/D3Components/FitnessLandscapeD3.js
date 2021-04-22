@@ -92,6 +92,7 @@ function FitnessLandscapeD3(props) {
 	}
 
 	function colorFrags(posFrom, posTo){
+		console.log(posFrom, posTo)
 		if ((posTo > props.current.pos_to) && (posFrom < props.current.pos_from)){
 			return "red"
 		}

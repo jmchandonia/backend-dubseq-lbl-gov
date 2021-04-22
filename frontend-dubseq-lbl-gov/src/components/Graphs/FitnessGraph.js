@@ -3,6 +3,8 @@ import Aux from '../../hoc/Aux';
 import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
 import Select from 'react-select'
+import AsyncSelect from 'react-select/async'
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const range = 10000;
 
@@ -14,83 +16,104 @@ function FitnessGraph() {
 	const [options, setOptions] = useState([]);
 	const currentGeneId = useRef(0);
 	const initialied = useRef(false);
-	const [searchTerm, setSearchTerm] = useState('');
+	const [organism, setOrganism] = useState([]);
+	const [selectedOrganism, setSelectedOrganism] = useState(1)
+	const [experiments, setExperiments] = useState([])
+	const [selectedExperiment, setSelectedExperiment] = useState(1)
+	const [genes, setGenes] = useState([])
+	// const [fragments, setFragments] = useState([])
 
 	useEffect(() => {
-		if (!initialied.current) {
-			initialieSelection();
-			initialied.current = true;
+		const fetchGenome = async () => {
+			let res = await axios('organisms')
+			setOrganism(res.data.map(e => ({ value: e['genome_id'], label: e['name'] })))
 		}
-
-		fetchGraphData();
-		// eslint-disable-next-line
-	}, [position]);
+		fetchGenome();
+	}, [])
 
 	useEffect(() => {
-		const fetchResults =  () => {
-			initialieSelection()
+		const fetchExperiment = async () => {
+			let res = await axios(`organisms/${selectedOrganism}/experiments`)
+			setExperiments(res.data.map(e => ({ value: e['barseq_experiment_id'], label: e['name'] })))
 		}
-		if (searchTerm){
 
-			fetchResults()
+		fetchExperiment();
+	}, [selectedOrganism])
+
+
+	useEffect(() => {
+
+		async function fetchGraphData() {
+
+			let data = { geneData: null, fragmentData: null };
+
+			let res1 = await axios('/gene', {
+				params: {
+					genome_id: selectedOrganism,
+					exp_id: selectedExperiment,
+					pos_from: position.start,
+					pos_to: position.end
+				}
+			})
+			data.geneData = res1.data.map(e => {
+				e['posFrom'] = e['pos_from']
+				e['posTo'] = e['pos_to']
+				return e
+			});
+
+			let res2 = await axios('/fragment', {
+				params: {
+					genome_id: selectedOrganism,
+					exp_id: selectedExperiment,
+					pos_from: position.start,
+					pos_to: position.end
+				}
+			})
+			
+			data.fragmentData = res2.data.map(e => {
+				e['posFrom'] = e['pos_from']
+				e['posTo'] = e['pos_to']
+				return e
+			});
+
+			// let res2 = await axios("/api/fragview", {
+			// 	params: {
+			// 		posFrom: position.start,
+			// 		posTo: position.end
+			// 	}
+			// })
+			// data.fragmentData = res2.data;
+			// console.log(data.fragmentData)
+			setData(data);
 		}
-	},[searchTerm])
+		fetchGraphData()
 
-	async function initialieSelection() {
-		// let res = await axios(`/genes/id?search=${searchTerm}&limit=${5}`);
-		let res = await axios('genes/id')
-		setOptions(res.data.map((e) => ({ value: `${e['gene_id']}`, label: e['name'] })));
-	}
+	}, [position])
 
-	async function fetchGraphData() {
+	const changeCurrent = async (gene) => {
 
-		let data = { geneData: null, fragmentData: null };
+		currentGeneId.current = gene.value;
 
-		let res1 = await axios("/api/geneview", {
-			params: {
-				posFrom: position.start,
-				posTo: position.end
-			}
-		})
-		data.geneData = res1.data;
+		let res = await axios(`/api/getGenes/${gene.value}`);
 
-		let res2 = await axios("/api/fragview", {
-			params: {
-				posFrom: position.start,
-				posTo: position.end
-			}
-		})
-		data.fragmentData = res2.data;
-
-		setData(data);
-	}
-
-	async function handleSelect(e) {
-
-		changeCurrent(e.value);
-	}
-
-	function handleSearch(e) {
-
-
-		setSearchTerm(e.value);
-	}
-
-
-	async function handleMove(new_gene_id) {
-
-		changeCurrent(new_gene_id);
-	}
-
-	const changeCurrent = async (gene_id) => {
-
-		currentGeneId.current = gene_id;
-
-		let res = await axios(`/api/genes/${gene_id}/position`);
 		let { s, f } = findRange(res.data[0]);
+
 		setPosition({ start: s, end: f })
 		setCurrent(res.data[0])
 	}
+
+
+	let getGenes = async (start) => {
+
+		try {
+			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`)
+			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
+		} catch (err) {
+			console.log(err)
+			return []
+		}
+	}
+
 
 	function findRange({ pos_from, pos_to }) {
 
@@ -101,6 +124,10 @@ function FitnessGraph() {
 		return { s, f }
 	}
 
+	function handleMove() {
+		console.log("move");
+	}
+
 
 	return (
 		<Aux>
@@ -108,17 +135,18 @@ function FitnessGraph() {
 			{/* <div><b>From: </b>{position.start}</div>
 			<div><b>To:</b> {position.end}</div>
 			<div>{currentGeneId.current}</div> */}
-
+			<div className={'w-25'}>
+				<Select placeholder={"Select Organism"} defaultValue={selectedOrganism} options={organism} onChange={e => setSelectedOrganism(e.value)} />
+				<Select placeholder={"Select Experiment"} defaultValue={selectedOrganism} options={experiments} onChange={e => setSelectedExperiment(e.value)} />
+				<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={changeCurrent} />
+			</div>
 			<div className='d-flex justify-content-between'>
 				<button className='btn w-25'
 					onClick={() => handleMove(parseInt(currentGeneId.current) - 1)}
 					style={{ backgroundColor: "#fa7f72", color: "#ffffff" }} >←</button>
 				<div style={{ width: '400px' }}>
-					<Select
-						options={options}
-						onChange={handleSelect}
-					/>
-					{/* <input type='text' value={searchTerm} onchange={handleSearch}/> 
+
+					{/* <input type='text' value={searchTerm} onchange={handleSearch} /> 
 					{options.map(e => <div key={e.value}>{e.label}</div>)} */}
 				</div>
 				<button className='btn w-25'

@@ -32,7 +32,7 @@ function GenomeLandingPage() {
 				return e;
 			})
 			setLibrary(res2.data);
-			let res3 = await axios(`/api/organisms/${id}/experiments`);
+			let res3 = await axios(`/api/organisms/${id}/topexperiments`);
 			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/?`)
 			setExperients(res3);
 			// let res4 = await axios(`/api/organisms/${id}/graphs`);

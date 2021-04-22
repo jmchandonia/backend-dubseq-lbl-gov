@@ -48,12 +48,20 @@ public class OrganismController {
     private String getOrganismLibrariesQuery;
 
     @Autowired
+    @Qualifier("getOrganismTopExperimentsQuery")
+    private String getOrganismTopExperimentsQuery;
+
+    @Autowired
     @Qualifier("getOrganismExperimentsQuery")
     private String getOrganismExperimentsQuery;
 
     @Autowired
     @Qualifier("getOrganismHistogramQuery")
     private String getOrganismHistogramQuery;
+
+    @Autowired
+    @Qualifier("getGenesForOrganismQuery")
+    private String getGenesForOrganismQuery;
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
@@ -89,7 +97,17 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/experiments")
     public List<Map<String, Object>> getOrganismExperiments(@PathVariable long id) {
 
-        String QUERY = String.format(getOrganismExperimentsQuery, id);
+        Map<String, Long> params = new HashMap<>();
+        params.put("id", id);
+
+        return jdbcTemplate.queryForList(getOrganismExperimentsQuery, params);
+    }
+
+    @CrossOrigin
+    @GetMapping("/organisms/{id}/topexperiments")
+    public List<Map<String, Object>> getOrganismTopExperiments(@PathVariable long id) {
+
+        String QUERY = String.format(getOrganismTopExperimentsQuery, id);
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }
@@ -102,5 +120,21 @@ public class OrganismController {
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }
+
+    @CrossOrigin
+    @GetMapping("/organisms/{genome_id}/{experiment_id}/genes/{start}")
+    public List<Map<String, Object>> getGenesByLibrary(@PathVariable long genome_id,
+                                                       @PathVariable long experiment_id,
+                                                       @PathVariable String start) {
+
+        Map<String, Long> params = new HashMap<>();
+        params.put("g_id", genome_id);
+        params.put("exp_id", experiment_id);
+
+        String QUERY = getGenesForOrganismQuery.concat("'" + start + "%';");
+        
+        return jdbcTemplate.queryForList(QUERY, params);
+    }
+
 
 }
