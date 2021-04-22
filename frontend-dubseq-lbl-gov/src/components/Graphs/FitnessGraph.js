@@ -7,6 +7,7 @@ import AsyncSelect from 'react-select/async'
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const range = 10000;
+const zoom = 0.2
 
 // HELPER FUNCTIONS.
 function findRange({ pos_from, pos_to }) {
@@ -140,16 +141,22 @@ function FitnessGraph() {
 				</div>
 				<div className='w-25'>
 					<button className='btn'
-						onClick={() => setPosition({ start: position.start - 100, end: position.end + 100 })}
+						onClick={() => {
+							let shift = (position.end - position.start) * zoom
+							setPosition({ start: parseInt(position.start - shift), end: parseInt(position.end + shift) })
+						}}
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >-</button>
 					<button className='btn'
-						onClick={() => setPosition({ start: position.start + 100, end: position.end - 100 })}
+						onClick={() => {
+							let shift = (position.end - position.start) * (zoom**2)
+							setPosition({ start: parseInt(position.start + shift), end: parseInt(position.end - shift) })
+						}}
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >+</button>
 					<button className='btn'
 						onClick={() => changeCurrent(currentGeneId.current)}
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >Reset</button>
 				</div>
-				
+
 			</div>
 			<div style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
 				<FitnessLandscapeD3
