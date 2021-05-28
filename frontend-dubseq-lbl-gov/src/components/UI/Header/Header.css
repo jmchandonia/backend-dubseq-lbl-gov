@@ -32,17 +32,18 @@
 }
 
 .navbar-links-wrapper{
-	margin-left: 60px;
+	margin: 0px 30px 0px 30px;
 }
 
 .navbar-links-wrapper a{
 	color: #ffffff;
-	padding-left: 30px;
+	padding: 0px 15px 0px 15px;
 	font-weight: 300;
 }
 
 .navbar-links-wrapper a:hover{
-	font-weight: 500;
+	/* font-weight: 500; */
+	text-shadow: 0px 0px 1px white;
 	color: #ffffff;
 	text-decoration: none;
 }

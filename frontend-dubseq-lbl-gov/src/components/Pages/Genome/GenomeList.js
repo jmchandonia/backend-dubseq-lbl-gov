@@ -8,6 +8,8 @@ import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom';
 import TableReact from '../../UI/Table/TableReact';
 
+const NCBI_TAXONOMY_ID_BROWSER = 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='
+
 function GenomeList() {
 
 	const [genomeList, setGenomeList] = useState(null);
@@ -18,6 +20,12 @@ function GenomeList() {
 			let res = await axios(`/api/organisms`);
 			res.data = res.data.map(e => {
 				e['link'] = <Link to={`/organisms/${e.genome_id}`}>See More</Link>;
+				e['ncbi_taxonomy_id'] =
+					<a
+						href={`${NCBI_TAXONOMY_ID_BROWSER}${e.ncbi_taxonomy_id}`}
+						target="_blank">
+						{e.ncbi_taxonomy_id}
+					</a>
 				return e;
 			})
 			setGenomeList(res.data);

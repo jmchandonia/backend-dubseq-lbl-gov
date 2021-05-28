@@ -4,7 +4,8 @@ import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import { useLocation } from 'react-router-dom';
+import { Card, ListGroup } from 'react-bootstrap'
 
 const range = 10000;
 const zoom = 0.2
@@ -19,34 +20,38 @@ function findRange({ pos_from, pos_to }) {
 	return { s, f }
 }
 
+// A custom hook that builds on useLocation to parse
+// the query string for you.
+function useQuery() {
+	return new URLSearchParams(useLocation().search);
+}
 
 function FitnessGraph() {
 
+	let query = useQuery();
 	const [data, setData] = useState([]);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
-	const [current, setCurrent] = useState(null)
 	const currentGeneId = useRef(0);
-	const initialied = useRef(false);
-	const [organism, setOrganism] = useState([]);
-	const [selectedOrganism, setSelectedOrganism] = useState(1)
+	const [organisms, setOrganisms] = useState([]);
+	const [selectedOrganism, setSelectedOrganism] = useState(query.get("organism"))
 	const [experiments, setExperiments] = useState([])
-	const [selectedExperiment, setSelectedExperiment] = useState(1)
+	const [selectedExperiment, setSelectedExperiment] = useState(query.get("experiment"))
 
 
 	// Getting organisms.
 	useEffect(() => {
-		const fetchGenome = async () => {
+		const fetchOrganisms = async () => {
 			let res = await axios('organisms')
-			setOrganism(res.data.map(e => ({ value: e['genome_id'], label: e['name'] })))
+			setOrganisms(res.data)
 		}
-		fetchGenome();
+		fetchOrganisms();
 	}, [])
 
 	// Getting extepriments.
 	useEffect(() => {
 		const fetchExperiment = async () => {
 			let res = await axios(`organisms/${selectedOrganism}/experiments`)
-			setExperiments(res.data.map(e => ({ value: e['barseq_experiment_id'], label: e['name'] })))
+			setExperiments(res.data)
 		}
 
 		fetchExperiment();
@@ -122,15 +127,18 @@ function FitnessGraph() {
 	return (
 		<Aux>
 
-			{/* <div><b>From: </b>{position.start}</div>
-			<div><b>To:</b> {position.end}</div>
-			<div>{currentGeneId.current}</div> */}
-			<div className={'w-25'}>
-				<Select placeholder={"Select Organism"} defaultValue={selectedOrganism} options={organism} onChange={e => setSelectedOrganism(e.value)} />
-				<Select placeholder={"Select Experiment"} defaultValue={selectedOrganism} options={experiments} onChange={e => setSelectedExperiment(e.value)} />
-				<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={gene => changeCurrent(gene.value)} />
-			</div>
-			<div className='d-flex justify-content-end'>
+			<div className='d-flex justify-content-between align-items-end'>
+				<div className={'w-50'}>
+					<Select placeholder={"Select Organism"}ç
+						defaultValue={selectedOrganism}
+						options={organisms.map(e => ({ value: e['genome_id'], label: e['name'] }))}
+						onChange={e => setSelectedOrganism(e.value)} />
+					<Select placeholder={"Select Experiment"}
+						defaultValue={selectedOrganism}
+						options={experiments.map(e => ({ value: e['barseq_experiment_id'], label: e['name'] }))}
+						onChange={e => setSelectedExperiment(e.value)} />
+					<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={gene => changeCurrent(gene.value)} />
+				</div>
 				<div className='w-25'>
 					<button className='btn'
 						onClick={() => changeCurrent(parseInt(currentGeneId.current) - 1)}
@@ -148,7 +156,7 @@ function FitnessGraph() {
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >-</button>
 					<button className='btn'
 						onClick={() => {
-							let shift = (position.end - position.start) * (zoom**2)
+							let shift = (position.end - position.start) * (zoom ** 2)
 							setPosition({ start: parseInt(position.start + shift), end: parseInt(position.end - shift) })
 						}}
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >+</button>
@@ -159,6 +167,13 @@ function FitnessGraph() {
 
 			</div>
 			<div style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
+				{/* <Card style={{ width: '18rem' }}>
+					<ListGroup variant="flush">
+						{organisms.filter(e => e.id == selectedExperiment).map(e => <ListGroup.Item>{e.name}</ListGroup.Item>)}
+						{experiments.filter(e => e.id == selectedExperiment).map(e => <ListGroup.Item>{e.name}</ListGroup.Item>)}
+						<ListGroup.Item>{data.geneData ? data.geneData.filter(gene => (gene.gene_id == currentGeneId.current)).shift() : "_none"}</ListGroup.Item>
+					</ListGroup>
+				</Card> */}
 				<FitnessLandscapeD3
 					xAxisLable="Position along the genome (bp)"
 					yAxisLable="Fragment Fitness Score"

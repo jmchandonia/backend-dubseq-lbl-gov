@@ -33,7 +33,9 @@ function GenomeLandingPage() {
 			})
 			setLibrary(res2.data);
 			let res3 = await axios(`/api/organisms/${id}/topexperiments`);
-			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/?`)
+			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/>`)
+			console.log(res3)
+			res3 = addLink(res3, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphPage/?organism=>&experiment=>`)
 			setExperients(res3);
 			// let res4 = await axios(`/api/organisms/${id}/graphs`);
 			// setHistData(res4.data);
@@ -52,7 +54,7 @@ function GenomeLandingPage() {
 		return data.map(e => {
 			let newPath = path;
 			idSrcCol.forEach(id => {
-				newPath = newPath.replace("?", e[id])
+				newPath = newPath.replace(">", e[id])
 			})
 			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
 			return e;
@@ -96,10 +98,15 @@ function GenomeLandingPage() {
 			sort: true
 		},
 		{
+			dataField: 'gene_name',
+			text: 'Gene',
+			sort: true
+		},
+		{
 			dataField: 'max gene score',
 			text: 'MaxGeneScore',
 			sort: true
-		},
+		}
 	]
 
 

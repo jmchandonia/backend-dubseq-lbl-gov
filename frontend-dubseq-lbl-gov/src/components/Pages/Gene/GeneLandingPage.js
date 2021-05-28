@@ -137,11 +137,11 @@ function GeneLandingPage() {
 					{stats && <Title title='Gene' specific={stats[0]['name']} />}
 					{stats && <TableHorizontal content={stats} title="General Information" />}
 					<br />
-					<TableReact title="GeneCoverate" keyField="bagseq_fragment_id" content={geneCoverage} labels={GeneCoverageLabels} />
+					<TableReact title={`Gene Coverage (${geneCoverage.length} fragments cover this gene)`} keyField="bagseq_fragment_id" content={geneCoverage} labels={GeneCoverageLabels} />
 					<br />
 					<TableReact title="Experiments" keyField="name" content={experiments} labels={ExperimentLabels} />
 					<br />
-					<TableReact title="FragmentExperiments" keyField="name" content={fragmenExperiments} labels={FragmentExperiments} />
+					<TableReact title="Fragment Experiments" keyField="name" content={fragmenExperiments} labels={FragmentExperiments} />
 					<br />
 				</div>
 			</Content>

@@ -95,12 +95,14 @@ select
 	be."name",
 	be."type",
 	be."barseq_experiment_id",
-	round(cast(bgs.score_cnnls as numeric), 2) as "max gene score"
+	round(cast(bgs.score_cnnls as numeric), 2) as "max gene score",
+    bgs.gene_id,
+    bgs.gene_name
 from _temp_genome g
 	inner join _temp_bagseq_library bl on g.genome_id = bl.genome_id
 	inner join _temp_barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
 	inner join _temp_barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
-where g.genome_id = %d
+where g.genome_id = :id
 order by bgs.score_cnnls desc limit 10
                 ]]>
             </value>
