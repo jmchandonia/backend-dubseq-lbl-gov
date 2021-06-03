@@ -11,7 +11,10 @@ function HeatMap() {
 	useEffect(() => {
 
 		async function fetchData() {
-			let res = await axios('/api/heatmap/1')
+			let res = await axios.post(`/api/heatmap/${1}`, {
+				geneIds: [1, 2, 3],
+				experimentIds: [1, 2, 3, 4, 5, 6, 7]
+			})
 
 			console.log(res.data)
 			let series = {}
@@ -21,7 +24,7 @@ function HeatMap() {
 					series[d['condition_name']] = [
 						{
 							x: d['gene_name'],
-							y: d['score']
+							y: Math.round(d['score'] * 1000) / 1000
 						}
 					]
 				}
@@ -30,7 +33,7 @@ function HeatMap() {
 					let arr = series[d['condition_name']]
 					arr.push({
 						x: d['gene_name'],
-						y: d['score']
+						y: Math.round(d['score'] * 1000) / 1000
 					})
 				}
 			})
@@ -38,9 +41,9 @@ function HeatMap() {
 			// console.log(series)
 
 			let array = []
-			Object.keys(series).forEach((columnName) => array.push({name: columnName, data: series[columnName]}))
+			Object.keys(series).forEach((columnName) => array.push({ name: columnName, data: series[columnName] }))
 
-			
+
 			setData(array)
 		}
 

@@ -164,14 +164,15 @@ order by cast(r.name as float)
         <constructor-arg>
             <value>
                 <![CDATA[
-select
-       g.name as "gene_name",
-       be.name as "condition_name",
+select g.name          as "gene_name",
+       be.name         as "condition_name",
        bgs.score_cnnls as "score"
 from barseq_gene_score bgs
          inner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id
          inner join gene g on bgs.gene_id = g.gene_id
-where g.genome_id = (:id);
+where g.genome_id = (:id)
+  and g.gene_id in (:genes)
+  and be.barseq_experiment_id in (:experiments);
                 ]]>
             </value>
         </constructor-arg>
