@@ -58,16 +58,9 @@ function FitnessGraph() {
 		fetchExperiment();
 	}, [selectedOrganism])
 
-	// useEffect(() => {
-	// 	if(selectedExperiment === undefined) return
-	// 	getGenes()
-
-	// },[selectedExperiment])
-
 	// used to query genes.
 	let getGenes = async (start) => {
 
-		console.log(start)
 		if (experiments.length == 0) return
 
 		try {
@@ -121,7 +114,6 @@ function FitnessGraph() {
 		fetchGraphData()
 
 	}, [position])
-
 
 
 	// change the current showing gene_id.

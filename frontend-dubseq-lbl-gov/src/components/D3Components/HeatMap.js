@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import Chart from "react-apexcharts";
 import axios from 'axios';
 
@@ -6,14 +8,22 @@ import axios from 'axios';
 function HeatMap() {
 
 	const [data, setData] = useState([])
-
+	const [organisms, setOrganisms] = useState([]);
+	const [selectedOrganism, setSelectedOrganism] = useState(null)
+	const [experiments, setExperiments] = useState([])
+	const [selectedExperiments, setSelectedExperiment] = useState([])
+	const [selectedGenes, setSelectedGenes] = useState([])
 
 	useEffect(() => {
 
+		if (selectedExperiments.length == 0 || selectedGenes.length == 0) return
 		async function fetchData() {
+
+			console.log(selectedGenes.map(gene => gene['value']))
+			console.log(selectedExperiments.map(experiment => experiment['value']))
 			let res = await axios.post(`/api/heatmap/${1}`, {
-				geneIds: [1, 2, 3],
-				experimentIds: [1, 2, 3, 4, 5, 6, 7]
+				geneIds: selectedGenes.map(gene => gene['value']),
+				experimentIds: selectedExperiments.map(experiment => experiment['value'])
 			})
 
 			console.log(res.data)
@@ -43,39 +53,85 @@ function HeatMap() {
 			let array = []
 			Object.keys(series).forEach((columnName) => array.push({ name: columnName, data: series[columnName] }))
 
-
 			setData(array)
 		}
 
-
 		fetchData()
+	}, [selectedExperiments, selectedGenes])
+
+	// Getting organisms.
+	useEffect(() => {
+		const fetchOrganisms = async () => {
+			let res = await axios('organisms')
+			setOrganisms(res.data)
+		}
+		fetchOrganisms();
 	}, [])
 
+	// Getting extepriments.
+	useEffect(() => {
+		if (!selectedOrganism) return
+		const fetchExperiment = async () => {
+			let res = await axios(`organisms/${selectedOrganism}/experiments`)
+			// console.log(res.data)
+			setExperiments(res.data)
+		}
 
+		if (organisms.length == 0) return
+		fetchExperiment();
+	}, [selectedOrganism])
 
+	// used to query genes.
+	let getGenes = async (start) => {
 
+		if (!selectedOrganism) return
+
+		try {
+			let res = await axios(`organisms/${selectedOrganism}/genes/${start.toLowerCase()}`)
+			// console.log(res.data)
+			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
+		} catch (err) {
+			console.log(err)
+			return []
+		}
+	}
 
 	return (
-		<Chart
-			options={{
-				plotOptions: {
-					heatmap: {
-						colorScale: {
-							ranges: [{
-								from: -20,
-								to: 20,
-								color: '#00A100',
-								name: 'score'
+		<div>
+			<Select placeholder={"Select Organism"}
+				options={organisms.map(e => ({ value: e['genome_id'], label: e['name'] }))}
+				onChange={e => setSelectedOrganism(e.value)} />
+			<Select placeholder={"Select Experiment"}
+				isDisabled={!selectedOrganism}
+				isMulti={true}
+				options={experiments.map(e => ({ value: e['barseq_experiment_id'], label: e['name'] }))}
+				onChange={e => setSelectedExperiment(e)} />
+			<AsyncSelect placeholder={"Select Genes"}
+				isDisabled={!selectedOrganism}
+				isMulti={true}
+				loadOptions={getGenes}
+				onChange={e => setSelectedGenes(e)} />
+			<Chart
+				options={{
+					plotOptions: {
+						heatmap: {
+							colorScale: {
+								ranges: [{
+									from: -5,
+									to: 15,
+									color: '#00A100',
+									name: 'score'
+								}
+								]
 							}
-							]
 						}
 					}
-				}
-			}}
-			series={data}
-			type="heatmap"
-			width="75%"
-		/>
+				}}
+				series={data}
+				type="heatmap"
+				width="75%"
+			/>
+		</div>
 	)
 }
 

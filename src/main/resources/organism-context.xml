@@ -21,11 +21,26 @@ from _temp_gene ge
          inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
 where genome_id = :g_id
   and tbe.barseq_experiment_id = :exp_id
-  and lower(ge.name) like ]]>
+  and lower(ge.name) like
+                ]]>
             </value>
         </constructor-arg>
     </bean>
 
+    <!--genes for organism-->
+    <bean id="getGenesByPrefixQuery" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+select ge.gene_id,
+       ge.name
+from _temp_gene ge
+where ge.genome_id = :genome_id
+  and lower(ge.name) like
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
 
     <!--list of organisms on first page-->
     <bean id="getOrganismsQuery" class="java.lang.String">
@@ -171,8 +186,8 @@ from barseq_gene_score bgs
          inner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id
          inner join gene g on bgs.gene_id = g.gene_id
 where g.genome_id = (:id)
-  and g.gene_id in (:genes)
-  and be.barseq_experiment_id in (:experiments);
+  and g.gene_id in (:geneIds)
+  and be.barseq_experiment_id in (:experimentIds);
                 ]]>
             </value>
         </constructor-arg>

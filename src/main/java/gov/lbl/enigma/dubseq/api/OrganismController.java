@@ -69,6 +69,10 @@ public class OrganismController {
     @Qualifier("getGenomeHeatMapQuery")
     private String getGenomeHeatMapQuery;
 
+    @Autowired
+    @Qualifier("getGenesByPrefixQuery")
+    private String getGenesByPrefixQuery;
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -144,6 +148,18 @@ public class OrganismController {
         return jdbcTemplate.queryForList(QUERY, params);
     }
 
+    @GetMapping("/organisms/{genome_id}/genes/{start}")
+    public List<Map<String, Object>> getGenesByPrefix(@PathVariable long genome_id,
+                                                      @PathVariable String start){
+
+        Map<String, Long> params = new HashMap<>();
+        params.put("genome_id", genome_id);
+
+        String QUERY = getGenesByPrefixQuery.concat("'" + start + "%';");
+
+        return jdbcTemplate.queryForList(QUERY, params);
+    }
+
     @PostMapping("/heatmap/{genomeId}")
     public List<Map<String, Object>> getHeatMapForGenome(
             @PathVariable Long genomeId,
@@ -151,8 +167,8 @@ public class OrganismController {
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", genomeId);
-        params.addValue("genes", body.get("geneIds"));
-        params.addValue("experiments", body.get("experimentIds"));
+        params.addValue("geneIds", body.get("geneIds"));
+        params.addValue("experimentIds", body.get("experimentIds"));
 
         return jdbcTemplate.queryForList(getGenomeHeatMapQuery, params);
     }
