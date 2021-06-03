@@ -63,6 +63,10 @@ public class OrganismController {
     @Qualifier("getGenesForOrganismQuery")
     private String getGenesForOrganismQuery;
 
+    @Autowired
+    @Qualifier("getGenomeHeatMapQuery")
+    private String getGenomeHeatMapQuery;
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -134,8 +138,18 @@ public class OrganismController {
         params.put("exp_id", experiment_id);
 
         String QUERY = getGenesForOrganismQuery.concat("'" + start + "%';");
-        
+
         return jdbcTemplate.queryForList(QUERY, params);
+    }
+
+
+    @GetMapping("/heatmap/{genomeId}")
+    public List<Map<String, Object>> getHeatMapForGenome(@PathVariable Long genomeId) {
+
+        HashMap<String, Long> params = new HashMap<>();
+        params.put("id", genomeId);
+
+        return jdbcTemplate.queryForList(getGenomeHeatMapQuery, params);
     }
 
 

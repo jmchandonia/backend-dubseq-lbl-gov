@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header'
 import ScoreGraph from '../../D3Components/FitLandscapeClass';
@@ -6,48 +6,38 @@ import HeatMap from '../../D3Components/HeatMap';
 import Layout from '../../Layouts/SideBarLayout';
 import classes from './GraphsPage.module.css';
 import Content from '../../../hoc/Content/Content';
-import FintessGraph from '../../Graphs/FitnessGraph';
 import Footer from '../../UI/Footer/Footer';
 import FitnessGraph from '../../Graphs/FitnessGraph';
 
 
-class GraphsPage extends Component {
+export default function GraphsPage() {
 
-	state = {
-		vis: 'Fitness Landscape'
-	}
+	const [vis, setVis] = useState('heatMap')
 
-	changeGraph = (e) => {
-		this.setState({ vis: e.target.getAttribute('data-value') })
-	}
 
-	render() {
-		return (
-			<Aux>
-				<Header title={this.state.vis} />
-				<Content>
-					<Layout
-						navbarContent={
-							<ul>
-								<li><button className={classes.link} data-value='heatMap' onClick={this.changeGraph}>Heat Map</button></li>
-								<li><button className={classes.link} data-value='Fitness Landscape' onClick={this.changeGraph}>Fit Landscape</button></li>
-								<li><button className={classes.link} data-value='compareExperiments' onClick={this.changeGraph}>Compare Experiments</button></li>
-								<li><button className={classes.link} data-value='compareGenes' onClick={this.changeGraph}>Compare Genes</button></li>
-							</ul>
-						}
-						mainContent={<Aux>
-							{this.state.vis === 'home' && <h1>Page for graphs</h1>}
-							{this.state.vis === 'Fitness Landscape' && <FitnessGraph />}
-							{this.state.vis === 'heatMap' && <HeatMap />}
+	return (
+		<Aux>
+			<Header title={vis} />
+			<Content>
+				<Layout
+					navbarContent={
+						<ul>
+							<li><button className={classes.link} value='heatMap' onClick={(e) => setVis(e.target.value)}>Heat Map</button></li>
+							<li><button className={classes.link} value='Fitness Landscape' onClick={(e) => setVis(e.target.value)}>Fit Landscape</button></li>
+							<li><button className={classes.link} value='compareExperiments' onClick={(e) => setVis(e.target.value)}>Compare Experiments</button></li>
+							<li><button className={classes.link} value='compareGenes' onClick={(e) => setVis(e.target.value)}>Compare Genes</button></li>
+						</ul>
+					}
+					mainContent={
+						<Aux>
+							{vis === 'home' && <h1>Page for graphs</h1>}
+							{vis === 'Fitness Landscape' && <FitnessGraph />}
+							{vis === 'heatMap' && <HeatMap />}
 						</Aux>
-						}
-					/>
-				</Content>
-				<Footer />
-			</Aux>
-		)
-	}
-
+					}
+				/>
+			</Content>
+			<Footer />
+		</Aux>
+	)
 }
-
-export default GraphsPage;

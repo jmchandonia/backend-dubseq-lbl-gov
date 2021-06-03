@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import Aux from '../../hoc/Aux';
 import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
@@ -31,11 +31,11 @@ function FitnessGraph() {
 	let query = useQuery();
 	const [data, setData] = useState([]);
 	const [position, setPosition] = useState({ start: 0, end: 0 });
-	const currentGeneId = useRef(0);
+	const currentGeneId = useRef(null);
 	const [organisms, setOrganisms] = useState([]);
-	const [selectedOrganism, setSelectedOrganism] = useState(query.get("organism"))
+	const [selectedOrganism, setSelectedOrganism] = useState(null)
 	const [experiments, setExperiments] = useState([])
-	const [selectedExperiment, setSelectedExperiment] = useState(query.get("experiment"))
+	const [selectedExperiment, setSelectedExperiment] = useState(null)
 
 
 	// Getting organisms.
@@ -54,9 +54,30 @@ function FitnessGraph() {
 			setExperiments(res.data)
 		}
 
+		if (organisms.length == 0) return
 		fetchExperiment();
 	}, [selectedOrganism])
 
+	// useEffect(() => {
+	// 	if(selectedExperiment === undefined) return
+	// 	getGenes()
+
+	// },[selectedExperiment])
+
+	// used to query genes.
+	let getGenes = async (start) => {
+
+		console.log(start)
+		if (experiments.length == 0) return
+
+		try {
+			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`)
+			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
+		} catch (err) {
+			console.log(err)
+			return []
+		}
+	}
 
 	// Changing the graph.
 	useEffect(() => {
@@ -95,21 +116,13 @@ function FitnessGraph() {
 
 			setData(data);
 		}
+
+		if (!currentGeneId) return
 		fetchGraphData()
 
 	}, [position])
 
-	// used to query genes.
-	let getGenes = async (start) => {
 
-		try {
-			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`)
-			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
-		} catch (err) {
-			console.log(err)
-			return []
-		}
-	}
 
 	// change the current showing gene_id.
 	const changeCurrent = async (gene_id) => {
@@ -121,7 +134,6 @@ function FitnessGraph() {
 		let { s, f } = findRange(res.data[0]);
 
 		setPosition({ start: s, end: f })
-		// setCurrent(res.data[0])
 	}
 
 	return (
@@ -129,15 +141,19 @@ function FitnessGraph() {
 
 			<div className='d-flex justify-content-between align-items-end'>
 				<div className={'w-50'}>
-					<Select placeholder={"Select Organism"}ç
+					<Select placeholder={"Select Organism"} ç
 						defaultValue={selectedOrganism}
 						options={organisms.map(e => ({ value: e['genome_id'], label: e['name'] }))}
 						onChange={e => setSelectedOrganism(e.value)} />
 					<Select placeholder={"Select Experiment"}
-						defaultValue={selectedOrganism}
+						defaultValue={selectedExperiment}
+						isDisabled={!selectedOrganism}
 						options={experiments.map(e => ({ value: e['barseq_experiment_id'], label: e['name'] }))}
 						onChange={e => setSelectedExperiment(e.value)} />
-					<AsyncSelect placeholder={"Select Genes"} loadOptions={getGenes} onChange={gene => changeCurrent(gene.value)} />
+					<AsyncSelect placeholder={"Select Genes"}
+						isDisabled={!selectedExperiment}
+						loadOptions={getGenes}
+						onChange={gene => changeCurrent(gene.value)} />
 				</div>
 				<div className='w-25'>
 					<button className='btn'

@@ -7,6 +7,7 @@ import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom';
 import TableReact from '../../UI/Table/TableReact';
+import TableReactExpandable from '../../UI/Table/TableReactExpandable';
 
 const NCBI_TAXONOMY_ID_BROWSER = 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='
 
@@ -48,7 +49,7 @@ function GenomeList() {
 			sort: true
 		}, {
 			dataField: 'size',
-			text: 'Size',
+			text: 'Size (kbps)',
 			sort: true
 		}, {
 			dataField: 'ncbi_taxonomy_id',
@@ -78,12 +79,24 @@ function GenomeList() {
 	]
 
 
+
+	let expandRowFunction = (row, row_ind) => {
+		console.log(row_ind)
+		return (
+			<div>
+				<div type="button" className="btn btn-success">Download</div>
+			</div>
+		)
+	}
+
+
 	return (
 		<Aux>
 			<Header title="TablePage" />
 			<Content>
 				<div className='container'>
-					{genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />}
+					{/* {genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />} */}
+					{genomeList && <TableReactExpandable title="Organisms" keyField='genome_id' content={genomeList} labels={lables} expandRowFunction={expandRowFunction} />}
 				</div>
 			</Content>
 			<Footer />

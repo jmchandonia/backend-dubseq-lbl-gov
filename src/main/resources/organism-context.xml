@@ -9,7 +9,7 @@
 >
 
 
-<!--genes for organism-->
+    <!--genes for organism-->
     <bean id="getGenesForOrganismQuery" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -27,14 +27,14 @@ where genome_id = :g_id
     </bean>
 
 
-<!--list of organisms on first page-->
+    <!--list of organisms on first page-->
     <bean id="getOrganismsQuery" class="java.lang.String">
         <constructor-arg>
             <value><![CDATA[
 select
 	g.genome_id,
 	g."name",
-	g."size",
+	(select (cast(max(g3.pos_to) as float) - cast(min(g3.pos_from) as float)) / 1000 from gene g3 where g3.genome_id = g.genome_id) as "size",
 	g.ncbi_taxonomy_id,
 	g.phylum,
 	(select count(*) from gene g2 where g2.genome_id = g.genome_id),
@@ -42,12 +42,12 @@ select
 	(select count(*)
 	from _temp_barseq_experiment e join bagseq_library b using(bagseq_library_id) where b.genome_id = g.genome_id) as experiment_count
 from genome g
-order by g.genome_id
+order by g.genome_id;
         ]]></value>
         </constructor-arg>
     </bean>
 
-<!--General summary for genome-->
+    <!--General summary for genome-->
     <bean id="getOrganismStatsQuery" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -67,7 +67,7 @@ where g.genome_id = %d
     </bean>
 
 
-<!--    Libraries created for an organism -->
+    <!--    Libraries created for an organism -->
     <bean id="getOrganismLibrariesQuery" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -86,7 +86,7 @@ where
         </constructor-arg>
     </bean>
 
-<!--top performing Experiments-->
+    <!--top performing Experiments-->
     <bean id="getOrganismTopExperimentsQuery" class="java.lang.String">
         <constructor-arg>
             <value>
@@ -155,6 +155,23 @@ from ranges r
 left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max
 group by r.name
 order by cast(r.name as float)
+                ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getGenomeHeatMapQuery" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+select
+       g.name as "gene_name",
+       be.name as "condition_name",
+       bgs.score_cnnls as "score"
+from barseq_gene_score bgs
+         inner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id
+         inner join gene g on bgs.gene_id = g.gene_id
+where g.genome_id = (:id);
                 ]]>
             </value>
         </constructor-arg>
