@@ -33,6 +33,7 @@ where genome_id = :g_id
             <value>
                 <![CDATA[
 select ge.gene_id,
+       ge.locus_tag,
        ge.name
 from _temp_gene ge
 where ge.genome_id = :genome_id
@@ -179,7 +180,9 @@ order by cast(r.name as float)
         <constructor-arg>
             <value>
                 <![CDATA[
-select g.name          as "gene_name",
+select g.gene_id       as "gene_id",
+       g.name          as "gene_name",
+       g.locus_tag     as "locus_tag",
        be.name         as "condition_name",
        bgs.score_cnnls as "score"
 from barseq_gene_score bgs

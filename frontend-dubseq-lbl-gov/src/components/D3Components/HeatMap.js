@@ -16,36 +16,30 @@ function HeatMap() {
 
 	useEffect(() => {
 
-		if (selectedExperiments.length == 0 || selectedGenes.length == 0) return
-		async function fetchData() {
+		if (selectedOrganism == null || selectedExperiments.length == 0 || selectedGenes.length == 0) return
 
-			console.log(selectedGenes.map(gene => gene['value']))
-			console.log(selectedExperiments.map(experiment => experiment['value']))
-			let res = await axios.post(`/api/heatmap/${1}`, {
+		console.log(selectedOrganism)
+		console.log(selectedExperiments)
+		console.log(selectedGenes)
+		async function fetchData() {
+			let res = await axios.post(`/api/heatmap/${selectedOrganism}`, {
 				geneIds: selectedGenes.map(gene => gene['value']),
 				experimentIds: selectedExperiments.map(experiment => experiment['value'])
 			})
-
 			console.log(res.data)
 			let series = {}
 			res.data.forEach((d) => {
 				// if column does not exist
 				if (!series[d['condition_name']]) {
-					series[d['condition_name']] = [
-						{
-							x: d['gene_name'],
-							y: Math.round(d['score'] * 1000) / 1000
-						}
-					]
+					series[d['condition_name']] = []
 				}
 				// if the column already exists add a row
-				else {
-					let arr = series[d['condition_name']]
-					arr.push({
-						x: d['gene_name'],
-						y: Math.round(d['score'] * 1000) / 1000
-					})
-				}
+				let arr = series[d['condition_name']]
+				arr.push({
+					x: d['gene_name'] ? d['gene_name'] : d['locus_tag'],
+					y: Math.round(d['score'] * 1000) / 1000
+				})
+
 			})
 
 			// console.log(series)
@@ -88,7 +82,7 @@ function HeatMap() {
 
 		try {
 			let res = await axios(`organisms/${selectedOrganism}/genes/${start.toLowerCase()}`)
-			// console.log(res.data)
+			console.log(res.data)
 			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
 		} catch (err) {
 			console.log(err)

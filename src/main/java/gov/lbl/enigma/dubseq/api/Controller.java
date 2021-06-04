@@ -49,6 +49,8 @@ public class Controller {
     @Autowired
     private LayoutCollector layoutCollector;
 
+    @Autowired
+    private QueryService queryService;
 
     @CrossOrigin
     @GetMapping("/genes")
@@ -119,6 +121,12 @@ public class Controller {
     }
 
 
+    @PostMapping("/query/{queryId}")
+    public String getQuery(@PathVariable Long queryId,
+                           @RequestBody Map<String, Object> body){
+
+        return queryService.getQuery(queryId);
+    }
 
 
 }
