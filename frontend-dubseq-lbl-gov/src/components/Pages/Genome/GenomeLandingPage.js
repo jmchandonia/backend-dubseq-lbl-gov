@@ -4,7 +4,6 @@ import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header';
 import Footer from '../../UI/Footer/Footer';
 import axios from 'axios';
-import Table from '../../UI/Table/Table';
 import RadialGraph from '../../Graphs/RadialGraph';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
@@ -19,24 +18,21 @@ function GenomeLandingPage() {
 	const [stats, setStats] = useState(null);
 	const [library, setLibrary] = useState(null);
 	const [experiments, setExperients] = useState(null);
-	// const [histData, setHistData] = useState(null);
 
 	useEffect(() => {
 
 		const fetchData = async () => {
 			let res1 = await axios(`/api/organisms/${id}/stats`);
 			setStats(res1.data);
+
 			let res2 = await axios(`/api/organisms/${id}/libraries`);
-			res2.data = res2.data.map(e => {
-				e.Name = <Link to={`/bagseq/libraries/${e.id}`}>{e.Name}</Link>;
-				return e;
-			})
+			res2.data = addLink(res2.data, 'Name', ['id'], `/bagseq/libraries/>`)
 			setLibrary(res2.data);
+
 			let res3 = await axios(`/api/organisms/${id}/topexperiments`);
-			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/>`)
-			console.log(res3)
-			res3 = addLink(res3, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphPage/?organism=>&experiment=>`)
-			setExperients(res3);
+			res3.data = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/>`)
+			res3.data = addLink(res3.data, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphs/fitness/?organism=>&experiment=>`)
+			setExperients(res3.data);
 			// let res4 = await axios(`/api/organisms/${id}/graphs`);
 			// setHistData(res4.data);
 		}
@@ -62,6 +58,40 @@ function GenomeLandingPage() {
 	}
 
 
+	let StatsLabels = [
+		{
+			dataField: 'name',
+			text: 'Name'
+		},
+		{
+			dataField: 'genome_id',
+			text: 'ID'
+		},
+		{
+			dataField: 'size',
+			text: 'Size (kbps)'
+		},
+		{
+			dataField: 'ncbi_taxonomy_id',
+			text: 'TaxonomyId'
+		},
+		{
+			dataField: 'phylum',
+			text: 'Phylum'
+		},
+		{
+			dataField: 'gene_count',
+			text: 'Gene Count'
+		},
+		{
+			dataField: 'experiment_count',
+			text: 'Experiment Count'
+		},
+		{
+			dataField: 'condition_count',
+			text: 'Condition Count'
+		},
+	]
 
 	let LibrariesLabels = [
 		{
@@ -116,10 +146,9 @@ function GenomeLandingPage() {
 			<Header title={'GenomeLandingPage'} />
 			<Content>
 				<div className='container' style={{ paddingBottom: "40px" }}>
-					{/* {stats && <h1 style={{ margin: '25px 0px 50px 0px', borderBottom: 'solid 2px black' }}> Organism - <span style={{ color: 'red', fontWeight: 300 }}>{stats[0]['Name:']}</span></h1>} */}
-					{stats && <Title title={'Organism'} specific={stats[0]['Name:']} />}
+					{stats && <Title title={'Organism'} specific={stats[0]['name']} />}
 					{stats && <HorizontalLayout content={[
-						<TableHorizontal content={stats} title='General Information' />,
+						<TableHorizontal content={stats} labels={StatsLabels} title='General Information' />,
 						<RadialGraph />
 					]} contentWidth={[6, 6]} />}
 					<div style={{ marginTop: "50px" }}>
@@ -127,7 +156,7 @@ function GenomeLandingPage() {
 					</div>
 
 					<div style={{ marginTop: "70px" }}>
-						{experiments && <TableReact content={experiments} keyField='id' labels={TopPerformingLabels} title='Top Experiments Performed' />}
+						{experiments && <TableReact content={experiments} keyField='max gene score' labels={TopPerformingLabels} title='Top Experiments Performed' />}
 					</div>
 
 				</div>

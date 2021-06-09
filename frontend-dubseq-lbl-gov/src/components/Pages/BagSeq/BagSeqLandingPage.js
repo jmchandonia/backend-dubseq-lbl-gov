@@ -24,14 +24,24 @@ function BagSeqLandingPage() {
 
 		async function fetchData() {
 			let res1 = await axios.get(`/api/libraries/${id}/stats`);
+			console.log(res1.data)
 			setStats(res1.data);
 			let res2 = await axios.get(`/api/libraries/${id}/experiments`);
-			res2.data = addLink(res2.data, 'itnum', 'experiment id', '/bagseq/libraries/${id}/experiments/${id_experiment}')
+			res2.data = addLink(res2.data, 'itnum', ['experiment id'], '/bagseq/libraries/${id}/experiments/${id_experiment}')
 			setExperients(res2.data);
 			let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
+			console.log(res3.data)
+			res3.data = res3.data.map((row, index) => ({
+				...row,
+				'uid': index,
+				'Gene name': <Link to={`/graphs/fitness/?gene_id=${row['gene_id']}`}>{row['Gene name']}</Link>
+			}))
+
 			setTopPerformingGenes(res3.data);
-			let res4 = await axios(`/api/libraries/${id}/experiments/1/graphs`);
-			setHistData(res4.data);
+
+			// Histogram
+			// let res4 = await axios(`/api/libraries/${id}/experiments/1/graphs`);
+			// setHistData(res4.data);
 		}
 
 		fetchData();
@@ -41,10 +51,10 @@ function BagSeqLandingPage() {
 	}, [])
 
 	function addLink(data, LinkCol, idCol, path) {
+		console.warn("WARNIGN: Using eval is NOT SAFE, Change this code")
 		return data.map(e => {
 			// eslint-disable-next-line
 			let id_experiment = e[idCol];
-			console.log('THIS IS WRONG!!! fix!!!');
 			let newPath = eval('`' + path + '`');
 			e[LinkCol] = <Link to={newPath}>{e[LinkCol]}</Link>;
 			return e;
@@ -52,6 +62,32 @@ function BagSeqLandingPage() {
 	}
 
 
+	let StatsLabels = [
+		{
+			dataField: 'name',
+			text: 'Name',
+		},
+		{
+			dataField: 'bagseq_library_id',
+			text: 'Library ID',
+		},
+		{
+			dataField: 'host_genome_name',
+			text: 'Host Genome Name',
+		},
+		{
+			dataField: 'host_genome_id',
+			text: 'Host Genome ID',
+		},
+		{
+			dataField: 'fragment_count',
+			text: 'Fragment Count',
+		},
+		{
+			dataField: 'experiment_count',
+			text: 'Experiment Count',
+		}
+	]
 
 	let ExperimentLabels = [
 		{
@@ -100,15 +136,15 @@ function BagSeqLandingPage() {
 			<Header title='Library LandingPage' />
 			<Content>
 				<div className='container'>
-					{stats && <Title title='BAGSeq Library' specific={stats[0]['Name:']}/>}
+					{stats && <Title title='Dub-seq Library' specific={stats[0]['name']} />}
 					{stats && histData && <HorizontalLayout content={[
-						<TableHorizontal content={stats} title='General Information' />,
-						<HistogramD3 data={histData} mountingId={`class_${1}`} />
+						<TableHorizontal content={stats} labels={StatsLabels} title='General Information' />,
+						// <HistogramD3 data={histData} mountingId={`class_${1}`} />
 					]} contentWidth={[6, 6]} />}
 					<br />
-					{experiments && <TableReact content={experiments} keyField='id' labels={ExperimentLabels} title='Experiments (high scoring genes - genes scored above 4)' />}
+					{experiments && <TableReact content={experiments} keyField='experiment id' labels={ExperimentLabels} title='Experiments (high scoring genes - genes scored above 4)' />}
 					<br />
-					{topPerformingGenes && <TableReact content={topPerformingGenes} keyField='id' labels={TopPerformingLabels} title='Top Performing Genes' />}
+					{topPerformingGenes && <TableReact content={topPerformingGenes} keyField='uid' labels={TopPerformingLabels} title='Top Performing Genes' />}
 				</div>
 			</Content>
 			<Footer />

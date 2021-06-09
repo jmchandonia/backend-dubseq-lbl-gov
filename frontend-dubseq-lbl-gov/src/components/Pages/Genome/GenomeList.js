@@ -81,10 +81,11 @@ function GenomeList() {
 
 
 	let expandRowFunction = (row, row_ind) => {
-		console.log(row_ind)
 		return (
 			<div>
-				<div type="button" className="btn btn-success">Download</div>
+				<button className='btn btn-success'>Download</button>
+				<Link to={`/graphs/heatmap/${row['genome_id']}`} className='btn btn-primary'>Heat-map</Link>
+				<Link to={`/graphs/fitness/${row['genome_id']}`} className='btn btn-warning'>Fitness</Link>
 			</div>
 		)
 	}

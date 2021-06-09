@@ -21,15 +21,16 @@ function ExperiemntLandingPage() {
 		async function fetchData() {
 			let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
 			setStats(res1.data);
+			
 			let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
-			console.log(res2.data)
-			res2 = addLink(res2.data, 'name', ['gene id'], '/genes/?')
-			setGenes(res2);
+			res2.data = addLink(res2.data, 'name', ['gene id'], '/genes/?')
+			setGenes(res2.data);
+
 			let res3 = await axios(`/libraries/${id}/experiments/${id_experiment}/fragments`);
 			setFragments(res3.data);
 		}
 		fetchData();
-	})
+	},[])
 
 	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
 	// 'bagseq/libraries/?/experiments/?'
@@ -44,6 +45,28 @@ function ExperiemntLandingPage() {
 		})
 	}
 
+	let StatsLabels = [
+		{
+			dataField: 'name',
+			text: 'Name',
+		},
+		{
+			dataField: 'barseq_experiment_id',
+			text: 'Experiment Id',
+		},
+		{
+			dataField: 'itnum',
+			text: 'ITnum',
+		},
+		{
+			dataField: 'gene_count',
+			text: 'Gene Count',
+		},
+		{
+			dataField: 'fragment_count',
+			text: 'Fragment Count',
+		},
+	]
 
 	let topScoringGensLabels = [
 		{
@@ -86,14 +109,14 @@ function ExperiemntLandingPage() {
 			<Header title='Experiment LandingPage' />
 			<Content>
 				<div className='container'>
-					{stats && <Title title='Experiment' specific={stats[0]['Name:']} />}
-					{stats && <TableHorizontal content={stats} title="General Information" />}
+					{stats && <Title title='Experiment' specific={stats[0]['name']} />}
+					{stats && <TableHorizontal content={stats} labels={StatsLabels} title="General Information" />}
 					<br />
 					{/* {genes && <Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />} */}
-					{genes && <TableReact content={genes} keyField='id' labels={topScoringGensLabels} title="Top Scoring Genes (top 20 highest scores)" />}
+					{genes && <TableReact content={genes} keyField='gene id' labels={topScoringGensLabels} title="Top Scoring Genes (top 20 highest scores)" />}
 					<br />
 					{/* {fragments && <Table content={fragments} title="Top Scoring Fragments" />} */}
-					{fragments && <TableReact content={fragments} keyField='id' labels={topScoringFragments} title="Top Scoring Fragments" />}
+					{fragments && <TableReact content={fragments} keyField='fragment id' labels={topScoringFragments} title="Top Scoring Fragments" />}
 				</div>
 			</Content>
 			<Footer />

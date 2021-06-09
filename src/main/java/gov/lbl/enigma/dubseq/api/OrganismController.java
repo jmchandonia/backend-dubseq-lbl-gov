@@ -89,9 +89,10 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/stats")
     public List<Map<String, Object>> getOrganismStats(@PathVariable long id) {
 
-        String QUERY = String.format(getOrganismStatsQuery, id);
+        Map<String, Long> params = new HashMap<>();
+        params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+        return jdbcTemplate.queryForList(getOrganismStatsQuery, params);
     }
 
     @CrossOrigin

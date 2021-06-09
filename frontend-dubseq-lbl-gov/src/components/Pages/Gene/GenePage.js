@@ -15,11 +15,12 @@ function GenePage() {
 		let fetchData = async () => {
 			let res = await axios('/api/getGenes')
 			res = addLink(res.data, "name", ['gene_id'], '/genes/?')
+			console.log(res)
 			setGenes(res)
 		}
 
 		fetchData()
-	}, [genes])
+	}, [])
 
 
 	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
@@ -79,7 +80,7 @@ function GenePage() {
 			<Header title='Genes' />
 			<Content>
 				<div className='container'>
-					<TableReact title="Genes" keyField="name" content={genes} labels={labels} />
+					<TableReact title="Genes" keyField="gene_id" content={genes} labels={labels} />
 				</div>
 			</Content>
 		</Aux>

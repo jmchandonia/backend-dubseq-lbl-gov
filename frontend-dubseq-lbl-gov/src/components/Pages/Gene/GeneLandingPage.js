@@ -17,7 +17,7 @@ function GeneLandingPage() {
 	const [stats, setStats] = useState(null)
 	const [experiments, setExperiments] = useState([])
 	const [fragmenExperiments, setFragmentExperiments] = useState([])
-	const [geneCoverage, setGeneCoverage] = useState([])
+
 
 	useEffect(() => {
 
@@ -33,9 +33,6 @@ function GeneLandingPage() {
 			let res3 = await axios(`/api/getGeneFragmentsExperiments/${id}`)
 			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], '/bagseq/libraries/1/experiments/?')
 			setFragmentExperiments(res3)
-
-			let res4 = await axios(`/api//getGeneCoverage/${id}`)
-			setGeneCoverage(res4.data)
 		}
 
 		fetchData()
@@ -53,6 +50,41 @@ function GeneLandingPage() {
 			return e;
 		})
 	}
+
+	let StatsLabels = [
+		{
+			dataField: 'gene_id',
+			text: 'ID'
+		},
+		{
+			dataField: 'name',
+			text: 'Name'
+		},
+		{
+			dataField: 'locus_tag',
+			text: 'Locus Tag'
+		},
+		{
+			dataField: 'pos_from',
+			text: 'Position From'
+		},
+		{
+			dataField: 'pos_to',
+			text: 'Position To'
+		},
+		{
+			dataField: 'strand',
+			text: 'Strand'
+		},
+		{
+			dataField: 'product',
+			text: 'Product'
+		},
+		{
+			dataField: 'fragment_coverage',
+			text: 'Fragment Coverage'
+		},
+	]
 
 	let ExperimentLabels = [
 		{
@@ -135,9 +167,7 @@ function GeneLandingPage() {
 			<Content>
 				<div className='container'>
 					{stats && <Title title='Gene' specific={stats[0]['name']} />}
-					{stats && <TableHorizontal content={stats} title="General Information" />}
-					<br />
-					<TableReact title={`Gene Coverage (${geneCoverage.length} fragments cover this gene)`} keyField="bagseq_fragment_id" content={geneCoverage} labels={GeneCoverageLabels} />
+					{stats && <TableHorizontal content={stats} labels={StatsLabels} title="General Information" />}
 					<br />
 					<TableReact title="Experiments" keyField="name" content={experiments} labels={ExperimentLabels} />
 					<br />

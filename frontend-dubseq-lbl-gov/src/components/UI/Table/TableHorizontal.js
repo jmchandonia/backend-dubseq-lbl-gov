@@ -10,16 +10,14 @@ const TableHorizontal = (props) => {
 		return Object.keys(obj);
 	}
 
-	function renderRow(data) {
+	function renderRow(labels, data) {
 
-		let keys = getKeys(data);
+		return labels.map((label, i) => (
+			<tr key={i}>
+				<th>{label['text']}</th>
+				<td>{data[label['dataField']]}</td>
+			</tr>))
 
-		return keys.map((d, i) =>
-		(<tr key={i}>
-			<th>{d}</th>
-			<td>{data[d]}</td>
-		</tr>)
-		)
 	}
 
 	return (
@@ -28,7 +26,7 @@ const TableHorizontal = (props) => {
 			<div className={classes.table_background}>
 				<table className='table table-hover'>
 					<tbody>
-						{props.content && renderRow(props.content[0])}
+						{props.content && renderRow(props.labels, props.content[0])}
 					</tbody>
 				</table>
 			</div>

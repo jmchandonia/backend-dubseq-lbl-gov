@@ -42,15 +42,14 @@ from barseq_experiment be
         <constructor-arg>
             <value><![CDATA[
 select
-	be.name as "Name:",
-	be.barseq_experiment_id as "Experiment id:",
-	be.itnum as "Itnum:",
-	(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as "Gene count:",
-	(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as "Fragment count:"
+	be.name,
+	be.barseq_experiment_id,
+	be.itnum,
+	(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as "gene_count",
+	(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as "fragment_count"
 from barseq_experiment be
-where 1=1
-and be.bagseq_library_id = %d
-and be.barseq_experiment_id = %d
+where be.bagseq_library_id = (:library_id)
+and be.barseq_experiment_id = (:experiment_id);
         ]]></value>
         </constructor-arg>
     </bean>
@@ -102,7 +101,7 @@ max_scores as (
 	from
 		barseq_gene_score s
 	inner join barseq_experiment e using (barseq_experiment_id)
-	where e.bagseq_library_id = 1
+	where e.bagseq_library_id = (:library_id)
 	group by s.barseq_experiment_id
 ),
 max_scores_gene as (

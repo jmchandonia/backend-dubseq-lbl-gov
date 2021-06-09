@@ -28,14 +28,12 @@ from _temp_gene g limit 100
             <value><![CDATA[
 select g.gene_id,
        g.name,
-       g.genome_id,
        g.locus_tag,
-       g.gene_type,
-       g.contig_id,
        g.pos_from,
        g.pos_to,
        g.strand,
-       g.product
+       g.product,
+       (select count(*) from _temp_bagseq_gene_fragment_map tbgfm where tbgfm.gene_id = :id) as "fragment_coverage"
 from _temp_gene g
 where gene_id = :id;
         ]]></value>
@@ -94,7 +92,7 @@ from _temp_gene g
          inner join _temp_bagseq_gene_fragment_map tbgfm on g.gene_id = tbgfm.gene_id
          inner join _temp_bagseq_fragment tbf on tbf.bagseq_fragment_id = tbgfm.bagseq_fragment_id
          inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
-where g.gene_id = :id;
+where g.gene_id = (:id);
         ]]></value>
         </constructor-arg>
     </bean>

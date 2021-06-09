@@ -21,7 +21,7 @@ class App extends Component {
 		return (
 			<Router>
 				<Route exact path='/' component={HomePage} />
-				<Route path='/graphPage' component={GraphPage} />
+				<Route path='/graphs' component={GraphPage} />
 				<Route path='/about' component={About} />
 				<Route path='/listPage/:id' component={TablePage} />
 				<Route path='/search' component={SearchPage} />

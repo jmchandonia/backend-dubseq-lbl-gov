@@ -10,7 +10,7 @@ const Header = () => (
 				<div className='d-flex align-items-center'>
 					<Link className="logo" to='/'>DubSeq Browser</Link>
 					<div className="d-flex navbar-links-wrapper">
-						<Link to='/graphPage'>Graphs</Link>
+						<Link to='/graphs'>Graphs</Link>
 						<Link to='/organisms'>Organisms</Link>
 						<Link to='/experiments'>Experiments</Link>
 						<Link to='/genes'>Genes</Link>

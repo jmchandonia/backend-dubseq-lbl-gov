@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header'
 import ScoreGraph from '../../D3Components/FitLandscapeClass';
+import { BrowserRouter as Router, Route, Link, Switch, useRouteMatch, useParams } from "react-router-dom";
 import HeatMap from '../../D3Components/HeatMap';
 import Layout from '../../Layouts/SideBarLayout';
 import classes from './GraphsPage.module.css';
@@ -10,10 +11,10 @@ import Footer from '../../UI/Footer/Footer';
 import FitnessGraph from '../../Graphs/FitnessGraph';
 
 
-export default function GraphsPage() {
+const GraphsPage = () => {
 
-	const [vis, setVis] = useState('heatMap')
-
+	const [vis, setVis] = useState('home')
+	let { path, url } = useRouteMatch()
 
 	return (
 		<Aux>
@@ -22,18 +23,25 @@ export default function GraphsPage() {
 				<Layout
 					navbarContent={
 						<ul>
-							<li><button className={classes.link} value='heatMap' onClick={(e) => setVis(e.target.value)}>Heat Map</button></li>
-							<li><button className={classes.link} value='Fitness Landscape' onClick={(e) => setVis(e.target.value)}>Fit Landscape</button></li>
-							<li><button className={classes.link} value='compareExperiments' onClick={(e) => setVis(e.target.value)}>Compare Experiments</button></li>
-							<li><button className={classes.link} value='compareGenes' onClick={(e) => setVis(e.target.value)}>Compare Genes</button></li>
+							<li>
+								<Link className={classes.link} to={`${url}/heatmap`} >Heat Map</Link>
+							</li>
+							<li>
+								<Link className={classes.link} to={`${url}/fitness`} >Fit Landscape</Link>
+							</li>
 						</ul>
 					}
 					mainContent={
-						<Aux>
-							{vis === 'home' && <h1>Page for graphs</h1>}
-							{vis === 'Fitness Landscape' && <FitnessGraph />}
-							{vis === 'heatMap' && <HeatMap />}
-						</Aux>
+						<Switch>
+							<Route exact path={path}>
+								<h3>Please select a graph</h3>
+							</Route>
+							<Route path={`${path}/heatmap`} component={HeatMap} />
+							<Route path={`${path}/fitness`} component={FitnessGraph} />
+							{/* <Route path={`${path}/:graphId`}>
+								<Graphs />
+							</Route> */}
+						</Switch>
 					}
 				/>
 			</Content>
@@ -41,3 +49,16 @@ export default function GraphsPage() {
 		</Aux>
 	)
 }
+
+function Graphs() {
+
+	let { graphId } = useParams();
+
+	return (
+		<div>
+			<h3>{graphId}</h3>
+		</div>
+	)
+}
+
+export default GraphsPage;

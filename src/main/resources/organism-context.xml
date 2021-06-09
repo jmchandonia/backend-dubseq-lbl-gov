@@ -68,15 +68,22 @@ order by g.genome_id;
         <constructor-arg>
             <value>
                 <![CDATA[
-select
-	g."name" as "Name:",
-	g.genome_id as "Genome id:",
-	g."size" as "Size:",
-	g.ncbi_taxonomy_id as "Taxonomy id:",
-	g.phylum as "Phylum:",
-	g.gene_count as "Gene count:"
+select g."name",
+       g.genome_id,
+       cast(g."size" as float) / 1000 as "size",
+       g.ncbi_taxonomy_id,
+       g.phylum,
+       (select count(*) from _temp_gene where genome_id = (:genome_id)) as "gene_count",
+       (select count(*)
+        from _temp_barseq_experiment tbe
+                 inner join _temp_bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
+        where tbl.genome_id = (:genome_id)) as "experiment_count",
+       (select count(distinct tbe2."name")
+        from _temp_barseq_experiment tbe2
+                 inner join _temp_bagseq_library tbl2 on tbe2.bagseq_library_id = tbl2.bagseq_library_id
+        where tbl2.genome_id = (:genome_id)) as "condition_count"
 from _temp_genome g
-where g.genome_id = %d
+where g.genome_id = (:genome_id);
                 ]]>
             </value>
         </constructor-arg>
