@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import TableReact from '../../UI/Table/TableReact';
 import Header from '../../UI/Header/Header';
+import Footer from '../../UI/Footer/Footer';
 import Content from '../../../hoc/Content/Content';
 import Aux from '../../../hoc/Aux';
 import { Link } from 'react-router-dom'
+import TableReactPaginated from '../../UI/Table/TableReactPaginated';
 
 function GenePage() {
 
@@ -15,7 +17,6 @@ function GenePage() {
 		let fetchData = async () => {
 			let res = await axios('/api/getGenes')
 			res = addLink(res.data, "name", ['gene_id'], '/genes/?')
-			console.log(res)
 			setGenes(res)
 		}
 
@@ -74,15 +75,23 @@ function GenePage() {
 		}
 	]
 
+	const options = {
+		custom: true,
+		totalSize: genes.length
+	};
 
 	return (
 		<Aux>
 			<Header title='Genes' />
 			<Content>
 				<div className='container'>
-					<TableReact title="Genes" keyField="gene_id" content={genes} labels={labels} />
+					<h4 style={{ fontWeight: "700", marginBottom: "30px" }}>{"Genes"}</h4>
+					<div style={{ backgroundColor: "white", borderRadius: '1rem' }}>
+						<TableReactPaginated keyField={'gene_id'} data={genes} colums={labels}/>
+					</div>
 				</div>
 			</Content>
+			<Footer />
 		</Aux>
 	)
 }

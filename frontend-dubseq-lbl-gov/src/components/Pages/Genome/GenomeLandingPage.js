@@ -26,12 +26,12 @@ function GenomeLandingPage() {
 			setStats(res1.data);
 
 			let res2 = await axios(`/api/organisms/${id}/libraries`);
-			res2.data = addLink(res2.data, 'Name', ['id'], `/bagseq/libraries/>`)
+			res2.data = addLink(res2.data, 'Name', ['id'], `/bagseq/libraries/<>`)
 			setLibrary(res2.data);
 
 			let res3 = await axios(`/api/organisms/${id}/topexperiments`);
-			res3.data = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/>`)
-			res3.data = addLink(res3.data, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphs/fitness/?organism=>&experiment=>`)
+			res3.data = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/<>`)
+			res3.data = addLink(res3.data, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphs/fitness/?genome_id=${id}&experiment_id=<>&gene_id=<>`)
 			setExperients(res3.data);
 			// let res4 = await axios(`/api/organisms/${id}/graphs`);
 			// setHistData(res4.data);
@@ -50,7 +50,7 @@ function GenomeLandingPage() {
 		return data.map(e => {
 			let newPath = path;
 			idSrcCol.forEach(id => {
-				newPath = newPath.replace(">", e[id])
+				newPath = newPath.replace("<>", e[id])
 			})
 			e[destLinkCol] = <Link to={newPath}>{e[destLinkCol]}</Link>;
 			return e;

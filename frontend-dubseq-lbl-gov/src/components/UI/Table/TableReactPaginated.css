@@ -1,0 +1,26 @@
+li.page-item.active .page-link {
+	background-color: hsl(6, 93%, 71%) ;
+	border-color: hsl(6, 93%, 71%) ;
+	
+}
+
+.page-item .page-link{
+	color: hsl(180, 45%, 40%);
+}
+
+.page-item .page-link:hover{
+	color: hsl(180, 45%, 25%);
+}
+
+#pageDropDown {
+	background-color: hsl(6, 93%, 71%);
+	border-color: hsl(6, 93%, 71%);
+}
+
+span.dropdown ul{
+	min-width: 0;
+}
+
+li.dropdown-item a{
+	color: hsl(180, 45%, 40%);
+}

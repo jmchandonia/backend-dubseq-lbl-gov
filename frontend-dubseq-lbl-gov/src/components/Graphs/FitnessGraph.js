@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Aux from '../../hoc/Aux';
 import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
@@ -36,16 +36,17 @@ function FitnessGraph() {
 	const [selectedOrganism, setSelectedOrganism] = useState(null)
 	const [experiments, setExperiments] = useState([])
 	const [selectedExperiment, setSelectedExperiment] = useState(null)
-	let { geneid, genomeid, experimentid } = useParams()
+	let location = useLocation();
+
 
 	useEffect(() => {
-		if (geneid) {
-			currentGeneId.current = geneid
-			changeCurrent(geneid)
-			setSelectedOrganism(genomeid)
-			setSelectedExperiment(experimentid)
-		}
-	}, [geneid])
+		let params = new URLSearchParams(location.search)
+		setSelectedOrganism(params.get("genome_id"))
+		setSelectedExperiment(params.get("experiment_id"))
+		currentGeneId.current = params.get("gene_id")
+		changeCurrent(currentGeneId.current)
+
+	}, location)
 
 	// Getting organisms.
 	useEffect(() => {
@@ -131,7 +132,6 @@ function FitnessGraph() {
 		currentGeneId.current = gene_id
 
 		let res = await axios(`/api/getGenes/${gene_id}`, { baseURL: '/' })
-
 		let { s, f } = findRange(res.data[0]);
 
 		setPosition({ start: s, end: f })

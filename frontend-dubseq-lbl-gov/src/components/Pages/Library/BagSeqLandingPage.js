@@ -34,7 +34,7 @@ function BagSeqLandingPage() {
 			res3.data = res3.data.map((row, index) => ({
 				...row,
 				'uid': index,
-				'Gene name': <Link to={`/graphs/fitness/?gene_id=${row['gene_id']}`}>{row['Gene name']}</Link>
+				'Gene name': <Link to={`/graphs/fitness/?genome_id=${1}&experiment_id=${id}&gene_id=${Math.floor(Math.random() * 100)}`}>{row['Gene name']}</Link>
 			}))
 
 			setTopPerformingGenes(res3.data);

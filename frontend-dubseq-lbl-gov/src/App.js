@@ -11,7 +11,7 @@ import ExperimentsPage from './components/Pages/Condition/ExperimentsPage';
 import GenePage from './components/Pages/Gene/GenePage';
 import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
-import BagSeqLandingPage from './components/Pages/BagSeq/BagSeqLandingPage';
+import BagSeqLandingPage from './components/Pages/Library/BagSeqLandingPage';
 import ExperiemntLandingPage from './components/Pages/Condition/ExperimentLandingPage';
 import GeneLandingPage from "./components/Pages/Gene/GeneLandingPage";
 
