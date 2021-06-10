@@ -13,12 +13,11 @@ import FitnessGraph from '../../Graphs/FitnessGraph';
 
 const GraphsPage = () => {
 
-	const [vis, setVis] = useState('home')
 	let { path, url } = useRouteMatch()
 
 	return (
 		<Aux>
-			<Header title={vis} />
+			<Header title={"Graphs"} />
 			<Content>
 				<Layout
 					navbarContent={
@@ -37,27 +36,13 @@ const GraphsPage = () => {
 								<h3>Please select a graph</h3>
 							</Route>
 							<Route path={`${path}/heatmap`} component={HeatMap} />
-							<Route path={`${path}/fitness`} component={FitnessGraph} />
-							{/* <Route path={`${path}/:graphId`}>
-								<Graphs />
-							</Route> */}
+							<Route path={[`${path}/fitness/:geneid/:genomeid/:experimentid`, `${path}/fitness`]} component={FitnessGraph} />
 						</Switch>
 					}
 				/>
 			</Content>
 			<Footer />
 		</Aux>
-	)
-}
-
-function Graphs() {
-
-	let { graphId } = useParams();
-
-	return (
-		<div>
-			<h3>{graphId}</h3>
-		</div>
 	)
 }
 

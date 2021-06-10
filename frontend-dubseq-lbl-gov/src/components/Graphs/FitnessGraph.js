@@ -4,8 +4,7 @@ import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { useLocation } from 'react-router-dom';
-import { Card, ListGroup } from 'react-bootstrap'
+import { useLocation, useParams } from 'react-router-dom';
 
 const range = 10000;
 const zoom = 0.2
@@ -28,20 +27,30 @@ function useQuery() {
 
 function FitnessGraph() {
 
-	let query = useQuery();
-	const [data, setData] = useState([]);
-	const [position, setPosition] = useState({ start: 0, end: 0 });
-	const currentGeneId = useRef(null);
-	const [organisms, setOrganisms] = useState([]);
+
+
+	const [data, setData] = useState([])
+	const [position, setPosition] = useState({ start: 0, end: 0 })
+	const currentGeneId = useRef(null)
+	const [organisms, setOrganisms] = useState([])
 	const [selectedOrganism, setSelectedOrganism] = useState(null)
 	const [experiments, setExperiments] = useState([])
 	const [selectedExperiment, setSelectedExperiment] = useState(null)
+	let { geneid, genomeid, experimentid } = useParams()
 
+	useEffect(() => {
+		if (geneid) {
+			currentGeneId.current = geneid
+			changeCurrent(geneid)
+			setSelectedOrganism(genomeid)
+			setSelectedExperiment(experimentid)
+		}
+	}, [geneid])
 
 	// Getting organisms.
 	useEffect(() => {
 		const fetchOrganisms = async () => {
-			let res = await axios('organisms')
+			let res = await axios('organisms', { baseURL: '/' })
 			setOrganisms(res.data)
 		}
 		fetchOrganisms();
@@ -50,7 +59,7 @@ function FitnessGraph() {
 	// Getting extepriments.
 	useEffect(() => {
 		const fetchExperiment = async () => {
-			let res = await axios(`organisms/${selectedOrganism}/experiments`)
+			let res = await axios(`organisms/${selectedOrganism}/experiments`, { baseURL: '/' })
 			setExperiments(res.data)
 		}
 
@@ -64,7 +73,7 @@ function FitnessGraph() {
 		if (experiments.length == 0) return
 
 		try {
-			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`)
+			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`, { baseURL: '/' })
 			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
 		} catch (err) {
 			console.log(err)
@@ -86,7 +95,7 @@ function FitnessGraph() {
 					pos_from: position.start,
 					pos_to: position.end
 				}
-			})
+			}, { baseURL: '/' })
 			data.geneData = res1.data.map(e => {
 				e['posFrom'] = e['pos_from']
 				e['posTo'] = e['pos_to']
@@ -99,7 +108,7 @@ function FitnessGraph() {
 					pos_from: position.start,
 					pos_to: position.end
 				}
-			})
+			}, { baseURL: '/' })
 
 			data.fragmentData = res2.data.map(e => {
 				e['posFrom'] = e['pos_from']
@@ -121,7 +130,7 @@ function FitnessGraph() {
 
 		currentGeneId.current = gene_id
 
-		let res = await axios(`/api/getGenes/${gene_id}`);
+		let res = await axios(`/api/getGenes/${gene_id}`, { baseURL: '/' })
 
 		let { s, f } = findRange(res.data[0]);
 
