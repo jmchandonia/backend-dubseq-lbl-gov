@@ -7,7 +7,7 @@ const Footer = () => (
 		<div className='container py-1 footer-wrapper'>
 			<div className='row'>
 				<div className="col-md-1 footer-link">
-					<Link to="/graphPage">Graphs</Link>
+					<Link to="/graphs">Graphs</Link>
 				</div>
 				<div className="col-md-1 footer-link">
 					<Link to="/testing">Testing</Link>

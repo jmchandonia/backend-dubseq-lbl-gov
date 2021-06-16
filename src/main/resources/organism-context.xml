@@ -203,4 +203,18 @@ where g.genome_id = (:id)
         </constructor-arg>
     </bean>
 
+    <bean id="getGenomeWithConditionQuery" class="java.lang.String">
+        <constructor-arg>
+            <value>
+                <![CDATA[
+select tbl.*
+from _temp_barseq_experiment tbe
+inner join _temp_bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
+where tbe.name = (:condition);
+                 ]]>
+            </value>
+        </constructor-arg>
+    </bean>
+
+
 </beans>

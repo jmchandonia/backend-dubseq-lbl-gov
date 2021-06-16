@@ -24,7 +24,7 @@ class HomePage extends Component {
 						<div className='container main-content-wrapper'>
 							<div className='row'>
 								<div className='col-7'>
-									<h1>Browse Organisms</h1>
+									<h2>Browse Organisms</h2>
 									<p style={{ color: "#272727", fontSize: '20px', fontWeight: '250', marginTop: "15px" }}>As a demonstration of this approach, we generate an Escherichia coli (E. coli) Dub-seq library and assayed the phenotypic consequences of overexpressing nearly all genes on E. coli fitness under dozens of experimental conditions.</p>
 								</div>
 								<div className='col-5'>

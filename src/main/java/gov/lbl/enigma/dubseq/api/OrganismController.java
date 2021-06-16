@@ -73,12 +73,16 @@ public class OrganismController {
     @Qualifier("getGenesByPrefixQuery")
     private String getGenesByPrefixQuery;
 
+    @Autowired
+    @Qualifier("getGenomeWithConditionQuery")
+    private String getGenomeWithConditionQuery;
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     @CrossOrigin
     @GetMapping("/organisms")
-    public List<Map<String, Object>> getOrganisms(@RequestParam(required = false) String id) {
+    public List<Map<String, Object>> getOrganisms() {
 
         String QUERY = getOrganismsQuery;
 
@@ -151,7 +155,7 @@ public class OrganismController {
 
     @GetMapping("/organisms/{genome_id}/genes/{start}")
     public List<Map<String, Object>> getGenesByPrefix(@PathVariable long genome_id,
-                                                      @PathVariable String start){
+                                                      @PathVariable String start) {
 
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", genome_id);
@@ -174,5 +178,14 @@ public class OrganismController {
         return jdbcTemplate.queryForList(getGenomeHeatMapQuery, params);
     }
 
+    @GetMapping("/organisms/condition/")
+    public List<Map<String, Object>> getOrganismsWithCondition(
+            @RequestParam String condition) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("condition", condition);
+
+        return jdbcTemplate.queryForList(getGenomeWithConditionQuery, params);
+    }
 
 }

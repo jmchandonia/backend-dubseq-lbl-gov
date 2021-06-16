@@ -8,7 +8,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom'
-import TableReact from '../../UI/Table/TableReact';
+// import TableReactPaginated from '../../UI/Table/TableReactPaginated';
+import TableReactPaginated from '../../UI/Table/TablePaginatedExpand';
 
 
 // const libraryIdLink = '/bagseq/libraries/${id}';
@@ -16,36 +17,24 @@ const libraryIdLink = '/bagseq/libraries/?';
 const experimentIdLink = 'bagseq/libraries/?/experiments/?';
 
 function ExperimentsPage() {
-	const [tableContent, setTableContent] = useState(null);
-	const [selectionData] = useState(['metal', 'salt', 'antibiotics']);
-	const [inputData] = useState("");
-	const [type, setType] = useState(null);
-
-
-	// let query = new URLSearchParams(useLocation().search);
-	let query = new URLSearchParams(useLocation().search);
-	let history = useHistory();
+	const [experiments, setExperiments] = useState([]);
 
 	// When change to the query parameters are made, the useEffect hook is executed.
 	useEffect(() => {
 
-		async function fetchData() {
-			const res = await axios("/api/experiments", {
-				params: {
-					...(type != null ? { type: type } : {})
-					// ...(query.get("condition") != null ? { condition: query.get("condition") } : {})
-				}
-			})
+		let fetchData = async () => {
+			const res = await axios("/api/experiments")
 			let links = addLink(res.data, 'Condition', ['Library id', 'id'], experimentIdLink)
-			links = addLink(links, 'Library name', ['Library id'], libraryIdLink);
-			setTableContent(links);
+			links = addLink(links, 'Library name', ['Library id'], libraryIdLink)
+			links = links.map((row, indx) => ({ index: indx, ...row }))
+			console.log(links)
+			setExperiments(links);
 		}
 
-		setType(query.get("type"));
 		fetchData();
 
 		// eslint-disable-next-line
-	}, [type]);
+	}, []);
 
 
 	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
@@ -61,16 +50,6 @@ function ExperimentsPage() {
 		})
 	}
 
-	// When submit button is pushed, the url path gets altered
-	function handleSubmit(e, formValues) {
-
-		history.push({
-			pathname: '/conditions',
-			search: 'type=' + formValues[1]
-		});
-		console.log("Submit: " + formValues[1]);
-		// e.preventDefault();
-	}
 	let labels = [
 		{
 			dataField: 'Condition',
@@ -105,24 +84,55 @@ function ExperimentsPage() {
 
 	]
 
+	function ExpandedInfo(props) {
+
+		const [libs, setLibs] = useState([])
+
+		useEffect( () => {
+
+			let fetchData = async() => {
+				let res = await axios('organisms/condition/',
+					{ params: { condition: props.condition } })
+
+				console.log(res.data)
+				setLibs(res.data)
+			}
+
+			fetchData();
+		}, [])
+
+		return (
+			libs.length !== 0 ? (
+				<div style={{ minHeight: '100px' }}>
+					<div>Other libraries with <span style={{ fontWeight: '600' }}>{props.row['Condition'].props.children}</span>, are {libs.map(lib => (`${lib.name}, `))}</div>
+				</div>)
+				: <div>Loading</div>
+		)
+	}
+
+	let expandRowFunction = (row, row_ind) => {
+		// fetchLibrariesWithCondition(row['Condition'].props.children).then((value) => {
+		// 	console.log(value)
+		// })
+
+		// let libs = ['lib1', 'lib2']
+		return (
+			<ExpandedInfo row={row} condition={row['Condition'].props.children} />
+			// <div style={{ minHeight: '100px' }}>
+			// 	{/* <div>Other libraries with <span style={{ fontWeight: '600' }}>{row['Condition'].props.children}</span>, are {libs.map(lib => lib)}</div> */}
+			// 	<div>Other libraries with <span style={{ fontWeight: '600' }}>{row['Condition'].props.children}</span>, are {libs[row_ind].map(lib => lib)}</div>
+			// </div>
+		)
+	}
+
+
 	return (
 		<Aux>
 			<Header title="TablePage" />
 			<Content>
-				<h5>{type}</h5>
 				<div className='container' style={{ paddingBottom: "40px" }}>
-					{tableContent && <TableReact title='Experiments' keyField='id' content={tableContent} labels={labels} />}
+					<TableReactPaginated data={experiments} keyField={'index'} columns={labels} expandRowFunction={expandRowFunction} />
 				</div>
-				{/* <HorizontalLayout content={[
-					<SearchBox
-						title='Search Experiment'
-						selectionTitle='Select experiment'
-						selection={selectionData}
-						inputTitle='condition'
-						inputDdata={inputData}
-						didSubmit={handleSubmit} />,
-					(tableContent && <TableReact title='Experiments' keyField='id' content={tableContent} labels={labels} />)
-				]} contentWidth={[3, 9]} /> */}
 			</Content>
 			<Footer />
 		</Aux>

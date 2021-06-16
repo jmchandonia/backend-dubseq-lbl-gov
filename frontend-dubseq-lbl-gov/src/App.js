@@ -7,12 +7,12 @@ import TablePage from './components/Pages/Table/TablePage';
 import SearchPage from './components/Pages/Search/SearchPage';
 import LandingPage from './components/Pages/Landing/LandingPage';
 import TestingPage from './components/Pages/Testing/TestingPage';
-import ExperimentsPage from './components/Pages/Condition/ExperimentsPage';
+import ExperimentsPage from './components/Pages/Experiment/ExperimentsPage';
 import GenePage from './components/Pages/Gene/GenePage';
 import GenomePage from './components/Pages/Genome/GenomeList';
 import GenomeLandingPage from './components/Pages/Genome/GenomeLandingPage';
 import BagSeqLandingPage from './components/Pages/Library/BagSeqLandingPage';
-import ExperiemntLandingPage from './components/Pages/Condition/ExperimentLandingPage';
+import ExperiemntLandingPage from './components/Pages/Experiment/ExperimentLandingPage';
 import GeneLandingPage from "./components/Pages/Gene/GeneLandingPage";
 
 

@@ -1,10 +1,19 @@
-import React from 'react'
+import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationListStandalone, PaginationProvider, SizePerPageDropdownStandalone } from 'react-bootstrap-table2-paginator';
+import "./Table.css";
 
 import './TableReactPaginated.css'
 
-export default function TableReactPaginated(props) {
+function TablePaginatedExpand(props) {
+
+	const expandRow = {
+		renderer: props.expandRowFunction,
+		showExpandColumn: true,
+		expandByColumnOnly: true,
+		expandHeaderColumnRenderer: () => '#',
+		expandColumnRenderer: ({ expanded }) => (expanded ? '-' : '+')
+	};
 
 	const options = {
 		custom: true,
@@ -15,13 +24,12 @@ export default function TableReactPaginated(props) {
 		(<PaginationProvider pagination={paginationFactory(options)}>
 			{({ paginationProps, paginationTableProps }) =>
 				<div>
-					
 					<div className='d-flex justify-content-between pagination-toggles'>
 						<SizePerPageDropdownStandalone
 							{...paginationProps}
 						/>
 
-						<PaginationListStandalone 
+						<PaginationListStandalone
 							{...paginationProps}
 						/>
 					</div>
@@ -32,10 +40,16 @@ export default function TableReactPaginated(props) {
 						bordered={false}
 						bootstrap4
 						hover
+						wrapperClasses="table-responsive"
+						expandRow={expandRow}
 						{...paginationTableProps}
+
 					/>
 				</div>
 			}
 		</PaginationProvider>)
 		: (<h4>Page Loading</h4>)
+
 }
+
+export default TablePaginatedExpand;

@@ -10,8 +10,9 @@ function TableReactExpandable(props) {
 		renderer: props.expandRowFunction,
 		showExpandColumn: true,
 		expandByColumnOnly: true,
-		expandHeaderColumnRenderer: ({ isAnyExpands }) => (<div style={{ width:'55px' }}>{isAnyExpands ? 'collapse' : 'expand'}</div>),
-		expandColumnRenderer: ({ expanded }) => (expanded ? '▼' : '►')
+		expandHeaderColumnRenderer: ({ isAnyExpands }) => (<div style={{ width:'55px' }}>#</div>),
+		// expandColumnRenderer: ({ expanded }) => (expanded ? '▼' : '►')
+		expandColumnRenderer: ({ expanded }) => (expanded ? '-' : '+')
 	};
 
 	return (

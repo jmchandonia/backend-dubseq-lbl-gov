@@ -75,10 +75,6 @@ function GenePage() {
 		}
 	]
 
-	const options = {
-		custom: true,
-		totalSize: genes.length
-	};
 
 	return (
 		<Aux>
@@ -87,7 +83,7 @@ function GenePage() {
 				<div className='container'>
 					<h4 style={{ fontWeight: "700", marginBottom: "30px" }}>{"Genes"}</h4>
 					<div style={{ backgroundColor: "white", borderRadius: '1rem' }}>
-						<TableReactPaginated keyField={'gene_id'} data={genes} colums={labels}/>
+						<TableReactPaginated keyField={'gene_id'} data={genes} columns={labels}/>
 					</div>
 				</div>
 			</Content>
