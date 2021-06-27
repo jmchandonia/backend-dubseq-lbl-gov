@@ -1,53 +1,49 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Aux from '../../../hoc/Aux';
 import Header from '../../UI/Header/Header'
 import ScoreGraph from '../../D3Components/FitLandscapeClass';
+import { BrowserRouter as Router, Route, Link, Switch, useRouteMatch, useParams } from "react-router-dom";
 import HeatMap from '../../D3Components/HeatMap';
 import Layout from '../../Layouts/SideBarLayout';
 import classes from './GraphsPage.module.css';
 import Content from '../../../hoc/Content/Content';
-import FintessGraph from '../../Graphs/FitnessGraph';
 import Footer from '../../UI/Footer/Footer';
 import FitnessGraph from '../../Graphs/FitnessGraph';
 
 
-class GraphsPage extends Component {
+const GraphsPage = () => {
 
-	state = {
-		vis: 'Fitness Landscape'
-	}
+	let { path, url } = useRouteMatch()
 
-	changeGraph = (e) => {
-		this.setState({ vis: e.target.getAttribute('data-value') })
-	}
-
-	render() {
-		return (
-			<Aux>
-				<Header title={this.state.vis} />
-				<Content>
-					<Layout
-						navbarContent={
-							<ol>
-								<li><button className={classes.link} data-value='heatMap' onClick={this.changeGraph}>Heat Map</button></li>
-								<li><button className={classes.link} data-value='Fitness Landscape' onClick={this.changeGraph}>Fit Landscape</button></li>
-								<li><button className={classes.link} data-value='compareExperiments' onClick={this.changeGraph}>Compare Experiments</button></li>
-								<li><button className={classes.link} data-value='compareGenes' onClick={this.changeGraph}>Compare Genes</button></li>
-							</ol>
-						}
-						mainContent={<Aux>
-							{this.state.vis === 'home' && <h1>Page for graphs</h1>}
-							{this.state.vis === 'Fitness Landscape' && <FitnessGraph />}
-							{this.state.vis === 'heatMap' && <HeatMap />}
-						</Aux>
-						}
-					/>
-				</Content>
-				<Footer />
-			</Aux>
-		)
-	}
-
+	return (
+		<Aux>
+			<Header title={"Graphs"} />
+			<Content>
+				<Layout
+					navbarContent={
+						<ul>
+							<li>
+								<Link className={classes.link} to={`${url}/heatmap`} >Heat Map</Link>
+							</li>
+							<li>
+								<Link className={classes.link} to={`${url}/fitness`} >Fit Landscape</Link>
+							</li>
+						</ul>
+					}
+					mainContent={
+						<Switch>
+							<Route exact path={path}>
+								<h3>Please select a graph</h3>
+							</Route>
+							<Route path={`${path}/heatmap`} component={HeatMap} />
+							<Route path={[`${path}/fitness/:geneid/:genomeid/:experimentid`, `${path}/fitness`]} component={FitnessGraph} />
+						</Switch>
+					}
+				/>
+			</Content>
+			<Footer />
+		</Aux>
+	)
 }
 
 export default GraphsPage;

@@ -9,8 +9,8 @@ function TestingPage() {
 
 	const [show, setShow] = useState(false)
 
-	let genomeLength = 1000
-	let num_genes = 100
+	let genomeLength = 60000
+	let num_genes = 400
 
 	useEffect(() => {
 

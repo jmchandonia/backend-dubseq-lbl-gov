@@ -7,6 +7,9 @@ import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom';
 import TableReact from '../../UI/Table/TableReact';
+import TableReactExpandable from '../../UI/Table/TableReactExpandable';
+
+const NCBI_TAXONOMY_ID_BROWSER = 'https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id='
 
 function GenomeList() {
 
@@ -18,6 +21,12 @@ function GenomeList() {
 			let res = await axios(`/api/organisms`);
 			res.data = res.data.map(e => {
 				e['link'] = <Link to={`/organisms/${e.genome_id}`}>See More</Link>;
+				e['ncbi_taxonomy_id'] =
+					<a
+						href={`${NCBI_TAXONOMY_ID_BROWSER}${e.ncbi_taxonomy_id}`}
+						target="_blank">
+						{e.ncbi_taxonomy_id}
+					</a>
 				return e;
 			})
 			setGenomeList(res.data);
@@ -40,7 +49,7 @@ function GenomeList() {
 			sort: true
 		}, {
 			dataField: 'size',
-			text: 'Size',
+			text: 'Size (kbps)',
 			sort: true
 		}, {
 			dataField: 'ncbi_taxonomy_id',
@@ -70,12 +79,25 @@ function GenomeList() {
 	]
 
 
+
+	let expandRowFunction = (row, row_ind) => {
+		return (
+			<div>
+				<button className='btn btn-success'>Download</button>
+				<Link to={`/graphs/heatmap/${row['genome_id']}`} className='btn btn-primary'>Heat-map</Link>
+				<Link to={`/graphs/fitness/${row['genome_id']}`} className='btn btn-warning'>Fitness</Link>
+			</div>
+		)
+	}
+
+
 	return (
 		<Aux>
 			<Header title="TablePage" />
 			<Content>
 				<div className='container'>
-					{genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />}
+					{/* {genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />} */}
+					{genomeList && <TableReactExpandable title="Organisms" keyField='genome_id' content={genomeList} labels={lables} expandRowFunction={expandRowFunction} />}
 				</div>
 			</Content>
 			<Footer />

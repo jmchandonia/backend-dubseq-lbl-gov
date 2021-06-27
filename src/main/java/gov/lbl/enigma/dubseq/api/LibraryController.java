@@ -43,18 +43,21 @@ public class LibraryController {
     @GetMapping("/libraries/{id}/stats")
     public List<Map<String, Object>> getLibraryStats(@PathVariable long id) {
 
-        String QUERY = String.format(getLibraryStatsQuery, id);
+//        String QUERY = String.format(getLibraryStatsQuery, id);
+        Map<String, Long> params = new HashMap<>();
+        params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+        return jdbcTemplate.queryForList(getLibraryStatsQuery, params);
     }
 
     @CrossOrigin
     @GetMapping("/libraries/{id}/highscoregenes")
     public List<Map<String, Object>> getTopPerformingGenesInExperiments(@PathVariable long id) {
 
-        String QUERY = String.format(getTopPerformingGenesInExperimentsQuery, id);
+        Map<String, Long> params = new HashMap<>();
+        params.put("library_id", id);
 
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+        return jdbcTemplate.queryForList(getTopPerformingGenesInExperimentsQuery, params);
     }
 
     @CrossOrigin

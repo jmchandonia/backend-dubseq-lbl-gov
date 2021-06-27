@@ -1,0 +1,38 @@
+.carousel-text-title{
+	color: #272727;
+	font-weight: 600;
+}
+
+.carousel-content{
+	height: 400px;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	margin: 15 0 15 0;
+	/* background: linear-gradient(0.25turn, #d0d0d0 1%, white, white, white, white, white, white, white, white, #d0d0d0 99%); */
+}
+
+.carousel-image{
+	border-radius: 5px;
+}
+
+.carousel-control-prev-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+   
+.carousel-control-next-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-indicators li {
+	background-color: rgb(82, 82, 82)  !important;;
+	background-color: rgba(49, 49, 49, 0.25)  !important;;
+}
+  
+.carousel-indicators .active {
+	background-color: #444  !important;;
+}
+
+.carousel-control-next, .carousel-control-prev {
+	width: 5% !important;
+}

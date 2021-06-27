@@ -8,23 +8,134 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="geneDaoReadAllQuery" class="java.lang.String">
-        <constructor-arg><value><![CDATA[
+        <constructor-arg>
+            <value><![CDATA[
 select
-	gene_id,
-	genome_id,
-	gene_index,
-	name,
-	locus_tag,
-	gene_type,
-	contig_id,
-	pos_from,
-	pos_to,
-	strand,
-	product,
-	note,
-	description
-from gene
-        ]]></value></constructor-arg>
+    g.gene_id,
+    g.name,
+    g.gene_type,
+    g.pos_from,
+    g.pos_to,
+    g.strand,
+    g.product
+from _temp_gene g limit 100
+        ]]></value>
+        </constructor-arg>
     </bean>
+
+    <bean id="getGeneQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select g.gene_id,
+       g.name,
+       g.locus_tag,
+       g.pos_from,
+       g.pos_to,
+       g.strand,
+       g.product,
+       (select count(*) from _temp_bagseq_gene_fragment_map tbgfm where tbgfm.gene_id = :id) as "fragment_coverage"
+from _temp_gene g
+where gene_id = :id;
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getGeneTopExperiments" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+    tbe.name,
+    tbe.type,
+    tbe.barseq_experiment_id,
+    tbgs.score_cnnls
+from _temp_gene g
+inner join _temp_barseq_gene_score tbgs on g.gene_id = tbgs.gene_id
+inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
+where g.gene_id = :id
+order by tbgs.score_cnnls desc;
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getGeneFragmentsTopExperiments" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+    tbe.name,
+    tbe.barseq_experiment_id,
+    tbe.type,
+    tbf.barcode,
+    tbf.bagseq_fragment_id,
+    tbfs.score
+from _temp_gene g
+inner join _temp_bagseq_gene_fragment_map tbgfm on g.gene_id = tbgfm.gene_id
+inner join _temp_bagseq_fragment tbf on tbgfm.bagseq_fragment_id = tbf.bagseq_fragment_id
+inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
+inner join _temp_barseq_experiment tbe on tbfs.barseq_experiment_id = tbe.barseq_experiment_id
+where g.gene_id = :id
+order by tbfs.score desc;
+
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getFragmentCoverage" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select
+    tbf.bagseq_fragment_id,
+    tbf.barcode,
+    tbfs.score
+from _temp_gene g
+         inner join _temp_bagseq_gene_fragment_map tbgfm on g.gene_id = tbgfm.gene_id
+         inner join _temp_bagseq_fragment tbf on tbf.bagseq_fragment_id = tbgfm.bagseq_fragment_id
+         inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
+where g.gene_id = (:id);
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="getGenesByPositionQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select g.gene_id,
+       g.name,
+       g.pos_from,
+       g.pos_to,
+       g.strand,
+       tbgs.score_cnnls
+from _temp_genome gn
+         inner join _temp_gene g using (genome_id)
+         inner join _temp_barseq_gene_score tbgs on g.gene_id = tbgs.gene_id
+         inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
+where gn.genome_id = :genome_id
+  and tbe.barseq_experiment_id = :exp_id
+  and g.pos_from >= :pos_from
+  and g.pos_to <= :pos_to;
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="getFragByPositionQuery" class="java.lang.String">
+        <constructor-arg>
+            <value><![CDATA[
+select tbf.bagseq_fragment_id,
+       tbf.pos_from,
+       tbf.pos_to,
+       tbfs.score
+from _temp_bagseq_fragment tbf
+         inner join _temp_bagseq_library tbl on tbf.bagseq_library_id = tbl.bagseq_library_id
+         inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bagseq_fragment_id
+where tbl.genome_id = :genome_id
+  and tbfs.barseq_experiment_id = :exp_id
+  and tbf.pos_from >= :pos_from
+  and tbf.pos_to <= :pos_to
+        ]]></value>
+        </constructor-arg>
+    </bean>
+
 
 </beans>

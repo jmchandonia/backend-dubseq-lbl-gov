@@ -56,6 +56,7 @@ public class ExperimentController {
     @Qualifier("getExperimentHistogramQuery")
     private String getExperimentHistogramQuery;
 
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -64,6 +65,7 @@ public class ExperimentController {
     public List<Map<String, Object>> getExperiments(@RequestParam(required = false) String type) {
 
         String QUERY = getAllExperimentsQuery;
+
 
         if (type != null) {
             QUERY = QUERY + " where type='" + type + "'";
@@ -101,13 +103,15 @@ public class ExperimentController {
     }
 
     @CrossOrigin
-    @GetMapping("/libraries/{id}/experiments/{id_experiment}/stats")
-    public List<Map<String, Object>> getLibraryExperiment(@PathVariable long id,
-                                                          @PathVariable long id_experiment) {
+    @GetMapping("/libraries/{library_id}/experiments/{experiment_id}/stats")
+    public List<Map<String, Object>> getLibraryExperiment(@PathVariable long library_id,
+                                                          @PathVariable long experiment_id) {
 
-        String QUERY = String.format(getLibraryExperimentStatsQuery, id, id_experiment);
+        Map<String, Long> params = new HashMap<>();
+        params.put("library_id", library_id);
+        params.put("experiment_id", experiment_id);
 
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+        return jdbcTemplate.queryForList(getLibraryExperimentStatsQuery, params);
     }
 
     @CrossOrigin

@@ -11,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping({"api", "/v1/api"})
 public class Controller {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -49,6 +46,8 @@ public class Controller {
     @Autowired
     private LayoutCollector layoutCollector;
 
+    @Autowired
+    private QueryService queryService;
 
     @CrossOrigin
     @GetMapping("/genes")
@@ -102,6 +101,30 @@ public class Controller {
                 "\tg.name,\n" +
                 "\tg.gene_id\n" +
                 "from gene g", new HashMap<>());
+    }
+
+//    TODO: Add "where" clause, to look for genes begining with some letters.
+    @CrossOrigin
+    @GetMapping("/genes/{start}")
+    public List<Map<String, Object>> getGenesLike(@PathVariable String start) {
+
+        String QUERY = "select\n" +
+                "       g.name,\n" +
+                "       g.gene_id\n" +
+                "from _temp_gene g\n" +
+                "where lower(g.name) like '" + start +"%'";
+
+        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+    }
+
+
+    @PostMapping("/query/{queryId}")
+    public List<Map<String, Object>> getQuery(@PathVariable Long queryId,
+                           @RequestBody(required = false) Map<String, Object> params){
+
+        String QUERY = queryService.getQueryString(queryId);
+
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
 
