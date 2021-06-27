@@ -1,5 +1,6 @@
 package gov.lbl.enigma.dubseq.api;
 
+import gov.lbl.enigma.dubseq.service.QueryService;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
@@ -25,14 +27,14 @@ public class OrganismController {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    private StringSubstitutor sub;
-
-    @Autowired
-    public void setParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("genome_table", "_temp_genome");
-        this.sub = new StringSubstitutor(params);
-    }
+//    private StringSubstitutor sub;
+//
+//    @Autowired
+//    public void setParams() {
+//        Map<String, String> params = new HashMap<>();
+//        params.put("genome_table", "_temp_genome");
+//        this.sub = new StringSubstitutor(params);
+//    }
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Query Strings under /resources/organism-context.xml
@@ -77,6 +79,9 @@ public class OrganismController {
     @Qualifier("getGenomeWithConditionQuery")
     private String getGenomeWithConditionQuery;
 
+    @Autowired
+    private QueryService queryService;
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Endpoints.
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -84,8 +89,8 @@ public class OrganismController {
     @GetMapping("/organisms")
     public List<Map<String, Object>> getOrganisms() {
 
-        String QUERY = getOrganismsQuery;
-
+//        DONE
+        String QUERY = queryService.getQueryString(0);
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }
 
@@ -93,17 +98,25 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/stats")
     public List<Map<String, Object>> getOrganismStats(@PathVariable long id) {
 
+//        DONE
+        String QUERY = queryService.getQueryString(1);
+
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(getOrganismStatsQuery, params);
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
     @CrossOrigin
     @GetMapping("/organisms/{id}/libraries")
     public List<Map<String, Object>> getOrganismLibraries(@PathVariable long id) {
 
-        String QUERY = String.format(getOrganismLibrariesQuery, id);
+//        DONE
+        String QUERY = queryService.getQueryString(2);
+
+        Map<String, Long> params = new HashMap<>();
+        params.put("genome_id", id);
+
 
         return jdbcTemplate.queryForList(QUERY, new HashMap<>());
     }
@@ -112,30 +125,37 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/experiments")
     public List<Map<String, Object>> getOrganismExperiments(@PathVariable long id) {
 
+//        DONE
+        String QUERY = queryService.getQueryString(3);
         Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
+        params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(getOrganismExperimentsQuery, params);
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
     @CrossOrigin
     @GetMapping("/organisms/{id}/topexperiments")
     public List<Map<String, Object>> getOrganismTopExperiments(@PathVariable long id) {
 
-//        String QUERY = String.format(getOrganismTopExperimentsQuery, id);
+//        DONE
+        String QUERY = queryService.getQueryString(4);
         Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
+        params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(getOrganismTopExperimentsQuery, params);
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
     @CrossOrigin
     @GetMapping("/organisms/{id}/graphs")
     public List<Map<String, Object>> getOrganismHistogram(@PathVariable long id) {
 
-        String QUERY = String.format(getOrganismHistogramQuery, id);
+//        DONE
+        String QUERY = queryService.getQueryString(5);
+        Map<String, Long> params = new HashMap<>();
+        params.put("genome_id", id);
 
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
     @CrossOrigin
@@ -170,22 +190,26 @@ public class OrganismController {
             @PathVariable Long genomeId,
             @RequestBody Map<String, Object> body) {
 
+
+
+        String QUERY = queryService.getQueryString(6);
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", genomeId);
         params.addValue("geneIds", body.get("geneIds"));
         params.addValue("experimentIds", body.get("experimentIds"));
 
-        return jdbcTemplate.queryForList(getGenomeHeatMapQuery, params);
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
     @GetMapping("/organisms/condition/")
     public List<Map<String, Object>> getOrganismsWithCondition(
             @RequestParam String condition) {
 
+        String QUERY = queryService.getQueryString(7);
         Map<String, String> params = new HashMap<>();
         params.put("condition", condition);
 
-        return jdbcTemplate.queryForList(getGenomeWithConditionQuery, params);
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
 }

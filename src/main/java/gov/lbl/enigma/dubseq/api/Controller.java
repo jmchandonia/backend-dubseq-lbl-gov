@@ -11,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
-@RequestMapping("api")
+@RequestMapping({"api", "/v1/api"})
 public class Controller {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -122,10 +119,12 @@ public class Controller {
 
 
     @PostMapping("/query/{queryId}")
-    public String getQuery(@PathVariable Long queryId,
-                           @RequestBody Map<String, Object> body){
+    public List<Map<String, Object>> getQuery(@PathVariable Long queryId,
+                           @RequestBody(required = false) Map<String, Object> params){
 
-        return queryService.getQuery(queryId);
+        String QUERY = queryService.getQueryString(queryId);
+
+        return jdbcTemplate.queryForList(QUERY, params);
     }
 
 

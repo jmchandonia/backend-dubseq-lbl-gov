@@ -10,14 +10,15 @@ import TableHorizontal from '../../UI/Table/TableHorizontal';
 import HorizontalLayout from '../../Layouts/HorizontalLayout';
 import Content from '../../../hoc/Content/Content';
 import Title from '../../UI/Title/Title';
-import TableReact from '../../UI/Table/TableReact';
+import TablePaginatedExpand from '../../UI/Table/TablePaginatedExpand';
+import TableReactPaginated from '../../UI/Table/TableReactPaginated';
 
 function BagSeqLandingPage() {
 
 	const { id } = useParams();
 	const [stats, setStats] = useState(null);
-	const [experiments, setExperients] = useState(null);
-	const [topPerformingGenes, setTopPerformingGenes] = useState(null);
+	const [experiments, setExperients] = useState([]);
+	const [topPerformingGenes, setTopPerformingGenes] = useState([]);
 	const [histData, setHistData] = useState(null);
 
 	useEffect(() => {
@@ -30,13 +31,13 @@ function BagSeqLandingPage() {
 			res2.data = addLink(res2.data, 'itnum', ['experiment id'], '/bagseq/libraries/${id}/experiments/${id_experiment}')
 			setExperients(res2.data);
 			let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
-			console.log(res3.data)
+			
 			res3.data = res3.data.map((row, index) => ({
-				...row,
 				'uid': index,
-				'Gene name': <Link to={`/graphs/fitness/?genome_id=${1}&experiment_id=${id}&gene_id=${Math.floor(Math.random() * 100)}`}>{row['Gene name']}</Link>
+				...row
 			}))
-
+			res3.data.forEach(row => row['gene_name'] = <Link to={`/genes/${row['gene_id']}`}> {row['gene_name']} </Link>)
+			
 			setTopPerformingGenes(res3.data);
 
 			// Histogram
@@ -86,6 +87,10 @@ function BagSeqLandingPage() {
 		{
 			dataField: 'experiment_count',
 			text: 'Experiment Count',
+		},
+		{
+			dataField: 'condition_count',
+			text: 'Condition Count',
 		}
 	]
 
@@ -114,21 +119,37 @@ function BagSeqLandingPage() {
 
 	let TopPerformingLabels = [
 		{
-			dataField: 'Gene name',
+			dataField: 'gene_name',
 			text: 'Gene Name',
 			sort: true
 		},
 		{
-			dataField: 'Gene score',
+			dataField: 'score',
 			text: 'Gene Score',
 			sort: true
 		},
 		{
-			dataField: 'Condition',
+			dataField: 'name',
 			text: 'Condition',
 			sort: true
 		},
 	]
+
+	let expandRow = (row, row_id) => {
+
+		let genome_id = id
+		let experiment_id = row['barseq_experiment_id']
+		let gene_id = row['gene_id']
+
+		return (
+			<div style={{ minHeight: '100px' }}>
+				<Link className='btn btn-primary'
+					to={`/graphs/fitness/?genome_id=${genome_id}&experiment_id=${experiment_id}&gene_id=${gene_id}`}>
+					Fitness Graphs
+				</Link>
+			</div>
+		)
+	}
 
 
 	return (
@@ -137,14 +158,17 @@ function BagSeqLandingPage() {
 			<Content>
 				<div className='container'>
 					{stats && <Title title='Dub-seq Library' specific={stats[0]['name']} />}
-					{stats && histData && <HorizontalLayout content={[
+					{stats && <HorizontalLayout content={[
 						<TableHorizontal content={stats} labels={StatsLabels} title='General Information' />,
 						// <HistogramD3 data={histData} mountingId={`class_${1}`} />
 					]} contentWidth={[6, 6]} />}
 					<br />
-					{experiments && <TableReact content={experiments} keyField='experiment id' labels={ExperimentLabels} title='Experiments (high scoring genes - genes scored above 4)' />}
+					<h4 style={{ fontWeight: "700", marginBottom: "30px" }}>Experiments (high scoring genes - genes scored above 4)</h4>
+					<TableReactPaginated data={experiments} keyField='experiment id' columns={ExperimentLabels} />
 					<br />
-					{topPerformingGenes && <TableReact content={topPerformingGenes} keyField='uid' labels={TopPerformingLabels} title='Top Performing Genes' />}
+					<h4 style={{ fontWeight: "700", marginBottom: "30px" }}>Top Performing Genes</h4>
+					<TablePaginatedExpand data={topPerformingGenes} keyField='uid' columns={TopPerformingLabels} expandRowFunction={expandRow} />
+					<br />
 				</div>
 			</Content>
 			<Footer />

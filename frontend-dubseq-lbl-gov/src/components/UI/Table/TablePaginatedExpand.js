@@ -28,7 +28,6 @@ function TablePaginatedExpand(props) {
 						<SizePerPageDropdownStandalone
 							{...paginationProps}
 						/>
-
 						<PaginationListStandalone
 							{...paginationProps}
 						/>

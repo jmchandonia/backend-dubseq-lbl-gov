@@ -88,9 +88,9 @@ function ExperimentsPage() {
 
 		const [libs, setLibs] = useState([])
 
-		useEffect( () => {
+		useEffect(() => {
 
-			let fetchData = async() => {
+			let fetchData = async () => {
 				let res = await axios('organisms/condition/',
 					{ params: { condition: props.condition } })
 
@@ -101,10 +101,14 @@ function ExperimentsPage() {
 			fetchData();
 		}, [])
 
+
 		return (
 			libs.length !== 0 ? (
 				<div style={{ minHeight: '100px' }}>
-					<div>Other libraries with <span style={{ fontWeight: '600' }}>{props.row['Condition'].props.children}</span>, are {libs.map(lib => (`${lib.name}, `))}</div>
+					<div>
+						Other libraries with {<span style={{ fontWeight: '600' }}>{props.row['Condition'].props.children}</span>},
+						are {libs.map(lib => <Link to={`organisms/${lib['bagseq_library_id']}`}>{lib['name']}, </Link>)}
+					</div>
 				</div>)
 				: <div>Loading</div>
 		)
@@ -131,6 +135,7 @@ function ExperimentsPage() {
 			<Header title="TablePage" />
 			<Content>
 				<div className='container' style={{ paddingBottom: "40px" }}>
+					<h4 style={{ fontWeight: "700", marginBottom: "30px" }}>{"Experiments"}</h4>
 					<TableReactPaginated data={experiments} keyField={'index'} columns={labels} expandRowFunction={expandRowFunction} />
 				</div>
 			</Content>

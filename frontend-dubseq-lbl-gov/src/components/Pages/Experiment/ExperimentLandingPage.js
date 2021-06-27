@@ -8,20 +8,21 @@ import Content from '../../../hoc/Content/Content';
 import Footer from '../../UI/Footer/Footer';
 import Title from '../../UI/Title/Title';
 import TableReact from '../../UI/Table/TableReact';
+import TablePaginatedExpand from '../../UI/Table/TablePaginatedExpand';
 
 
 function ExperiemntLandingPage() {
 
 	const { id, id_experiment } = useParams();
 	const [stats, setStats] = useState(null);
-	const [genes, setGenes] = useState(null);
-	const [fragments, setFragments] = useState(null);
+	const [genes, setGenes] = useState([]);
+	const [fragments, setFragments] = useState([]);
 
 	useEffect(() => {
 		async function fetchData() {
 			let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
 			setStats(res1.data);
-			
+
 			let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
 			res2.data = addLink(res2.data, 'name', ['gene id'], '/genes/?')
 			setGenes(res2.data);
@@ -30,7 +31,7 @@ function ExperiemntLandingPage() {
 			setFragments(res3.data);
 		}
 		fetchData();
-	},[])
+	}, [])
 
 	// DESTINATION STRING MUST BE FORMATED CORRECTLY 
 	// 'bagseq/libraries/?/experiments/?'
@@ -65,6 +66,14 @@ function ExperiemntLandingPage() {
 		{
 			dataField: 'fragment_count',
 			text: 'Fragment Count',
+		},
+		{
+			dataField: 'library_name',
+			text: 'Library Name',
+		},
+		{
+			dataField: 'genome_name',
+			text: 'Genome Name',
 		},
 	]
 
@@ -104,6 +113,20 @@ function ExperiemntLandingPage() {
 		}
 	]
 
+	let expandRowFunction = (row, row_ind) => {
+		let genome_id = stats[0]['genome_id']
+		let experiment_id = stats[0]['barseq_experiment_id']
+		let gene_id = row['gene id']
+		return (
+			<div style={{ minHeight: '100px' }}>
+				<Link className='btn btn-primary'
+					to={`/graphs/fitness/?genome_id=${genome_id}&experiment_id=${experiment_id}&gene_id=${gene_id}`}>
+						Fitness Graphs
+				</Link>
+			</div>
+		)
+	}
+
 	return (
 		<Aux>
 			<Header title='Experiment LandingPage' />
@@ -112,11 +135,10 @@ function ExperiemntLandingPage() {
 					{stats && <Title title='Experiment' specific={stats[0]['name']} />}
 					{stats && <TableHorizontal content={stats} labels={StatsLabels} title="General Information" />}
 					<br />
-					{/* {genes && <Table content={genes} title="Top Scoring Genes (top 20 highest scores)" />} */}
-					{genes && <TableReact content={genes} keyField='gene id' labels={topScoringGensLabels} title="Top Scoring Genes (top 20 highest scores)" />}
+					{/* {genes && <TableReact content={genes} keyField='gene id' labels={topScoringGensLabels} title="Top Scoring Genes (top 20 highest scores)" />} */}
+					<TablePaginatedExpand data={genes} keyField={'gene id'} columns={topScoringGensLabels} expandRowFunction={expandRowFunction} />
 					<br />
-					{/* {fragments && <Table content={fragments} title="Top Scoring Fragments" />} */}
-					{fragments && <TableReact content={fragments} keyField='fragment id' labels={topScoringFragments} title="Top Scoring Fragments" />}
+					{/* {fragments && <TableReact content={fragments} keyField='fragment id' labels={topScoringFragments} title="Top Scoring Fragments" />} */}
 				</div>
 			</Content>
 			<Footer />

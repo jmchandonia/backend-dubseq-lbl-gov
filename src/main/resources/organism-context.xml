@@ -19,7 +19,7 @@ select ge.gene_id,
 from _temp_gene ge
          inner join _temp_barseq_gene_score tbgs on ge.gene_id = tbgs.gene_id
          inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
-where genome_id = :g_id
+where genome_id = (:g_id)
   and tbe.barseq_experiment_id = :exp_id
   and lower(ge.name) like
                 ]]>
@@ -56,7 +56,7 @@ select
 	(select count(*) from gene g2 where g2.genome_id = g.genome_id),
 	(select count(*) from bagseq_library b where b.genome_id = g.genome_id) as library_count,
 	(select count(*)
-	from _temp_barseq_experiment e join bagseq_library b using(bagseq_library_id) where b.genome_id = g.genome_id) as experiment_count
+	from barseq_experiment e join bagseq_library b using(bagseq_library_id) where b.genome_id = g.genome_id) as experiment_count
 from genome g
 order by g.genome_id;
         ]]></value>
@@ -70,19 +70,21 @@ order by g.genome_id;
                 <![CDATA[
 select g."name",
        g.genome_id,
-       cast(g."size" as float) / 1000 as "size",
+       (select (cast(max(g3.pos_to) as float) - cast(min(g3.pos_from) as float)) / 1000
+        from gene g3
+        where g3.genome_id = g.genome_id)                         as "size",
        g.ncbi_taxonomy_id,
        g.phylum,
-       (select count(*) from _temp_gene where genome_id = (:genome_id)) as "gene_count",
+       (select count(*) from gene where genome_id = (:genome_id)) as "gene_count",
        (select count(*)
-        from _temp_barseq_experiment tbe
-                 inner join _temp_bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
-        where tbl.genome_id = (:genome_id)) as "experiment_count",
+        from barseq_experiment tbe
+                 inner join bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
+        where tbl.genome_id = (:genome_id))                       as "experiment_count",
        (select count(distinct tbe2."name")
-        from _temp_barseq_experiment tbe2
-                 inner join _temp_bagseq_library tbl2 on tbe2.bagseq_library_id = tbl2.bagseq_library_id
-        where tbl2.genome_id = (:genome_id)) as "condition_count"
-from _temp_genome g
+        from barseq_experiment tbe2
+                 inner join bagseq_library tbl2 on tbe2.bagseq_library_id = tbl2.bagseq_library_id
+        where tbl2.genome_id = (:genome_id))                      as "condition_count"
+from genome g
 where g.genome_id = (:genome_id);
                 ]]>
             </value>
@@ -95,15 +97,15 @@ where g.genome_id = (:genome_id);
         <constructor-arg>
             <value>
                 <![CDATA[
-select
-	bl."name" as "Name",
-	bl.bagseq_library_id as "id",
-	(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id ) as "Experiments",
-	(select count(*) from bagseq_fragment bf where bl.bagseq_library_id = bf.bagseq_library_id) as "Fragments"
-from
-	_temp_bagseq_library bl inner join _temp_genome g on bl.genome_id = g.genome_id
-where
-	g.genome_id = %d
+select bl."name",
+       bl.bagseq_library_id,
+       (select count(*)
+        from barseq_experiment be
+        where bl.bagseq_library_id = be.bagseq_library_id)                                         as "experiments_count",
+       (select count(*) from bagseq_fragment bf where bl.bagseq_library_id = bf.bagseq_library_id) as "fragment_count"
+from bagseq_library bl
+         inner join genome g on bl.genome_id = g.genome_id
+where g.genome_id = (:genome_id)
                 ]]>
             </value>
         </constructor-arg>
@@ -114,19 +116,20 @@ where
         <constructor-arg>
             <value>
                 <![CDATA[
-select
-	be."name",
-	be."type",
-	be."barseq_experiment_id",
-	round(cast(bgs.score_cnnls as numeric), 2) as "max gene score",
-    bgs.gene_id,
-    bgs.gene_name
-from _temp_genome g
-	inner join _temp_bagseq_library bl on g.genome_id = bl.genome_id
-	inner join _temp_barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
-	inner join _temp_barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
-where g.genome_id = :id
-order by bgs.score_cnnls desc limit 10
+select be."name",
+       be."type",
+       be."barseq_experiment_id",
+       round(cast(bgs.score_cnnls as numeric), 2) as "max_gene_score",
+       bgs.gene_id,
+       g2.name                                    as "gene_name"
+from genome g
+         inner join bagseq_library bl on g.genome_id = bl.genome_id
+         inner join barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
+         inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
+         inner join gene g2 on bgs.gene_id = g2.gene_id
+where g.genome_id = (:genome_id)
+order by bgs.score_cnnls desc
+limit 10;
                 ]]>
             </value>
         </constructor-arg>
@@ -137,12 +140,11 @@ order by bgs.score_cnnls desc limit 10
         <constructor-arg>
             <value>
                 <![CDATA[
-select
-    be.*
-from _temp_genome g
-	inner join _temp_bagseq_library bl on g.genome_id = bl.genome_id
-	inner join _temp_barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
-where g.genome_id = :id
+select be.*
+from genome g
+         inner join bagseq_library bl on g.genome_id = bl.genome_id
+         inner join barseq_experiment be on bl.bagseq_library_id = be.bagseq_library_id
+where g.genome_id = (:genome_id);
                 ]]>
             </value>
         </constructor-arg>
@@ -152,32 +154,32 @@ where g.genome_id = :id
         <constructor-arg>
             <value>
                 <![CDATA[
-with
-t as (
-	select
-		*
-	from gene g
-	inner join barseq_gene_score bgs on g.gene_id = bgs.gene_id
-	where g.genome_id = %d
-)
-,ranges as (
-select '-2' as name, -999999 as min, -2 as max union all
-select '-1' as name, -2 as min, -1 as max union all
-select '-0.5' as name, -1 as min, -0.5 as max union all
-select '0' as name, -0.5 as min, 0 as max union all
-select '1' as name, 0 as min, 1 as max union all
-select '2' as name, 1 as min, 2 as max union all
-select '4' as name, 2 as min, 4 as max union all
-select '6' as name, 4 as min, 6 as max union all
-select '9' as name, 6 as min, 999999 as max
-)
-select
-	r.name,
-	count(*) as cnt
+with t as (select *
+           from gene g
+                    inner join barseq_gene_score bgs on g.gene_id = bgs.gene_id
+           where g.genome_id = (:genome_id)),
+     ranges as (select '-2' as name, -999999 as min, -2 as max
+                union all
+                select '-1' as name, -2 as min, -1 as max
+                union all
+                select '-0.5' as name, -1 as min, -0.5 as max
+                union all
+                select '0' as name, -0.5 as min, 0 as max
+                union all
+                select '1' as name, 0 as min, 1 as max
+                union all
+                select '2' as name, 1 as min, 2 as max
+                union all
+                select '4' as name, 2 as min, 4 as max
+                union all
+                select '6' as name, 4 as min, 6 as max
+                union all
+                select '9' as name, 6 as min, 999999 as max)
+select r.name, count(*) as cnt
 from ranges r
-left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max
+         left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max
 group by r.name
-order by cast(r.name as float)
+order by cast(r.name as float);
                 ]]>
             </value>
         </constructor-arg>
@@ -208,8 +210,8 @@ where g.genome_id = (:id)
             <value>
                 <![CDATA[
 select tbl.*
-from _temp_barseq_experiment tbe
-inner join _temp_bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
+from barseq_experiment tbe
+inner join bagseq_library tbl on tbe.bagseq_library_id = tbl.bagseq_library_id
 where tbe.name = (:condition);
                  ]]>
             </value>

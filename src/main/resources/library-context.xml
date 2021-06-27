@@ -17,7 +17,8 @@ select
 	(select g.name from genome g where bl.genome_id = g.genome_id) as "host_genome_name",
 	bl.host_genome_id as "host_genome_id",
 	(select count(*) from bagseq_fragment bf where bl.bagseq_library_id = bf.bagseq_library_id) as "fragment_count",
-	(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) as "experiment_count"
+	(select count(*) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) as "experiment_count",
+    (select count(distinct be.name) from barseq_experiment be where bl.bagseq_library_id = be.bagseq_library_id) as "condition_count"
 from bagseq_library bl
 where bl.bagseq_library_id = (:genome_id)
         ]]></value>

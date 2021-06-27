@@ -107,7 +107,6 @@ public class ExperimentController {
     public List<Map<String, Object>> getLibraryExperiment(@PathVariable long library_id,
                                                           @PathVariable long experiment_id) {
 
-//        String QUERY = String.format(getLibraryExperimentStatsQuery, id, id_experiment);
         Map<String, Long> params = new HashMap<>();
         params.put("library_id", library_id);
         params.put("experiment_id", experiment_id);

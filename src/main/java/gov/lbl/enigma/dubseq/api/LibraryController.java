@@ -54,8 +54,6 @@ public class LibraryController {
     @GetMapping("/libraries/{id}/highscoregenes")
     public List<Map<String, Object>> getTopPerformingGenesInExperiments(@PathVariable long id) {
 
-//        String QUERY = String.format(getTopPerformingGenesInExperimentsQuery, id);
-
         Map<String, Long> params = new HashMap<>();
         params.put("library_id", id);
 

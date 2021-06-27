@@ -9,6 +9,7 @@ import Title from '../../UI/Title/Title';
 import TableHorizontal from '../../UI/Table/TableHorizontal';
 import Footer from '../../UI/Footer/Footer';
 import { Link } from 'react-router-dom';
+import TableReactPaginated from '../../UI/Table/TableReactPaginated';
 
 function GeneLandingPage() {
 
@@ -32,6 +33,7 @@ function GeneLandingPage() {
 
 			let res3 = await axios(`/api/getGeneFragmentsExperiments/${id}`)
 			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], '/bagseq/libraries/1/experiments/?')
+			console.log(res3)
 			setFragmentExperiments(res3)
 		}
 
@@ -169,9 +171,11 @@ function GeneLandingPage() {
 					{stats && <Title title='Gene' specific={stats[0]['name']} />}
 					{stats && <TableHorizontal content={stats} labels={StatsLabels} title="General Information" />}
 					<br />
-					<TableReact title="Experiments" keyField="name" content={experiments} labels={ExperimentLabels} />
+					<h4 style={{fontWeight: "700", marginBottom: "30px"}}>Experiments</h4>
+					<TableReactPaginated data={experiments} keyField="name" columns={ExperimentLabels} />
 					<br />
-					<TableReact title="Fragment Experiments" keyField="name" content={fragmenExperiments} labels={FragmentExperiments} />
+					<h4 style={{fontWeight: "700", marginBottom: "30px"}}>Fragment Experiments</h4>
+					<TableReactPaginated data={fragmenExperiments} keyField="barcode" columns={FragmentExperiments} />
 					<br />
 				</div>
 			</Content>

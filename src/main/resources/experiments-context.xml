@@ -46,8 +46,14 @@ select
 	be.barseq_experiment_id,
 	be.itnum,
 	(select count(*) from barseq_gene_score bgs where be.barseq_experiment_id = bgs.barseq_experiment_id) as "gene_count",
-	(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as "fragment_count"
+	(select count(*) from barseq_fragment_score bfs where be.barseq_experiment_id = bfs.barseq_experiment_id) as "fragment_count",
+    tbl.name as "library_name",
+    tbl.bagseq_library_id as "library_id",
+    tg.name as "genome_name",
+    tg.genome_id as "genome_id"
 from barseq_experiment be
+inner join bagseq_library tbl on be.bagseq_library_id = tbl.bagseq_library_id
+inner join genome tg on tbl.genome_id = tg.genome_id
 where be.bagseq_library_id = (:library_id)
 and be.barseq_experiment_id = (:experiment_id);
         ]]></value>
@@ -93,36 +99,21 @@ limit 100
     <bean id="getTopPerformingGenesInExperimentsQuery" class="java.lang.String">
         <constructor-arg>
             <value><![CDATA[
-with
-max_scores as (
-	select
-		s.barseq_experiment_id,
-		max(s.score_cnnls) max_score
-	from
-		barseq_gene_score s
-	inner join barseq_experiment e using (barseq_experiment_id)
-	where e.bagseq_library_id = (:library_id)
-	group by s.barseq_experiment_id
-),
-max_scores_gene as (
-	select
-		gs.barseq_experiment_id
-		,gs.score_cnnls
-		,string_agg(gene_name, ',') gene_names
-	from barseq_gene_score gs
-	inner join max_scores ms on gs.barseq_experiment_id = ms.barseq_experiment_id
-	and gs.score_cnnls = ms.max_score
-	group by
-		gs.barseq_experiment_id,
-		gs.score_cnnls
+with t as (
+    select tbgs.gene_id
+         , tbgs.gene_name
+         , round(cast(tbgs.score_cnnls as numeric), 2) as "score"
+         , tbe.barseq_experiment_id
+         , tbe.name
+         , rank() over (partition by tbe.barseq_experiment_id order by tbgs.score_cnnls desc ) as rank
+    from barseq_experiment tbe
+             inner join barseq_gene_score tbgs on tbe.barseq_experiment_id = tbgs.barseq_experiment_id
+    where tbe.bagseq_library_id = (:library_id)
 )
-select
-	m.gene_names as "Gene name",
-	round(cast(m.score_cnnls as numeric), 2) as "Gene score",
-	e.name as "Condition"
-from max_scores_gene m
-inner join barseq_experiment e on m.barseq_experiment_id = e.barseq_experiment_id
-order by m.score_cnnls desc
+select *
+from t
+where rank = 1
+order by "score" desc;
         ]]></value>
         </constructor-arg>
     </bean>
