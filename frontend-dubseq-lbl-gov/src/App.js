@@ -5,7 +5,7 @@ import HomePage from './components/Pages/Home/HomePage';
 import About from './components/Pages/About/AboutPage';
 import TablePage from './components/Pages/Table/TablePage';
 import SearchPage from './components/Pages/Search/SearchPage';
-import LandingPage from './components/Pages/Landing/LandingPage';
+// import LandingPage from './components/Pages/Landing/LandingPage';
 import TestingPage from './components/Pages/Testing/TestingPage';
 import ExperimentsPage from './components/Pages/Experiment/ExperimentsPage';
 import GenePage from './components/Pages/Gene/GenePage';
@@ -25,7 +25,7 @@ class App extends Component {
 				<Route path='/about' component={About} />
 				<Route path='/listPage/:id' component={TablePage} />
 				<Route path='/search' component={SearchPage} />
-				<Route path='/landingPage/:id' component={LandingPage} />
+				{/* <Route path='/landingPage/:id' component={LandingPage} /> */}
 				<Route path='/testing' component={TestingPage} />
 				<Route exact path='/organisms' component={GenomePage} />
 				<Route strict path='/organisms/:id' component={GenomeLandingPage} />

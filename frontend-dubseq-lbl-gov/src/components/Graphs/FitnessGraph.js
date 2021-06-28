@@ -27,8 +27,6 @@ function useQuery() {
 
 function FitnessGraph() {
 
-
-
 	const [data, setData] = useState([])
 	const [position, setPosition] = useState({ start: 0, end: 0 })
 	const currentGeneId = useRef(null)
@@ -51,7 +49,8 @@ function FitnessGraph() {
 	// Getting organisms.
 	useEffect(() => {
 		const fetchOrganisms = async () => {
-			let res = await axios('organisms', { baseURL: '/' })
+			// let res = await axios('organisms', { baseURL: '/' })
+			let res = await axios.post('/v2/api/query/0')
 			setOrganisms(res.data)
 		}
 		fetchOrganisms();
@@ -60,7 +59,8 @@ function FitnessGraph() {
 	// Getting extepriments.
 	useEffect(() => {
 		const fetchExperiment = async () => {
-			let res = await axios(`organisms/${selectedOrganism}/experiments`, { baseURL: '/' })
+			// let res = await axios(`organisms/${selectedOrganism}/experiments`, { baseURL: '/' })
+			let res = await axios.post('/v2/api/query/3', { 'genome_id': selectedOrganism })
 			setExperiments(res.data)
 		}
 
@@ -74,7 +74,7 @@ function FitnessGraph() {
 		if (experiments.length == 0) return
 
 		try {
-			let res = await axios(`organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`, { baseURL: '/' })
+			let res = await axios(`/api/organisms/${selectedOrganism}/${selectedExperiment}/genes/${start.toLowerCase()}`)
 			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
 		} catch (err) {
 			console.log(err)
@@ -89,28 +89,26 @@ function FitnessGraph() {
 
 			let data = { geneData: null, fragmentData: null };
 
-			let res1 = await axios('/gene', {
-				params: {
-					genome_id: selectedOrganism,
-					exp_id: selectedExperiment,
-					pos_from: position.start,
-					pos_to: position.end
+			let res1 = await axios.post('/v2/api/query/22',
+				{
+					genome_id: parseInt(selectedOrganism),
+					exp_id: parseInt(selectedExperiment),
+					pos_from: parseInt(position.start),
+					pos_to: parseInt(position.end)
 				}
-			}, { baseURL: '/' })
+			)
 			data.geneData = res1.data.map(e => {
 				e['posFrom'] = e['pos_from']
 				e['posTo'] = e['pos_to']
 				return e
 			});
-			let res2 = await axios('/fragment', {
-				params: {
-					genome_id: selectedOrganism,
-					exp_id: selectedExperiment,
-					pos_from: position.start,
-					pos_to: position.end
-				}
-			}, { baseURL: '/' })
 
+			let res2 = await axios.post('/v2/api/query/23', {
+				genome_id: parseInt(selectedOrganism),
+				exp_id: parseInt(selectedExperiment),
+				pos_from: parseInt(position.start),
+				pos_to: parseInt(position.end)
+			})
 			data.fragmentData = res2.data.map(e => {
 				e['posFrom'] = e['pos_from']
 				e['posTo'] = e['pos_to']
@@ -131,7 +129,8 @@ function FitnessGraph() {
 
 		currentGeneId.current = gene_id
 
-		let res = await axios(`/api/getGenes/${gene_id}`, { baseURL: '/' })
+		// let res = await axios(`/api/getGenes/${gene_id}`, { baseURL: '/' })
+		let res = await axios.post('/v2/api/query/19/', { 'gene_id': parseInt(gene_id) })
 		let { s, f } = findRange(res.data[0]);
 
 		setPosition({ start: s, end: f })
@@ -142,7 +141,7 @@ function FitnessGraph() {
 
 			<div className='d-flex justify-content-between align-items-end'>
 				<div className={'w-50'}>
-					<Select placeholder={"Select Organism"} ç
+					<Select placeholder={"Select Organism"}
 						defaultValue={selectedOrganism}
 						options={organisms.map(e => ({ value: e['genome_id'], label: e['name'] }))}
 						onChange={e => setSelectedOrganism(e.value)} />

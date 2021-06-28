@@ -8,23 +8,20 @@ function RadialGraph() {
 
 	useEffect(() => {
 
+		async function fetchData() {
+
+			let res = await axios('/api/libraries/1/fragmentcount');
+			setData(res.data);
+		}
+
 		fetchData();
 		console.log("RadialGraph Update")
 	}, [])
 
-	async function fetchData() {
 
-		let res = await axios('/api/libraries/1/fragmentcount');
-
-		// let data = res.data.map(row => ({
-		// 	position: row.position/100000,
-		// 	count: row.count
-		// }))
-		setData(res.data);
-	}
 
 	return (
-		<GenomeRadialD3 content={data} />
+		<GenomeRadialD3 content={data} title='Escherichia-coli BW25113 dubseq-library' />
 	)
 }
 

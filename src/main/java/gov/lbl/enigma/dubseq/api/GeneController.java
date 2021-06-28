@@ -97,8 +97,8 @@ public class GeneController {
     }
 
     @CrossOrigin
-    @GetMapping("/gene")
-    public List<Map<String, Object>> getGenesByPosition(@RequestParam long genome_id,
+    @GetMapping("/gene-interval")
+    public List<Map<String, Object>> getGenesByInterval(@RequestParam long genome_id,
                                                         @RequestParam long exp_id,
                                                         @RequestParam long pos_from,
                                                         @RequestParam long pos_to) {
@@ -114,8 +114,8 @@ public class GeneController {
 
 
     @CrossOrigin
-    @GetMapping("/fragment")
-    public List<Map<String, Object>> getFragmentsByPosition(@RequestParam long genome_id,
+    @GetMapping("/fragment-interval")
+    public List<Map<String, Object>> getFragmentsByInterval(@RequestParam long genome_id,
                                                             @RequestParam long exp_id,
                                                             @RequestParam long pos_from,
                                                             @RequestParam long pos_to){

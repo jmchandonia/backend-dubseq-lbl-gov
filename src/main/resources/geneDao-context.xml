@@ -109,10 +109,10 @@ from _temp_genome gn
          inner join _temp_gene g using (genome_id)
          inner join _temp_barseq_gene_score tbgs on g.gene_id = tbgs.gene_id
          inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
-where gn.genome_id = :genome_id
-  and tbe.barseq_experiment_id = :exp_id
-  and g.pos_from >= :pos_from
-  and g.pos_to <= :pos_to;
+where gn.genome_id = (:genome_id)
+  and tbe.barseq_experiment_id = (:exp_id)
+  and g.pos_from >= (:pos_from)
+  and g.pos_to <= (:pos_to);
         ]]></value>
         </constructor-arg>
     </bean>

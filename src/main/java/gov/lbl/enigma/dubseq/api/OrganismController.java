@@ -89,17 +89,14 @@ public class OrganismController {
     @GetMapping("/organisms")
     public List<Map<String, Object>> getOrganisms() {
 
-//        DONE
-        String QUERY = queryService.getQueryString(0);
-        return jdbcTemplate.queryForList(QUERY, new HashMap<>());
+        return jdbcTemplate.queryForList(getOrganismsQuery, new HashMap<>());
     }
 
     @CrossOrigin
     @GetMapping("/organisms/{id}/stats")
     public List<Map<String, Object>> getOrganismStats(@PathVariable long id) {
 
-//        DONE
-        String QUERY = queryService.getQueryString(1);
+        String QUERY = getOrganismStatsQuery;
 
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
@@ -111,8 +108,7 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/libraries")
     public List<Map<String, Object>> getOrganismLibraries(@PathVariable long id) {
 
-//        DONE
-        String QUERY = queryService.getQueryString(2);
+        String QUERY = getOrganismLibrariesQuery;
 
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
@@ -125,8 +121,7 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/experiments")
     public List<Map<String, Object>> getOrganismExperiments(@PathVariable long id) {
 
-//        DONE
-        String QUERY = queryService.getQueryString(3);
+        String QUERY = getOrganismExperimentsQuery;
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
 
@@ -137,8 +132,7 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/topexperiments")
     public List<Map<String, Object>> getOrganismTopExperiments(@PathVariable long id) {
 
-//        DONE
-        String QUERY = queryService.getQueryString(4);
+        String QUERY = getOrganismTopExperimentsQuery;
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
 
@@ -149,8 +143,7 @@ public class OrganismController {
     @GetMapping("/organisms/{id}/graphs")
     public List<Map<String, Object>> getOrganismHistogram(@PathVariable long id) {
 
-//        DONE
-        String QUERY = queryService.getQueryString(5);
+        String QUERY = getOrganismHistogramQuery;
         Map<String, Long> params = new HashMap<>();
         params.put("genome_id", id);
 
@@ -192,7 +185,7 @@ public class OrganismController {
 
 
 
-        String QUERY = queryService.getQueryString(6);
+        String QUERY = getGenomeHeatMapQuery;
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", genomeId);
         params.addValue("geneIds", body.get("geneIds"));
@@ -205,7 +198,7 @@ public class OrganismController {
     public List<Map<String, Object>> getOrganismsWithCondition(
             @RequestParam String condition) {
 
-        String QUERY = queryService.getQueryString(7);
+        String QUERY = getGenomeWithConditionQuery;
         Map<String, String> params = new HashMap<>();
         params.put("condition", condition);
 

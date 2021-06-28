@@ -41,16 +41,12 @@ public class ControllerV2 {
 
         String QUERY = queryService.getQueryString(queryId);
         System.out.println(QUERY);
-        Map<String, Integer> params = new HashMap<>();
 
-        if (body != null) {
-            for (Map.Entry<String, Object> entry : body.entrySet()) {
-                params.put(entry.getKey(), Integer.valueOf((String) entry.getValue()));
-                System.out.println("Key = " + entry.getKey() +
-                        ", Value = " + Integer.valueOf((String) entry.getValue()));
-            }
-        }
+        if (body != null)
+            for (Map.Entry<String, Object> entry : body.entrySet())
+                System.out.println("Key: " + entry.getKey() + "\nValue: " + entry.getValue().toString());
 
-        return jdbcTemplate.queryForList(QUERY, params);
+
+        return jdbcTemplate.queryForList(QUERY, body);
     }
 }
