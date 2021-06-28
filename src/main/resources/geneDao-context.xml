@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="geneDaoReadAllQuery" class="java.lang.String">
+    <bean id="getAllGenesQuery" class="java.lang.String">
         <constructor-arg>
             <value><![CDATA[
 select
@@ -75,7 +75,6 @@ inner join _temp_barseq_fragment_score tbfs on tbf.bagseq_fragment_id = tbfs.bag
 inner join _temp_barseq_experiment tbe on tbfs.barseq_experiment_id = tbe.barseq_experiment_id
 where g.gene_id = :id
 order by tbfs.score desc;
-
         ]]></value>
         </constructor-arg>
     </bean>

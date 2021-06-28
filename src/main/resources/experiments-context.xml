@@ -73,7 +73,7 @@ inner join barseq_experiment be using(barseq_experiment_id)
 where be.bagseq_library_id = %d
 and be.barseq_experiment_id = %d
 order by (bgs.score_cnnls) desc
-limit 20
+limit 20;
         ]]></value>
         </constructor-arg>
     </bean>
@@ -91,7 +91,7 @@ where be.bagseq_library_id = %d
 and bfs.barseq_experiment_id = %d
 group by bfs.barcode, bfs.bagseq_fragment_id
 order by "average score" desc
-limit 100
+limit 100;
         ]]></value>
         </constructor-arg>
     </bean>
@@ -182,7 +182,7 @@ select
 from ranges r
 left outer join t on t.score_cnnls >= r.min and t.score_cnnls < r.max
 group by r.name
-order by cast(r.name as float)
+order by cast(r.name as float);
         ]]></value>
         </constructor-arg>
     </bean>
