@@ -22,7 +22,7 @@ public class GeneController {
     }
 
     @Autowired
-    @Qualifier("geneDaoReadAllQuery")
+    @Qualifier("getAllGenesQuery")
     private String getAllGenesQuery;
 
     @Autowired

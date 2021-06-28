@@ -18,7 +18,8 @@ function GenomeList() {
 	useEffect(() => {
 
 		async function fetchData() {
-			let res = await axios(`/api/organisms`);
+			// https://docs.google.com/spreadsheets/d/1OJNuSJz9_057EFYK5IbSUbV0dIMaY7Po3cnTlkhThq4/edit#gid=0
+			let res = await axios.post('v2/api/query/0')
 			res.data = res.data.map(e => {
 				e['link'] = <Link to={`/organisms/${e.genome_id}`}>See More</Link>;
 				e['ncbi_taxonomy_id'] =
@@ -96,8 +97,7 @@ function GenomeList() {
 			<Header title="TablePage" />
 			<Content>
 				<div className='container'>
-					{/* {genomeList && <TableReact title="Organisms" keyField='genome_id' content={genomeList} labels={lables} />} */}
-					{genomeList && <TableReactExpandable title="Organisms" keyField='genome_id' content={genomeList} labels={lables} expandRowFunction={expandRowFunction} />}
+					<TableReactExpandable title="Organisms" keyField='genome_id' content={genomeList} labels={lables} expandRowFunction={expandRowFunction} />
 				</div>
 			</Content>
 			<Footer />

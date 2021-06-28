@@ -118,14 +118,14 @@ public class Controller {
     }
 
 
-    @PostMapping("/query/{queryId}")
-    public List<Map<String, Object>> getQuery(@PathVariable Long queryId,
-                           @RequestBody(required = false) Map<String, Object> params){
-
-        String QUERY = queryService.getQueryString(queryId);
-
-        return jdbcTemplate.queryForList(QUERY, params);
-    }
+//    @PostMapping("/query/{queryId}")
+//    public List<Map<String, Object>> getQuery(@PathVariable Long queryId,
+//                           @RequestBody(required = false) Map<String, Object> params){
+//
+//        String QUERY = queryService.getQueryString(queryId);
+//
+//        return jdbcTemplate.queryForList(QUERY, params);
+//    }
 
 
 }

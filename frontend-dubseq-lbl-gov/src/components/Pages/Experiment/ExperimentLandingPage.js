@@ -20,15 +20,18 @@ function ExperiemntLandingPage() {
 
 	useEffect(() => {
 		async function fetchData() {
-			let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
+			// let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
+			let res1 = await axios.post('/v2/api/query/10', {"library_id": id, "experiment_id": id_experiment})
 			setStats(res1.data);
 
-			let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
-			res2.data = addLink(res2.data, 'name', ['gene id'], '/genes/?')
+			// let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
+			let res2 = await axios.post('/v2/api/query/11', {"library_id": id, "experiment_id": id_experiment})
+			res2.data = addLink(res2.data, 'gene_name', ['gene_id'], '/genes/?')
 			setGenes(res2.data);
 
-			let res3 = await axios(`/libraries/${id}/experiments/${id_experiment}/fragments`);
-			setFragments(res3.data);
+			// let res3 = await axios(`/libraries/${id}/experiments/${id_experiment}/fragments`);
+			// let res3 = await axios.post('/v2/api/query/12', {"library_id": id, "experiment_id": id_experiment})
+			// setFragments(res3.data);
 		}
 		fetchData();
 	}, [])
@@ -79,17 +82,17 @@ function ExperiemntLandingPage() {
 
 	let topScoringGensLabels = [
 		{
-			dataField: 'name',
+			dataField: 'gene_name',
 			text: 'Name',
 			sort: true
 		},
 		{
-			dataField: 'gene id',
+			dataField: 'gene_id',
 			text: 'Gene ID',
 			sort: true
 		},
 		{
-			dataField: 'gene score',
+			dataField: 'score',
 			text: 'Gene Score',
 			sort: true
 		}
@@ -116,7 +119,7 @@ function ExperiemntLandingPage() {
 	let expandRowFunction = (row, row_ind) => {
 		let genome_id = stats[0]['genome_id']
 		let experiment_id = stats[0]['barseq_experiment_id']
-		let gene_id = row['gene id']
+		let gene_id = row['gene_id']
 		return (
 			<div style={{ minHeight: '100px' }}>
 				<Link className='btn btn-primary'
@@ -136,7 +139,7 @@ function ExperiemntLandingPage() {
 					{stats && <TableHorizontal content={stats} labels={StatsLabels} title="General Information" />}
 					<br />
 					{/* {genes && <TableReact content={genes} keyField='gene id' labels={topScoringGensLabels} title="Top Scoring Genes (top 20 highest scores)" />} */}
-					<TablePaginatedExpand data={genes} keyField={'gene id'} columns={topScoringGensLabels} expandRowFunction={expandRowFunction} />
+					<TablePaginatedExpand data={genes} keyField={'gene_id'} columns={topScoringGensLabels} expandRowFunction={expandRowFunction} />
 					<br />
 					{/* {fragments && <TableReact content={fragments} keyField='fragment id' labels={topScoringFragments} title="Top Scoring Fragments" />} */}
 				</div>

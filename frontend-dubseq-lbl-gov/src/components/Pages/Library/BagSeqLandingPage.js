@@ -24,20 +24,21 @@ function BagSeqLandingPage() {
 	useEffect(() => {
 
 		async function fetchData() {
-			let res1 = await axios.get(`/api/libraries/${id}/stats`);
-			console.log(res1.data)
+			// let res1 = await axios.get(`/api/libraries/${id}/stats`);
+			let res1 = await axios.post('/v2/api/query/16', {'library_id': id})
 			setStats(res1.data);
-			let res2 = await axios.get(`/api/libraries/${id}/experiments`);
-			res2.data = addLink(res2.data, 'itnum', ['experiment id'], '/bagseq/libraries/${id}/experiments/${id_experiment}')
+			// let res2 = await axios.get(`/api/libraries/${id}/experiments`);
+			let res2 = await axios.post('/v2/api/query/17', {'library_id': id})
+			res2.data = addLink(res2.data, 'itnum', ['experiment_id'], '/bagseq/libraries/${id}/experiments/${id_experiment}')
 			setExperients(res2.data);
-			let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
-			
+
+			// let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
+			let res3 = await axios.post('/v2/api/query/13', {'library_id': id})
 			res3.data = res3.data.map((row, index) => ({
 				'uid': index,
 				...row
 			}))
 			res3.data.forEach(row => row['gene_name'] = <Link to={`/genes/${row['gene_id']}`}> {row['gene_name']} </Link>)
-			
 			setTopPerformingGenes(res3.data);
 
 			// Histogram
@@ -96,12 +97,12 @@ function BagSeqLandingPage() {
 
 	let ExperimentLabels = [
 		{
-			dataField: 'Condition',
+			dataField: 'condition_name',
 			text: 'Condition',
 			sort: true
 		},
 		{
-			dataField: 'High Scoring Genes',
+			dataField: 'high_scoring_genes',
 			text: 'High Scoring Genes',
 			sort: true
 		},
@@ -111,7 +112,7 @@ function BagSeqLandingPage() {
 			sort: true
 		},
 		{
-			dataField: 'experiment id',
+			dataField: 'experiment_id',
 			text: 'Experiment Id',
 			sort: true
 		},

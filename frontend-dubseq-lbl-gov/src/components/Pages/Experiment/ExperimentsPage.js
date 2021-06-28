@@ -23,11 +23,11 @@ function ExperimentsPage() {
 	useEffect(() => {
 
 		let fetchData = async () => {
-			const res = await axios("/api/experiments")
-			let links = addLink(res.data, 'Condition', ['Library id', 'id'], experimentIdLink)
-			links = addLink(links, 'Library name', ['Library id'], libraryIdLink)
+			// const res = await axios("/api/experiments")
+			const res = await axios.post('/v2/api/query/8')
+			let links = addLink(res.data, 'condition_name', ['library_id', 'experiment_id'], experimentIdLink)
+			links = addLink(links, 'library_name', ['library_id'], libraryIdLink)
 			links = links.map((row, indx) => ({ index: indx, ...row }))
-			console.log(links)
 			setExperiments(links);
 		}
 
@@ -52,22 +52,22 @@ function ExperimentsPage() {
 
 	let labels = [
 		{
-			dataField: 'Condition',
+			dataField: 'condition_name',
 			text: 'Condition',
 			sort: true
 		},
 		{
-			dataField: 'Library id',
+			dataField: 'library_id',
 			text: 'Library id',
 			sort: true
 		},
 		{
-			dataField: 'Library name',
+			dataField: 'library_name',
 			text: 'Library name',
 			sort: true
 		},
 		{
-			dataField: 'id',
+			dataField: 'experiment_id',
 			text: 'Id',
 			sort: true
 		},
@@ -106,7 +106,7 @@ function ExperimentsPage() {
 			libs.length !== 0 ? (
 				<div style={{ minHeight: '100px' }}>
 					<div>
-						Other libraries with {<span style={{ fontWeight: '600' }}>{props.row['Condition'].props.children}</span>},
+						Other libraries with {<span style={{ fontWeight: '600' }}>{props.row['condition_name'].props.children}</span>},
 						are {libs.map(lib => <Link to={`organisms/${lib['bagseq_library_id']}`}>{lib['name']}, </Link>)}
 					</div>
 				</div>)
@@ -121,7 +121,7 @@ function ExperimentsPage() {
 
 		// let libs = ['lib1', 'lib2']
 		return (
-			<ExpandedInfo row={row} condition={row['Condition'].props.children} />
+			<ExpandedInfo row={row} condition={row['condition_name'].props.children} />
 			// <div style={{ minHeight: '100px' }}>
 			// 	{/* <div>Other libraries with <span style={{ fontWeight: '600' }}>{row['Condition'].props.children}</span>, are {libs.map(lib => lib)}</div> */}
 			// 	<div>Other libraries with <span style={{ fontWeight: '600' }}>{row['Condition'].props.children}</span>, are {libs[row_ind].map(lib => lib)}</div>

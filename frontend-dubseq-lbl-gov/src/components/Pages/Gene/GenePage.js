@@ -15,7 +15,8 @@ function GenePage() {
 	useEffect(() => {
 
 		let fetchData = async () => {
-			let res = await axios('/api/getGenes')
+			// let res = await axios('/api/getGenes')
+			let res = await axios.post('/v2/api/query/18')
 			res = addLink(res.data, "name", ['gene_id'], '/genes/?')
 			setGenes(res)
 		}

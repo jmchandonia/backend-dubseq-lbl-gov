@@ -51,8 +51,7 @@ from barseq_experiment be
 inner join barseq_gene_score bgs on be.barseq_experiment_id = bgs.barseq_experiment_id
 where be.bagseq_library_id = %d
 group by be."name", be.barseq_experiment_id
-order by "High Scoring Genes" desc, 1
-
+order by "High Scoring Genes" desc, 1;
        ]]></value>
         </constructor-arg>
     </bean>
