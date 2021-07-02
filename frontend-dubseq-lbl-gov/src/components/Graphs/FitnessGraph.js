@@ -4,7 +4,8 @@ import axios from 'axios';
 import FitnessLandscapeD3 from '../D3Components/FitnessLandscapeD3';
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import downloadSvg from 'svg-crowbar';
 
 const range = 10000;
 const zoom = 0.2
@@ -30,6 +31,7 @@ function FitnessGraph() {
 	const [data, setData] = useState([])
 	const [position, setPosition] = useState({ start: 0, end: 0 })
 	const currentGeneId = useRef(null)
+	const svgElement = useRef(null)
 	const [organisms, setOrganisms] = useState([])
 	const [selectedOrganism, setSelectedOrganism] = useState(null)
 	const [experiments, setExperiments] = useState([])
@@ -42,7 +44,9 @@ function FitnessGraph() {
 		setSelectedOrganism(params.get("genome_id"))
 		setSelectedExperiment(params.get("experiment_id"))
 		currentGeneId.current = params.get("gene_id")
-		changeCurrent(currentGeneId.current)
+		if (currentGeneId.current) {
+			changeCurrent(currentGeneId.current)
+		}
 
 	}, location)
 
@@ -125,7 +129,7 @@ function FitnessGraph() {
 
 
 	// change the current showing gene_id.
-	const changeCurrent = async (gene_id) => {
+	async function changeCurrent(gene_id) {
 
 		currentGeneId.current = gene_id
 
@@ -136,9 +140,11 @@ function FitnessGraph() {
 		setPosition({ start: s, end: f })
 	}
 
+
+
+
 	return (
 		<Aux>
-
 			<div className='d-flex justify-content-between align-items-end'>
 				<div className={'w-50'}>
 					<Select placeholder={"Select Organism"}
@@ -180,22 +186,23 @@ function FitnessGraph() {
 						onClick={() => changeCurrent(currentGeneId.current)}
 						style={{ backgroundColor: "#0062cc", color: "#ffffff" }} >Reset</button>
 				</div>
+				<div>
+					<button className='btn btn-info'
+						onClick={() => {
+							downloadSvg(svgElement.current, 'geneExperimentGenome.svg');
+						}}
+					>SVG</button>
+				</div>
 
 			</div>
-			<div style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
-				{/* <Card style={{ width: '18rem' }}>
-					<ListGroup variant="flush">
-						{organisms.filter(e => e.id == selectedExperiment).map(e => <ListGroup.Item>{e.name}</ListGroup.Item>)}
-						{experiments.filter(e => e.id == selectedExperiment).map(e => <ListGroup.Item>{e.name}</ListGroup.Item>)}
-						<ListGroup.Item>{data.geneData ? data.geneData.filter(gene => (gene.gene_id == currentGeneId.current)).shift() : "_none"}</ListGroup.Item>
-					</ListGroup>
-				</Card> */}
+			<div id='fitness' style={{ backgroundColor: '#eeeeee', width: '100%', borderRadius: '10px', padding: '5px' }}>
 				<FitnessLandscapeD3
 					xAxisLable="Position along the genome (bp)"
 					yAxisLable="Fragment Fitness Score"
 					data={data}
 					current={data.geneData ? data.geneData.filter(gene => (gene.gene_id == currentGeneId.current)).shift() : {}}
 					handleClickGene={changeCurrent}
+					reference={svgElement}
 				/>
 			</div>
 		</Aux>
