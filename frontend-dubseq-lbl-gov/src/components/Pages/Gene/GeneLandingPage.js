@@ -25,16 +25,16 @@ function GeneLandingPage() {
 		let fetchData = async () => {
 
 			// let res1 = await axios(`/api/getGenes/${id}`)
-			let res1 = await axios.post('/v2/api/query/19', {"gene_id": id})
+			let res1 = await axios.post('/v2/api/query/19', {"gene_id": parseInt(id)})
 			setStats(res1.data)
 
 			// let res2 = await axios(`/api/getTopGeneExperiments/${id}`)
-			let res2 = await axios.post('/v2/api/query/21', {"gene_id": id})
+			let res2 = await axios.post('/v2/api/query/21', {"gene_id": parseInt(id)})
 			res2 = addLink(res2.data, 'name', ['barseq_experiment_id'], '/bagseq/libraries/1/experiments/?')
 			setExperiments(res2)
 
 			// let res3 = await axios(`/api/getGeneFragmentsExperiments/${id}`)
-			let res3 = await axios.post('/v2/api/query/20', {"gene_id": id})
+			let res3 = await axios.post('/v2/api/query/20', {"gene_id": parseInt(id)})
 			res3 = addLink(res3.data, 'name', ['barseq_experiment_id'], '/bagseq/libraries/1/experiments/?')
 			setFragmentExperiments(res3)
 		}

@@ -16,11 +16,11 @@
                 <![CDATA[
 select ge.gene_id,
        ge.name
-from _temp_gene ge
-         inner join _temp_barseq_gene_score tbgs on ge.gene_id = tbgs.gene_id
-         inner join _temp_barseq_experiment tbe on tbgs.barseq_experiment_id = tbe.barseq_experiment_id
+from gene ge
+         inner join barseq_gene_score bgs on ge.gene_id = bgs.gene_id
+         inner join barseq_experiment be on bgs.barseq_experiment_id = be.barseq_experiment_id
 where genome_id = (:g_id)
-  and tbe.barseq_experiment_id = :exp_id
+  and be.barseq_experiment_id = (:exp_id)
   and lower(ge.name) like
                 ]]>
             </value>
@@ -35,8 +35,8 @@ where genome_id = (:g_id)
 select ge.gene_id,
        ge.locus_tag,
        ge.name
-from _temp_gene ge
-where ge.genome_id = :genome_id
+from gene ge
+where ge.genome_id = (:genome_id)
   and lower(ge.name) like
                 ]]>
             </value>

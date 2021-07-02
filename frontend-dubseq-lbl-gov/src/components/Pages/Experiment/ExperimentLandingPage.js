@@ -21,11 +21,11 @@ function ExperiemntLandingPage() {
 	useEffect(() => {
 		async function fetchData() {
 			// let res1 = await axios(`/libraries/${id}/experiments/${id_experiment}/stats`);
-			let res1 = await axios.post('/v2/api/query/10', {"library_id": id, "experiment_id": id_experiment})
+			let res1 = await axios.post('/v2/api/query/10', {"library_id": parseInt(id), "experiment_id": parseInt(id_experiment)})
 			setStats(res1.data);
 
 			// let res2 = await axios(`/libraries/${id}/experiments/${id_experiment}/genes`);
-			let res2 = await axios.post('/v2/api/query/11', {"library_id": id, "experiment_id": id_experiment})
+			let res2 = await axios.post('/v2/api/query/11', {"library_id": parseInt(id), "experiment_id": parseInt(id_experiment)})
 			res2.data = addLink(res2.data, 'gene_name', ['gene_id'], '/genes/?')
 			setGenes(res2.data);
 

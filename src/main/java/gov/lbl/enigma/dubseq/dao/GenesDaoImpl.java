@@ -22,7 +22,7 @@ public class GenesDaoImpl implements GenesDao {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
-    @Qualifier("geneDaoReadAllQuery")
+    @Qualifier("getAllGenesQuery")
     private String query;
 
     /* SPRING INJECTION */

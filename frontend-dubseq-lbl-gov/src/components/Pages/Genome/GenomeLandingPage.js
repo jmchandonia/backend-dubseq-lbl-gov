@@ -24,16 +24,16 @@ function GenomeLandingPage() {
 
 		const fetchData = async () => {
 			// let res1 = await axios(`/api/organisms/${id}/stats`);
-			let res1 = await axios.post('/v2/api/query/1', { "genome_id": id })
+			let res1 = await axios.post('/v2/api/query/1', { "genome_id": parseInt(id) })
 			setStats(res1.data);
 
 			// let res2 = await axios(`/api/organisms/${id}/libraries`);
-			let res2 = await axios.post('/v2/api/query/2', { "genome_id": id })
+			let res2 = await axios.post('/v2/api/query/2', { "genome_id": parseInt(id) })
 			res2.data = addLink(res2.data, 'name', ['bagseq_library_id'], `/bagseq/libraries/<>`)
 			setLibrary(res2.data);
 
 			// let res3 = await axios(`/api/organisms/${id}/topexperiments`);
-			let res3 = await axios.post('/v2/api/query/4', { "genome_id": id })
+			let res3 = await axios.post('/v2/api/query/4', { "genome_id": parseInt(id) })
 			res3.data = addLink(res3.data, 'name', ['barseq_experiment_id'], `/bagseq/libraries/${id}/experiments/<>`)
 			res3.data = addLink(res3.data, 'gene_name', ['barseq_experiment_id', 'gene_id'], `/graphs/fitness/?genome_id=${id}&experiment_id=<>&gene_id=<>`)
 			setExperients(res3.data);

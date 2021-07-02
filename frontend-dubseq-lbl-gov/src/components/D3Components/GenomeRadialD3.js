@@ -5,12 +5,43 @@ import { scaleLinear } from 'd3-scale';
 import { max, min } from 'd3-array';
 import { pointRadial, lineRadial, curveLinearClosed } from 'd3-shape';
 import { uid } from 'react-uid';
+import { selectAll } from 'd3';
 
 let margin = 10;
 let width = 500;
 let height = width;
 let innerRadius = width / 3;
 let outerRadius = width / 2 - margin;
+
+function wrap(text) {
+    text.each(function() {
+        var text = select(this);
+        var words = text.text().split(/\s+/).reverse();
+        var lineHeight = 30;
+        var width = parseFloat(text.attr('width'));
+        var y = parseFloat(text.attr('y'));
+        var x = text.attr('x');
+        var anchor = text.attr('text-anchor');
+    
+        var tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('text-anchor', anchor);
+        var lineNumber = 0;
+        var line = [];
+        var word = words.pop();
+
+        while (word) {
+            line.push(word);
+            tspan.text(line.join(' '));
+            if (tspan.node().getComputedTextLength() > width) {
+                lineNumber += 1;
+                line.pop();
+                tspan.text(line.join(' '));
+                line = [word];
+                tspan = text.append('tspan').attr('x', x).attr('y', y + lineNumber * lineHeight).attr('anchor', anchor).text(word);
+            }
+            word = words.pop();
+        }
+    });
+}
 
 function GenomeRadialD3(props) {
 
@@ -55,9 +86,19 @@ function GenomeRadialD3(props) {
 		let title = svg.append('g')
 			.attr('transform', 'translate(-60, -10)');
 
-		title.append('text').text('Escherichia coli');
-		title.append('text').attr('transform', 'translate(0, 15)').text('BW25113');
-		title.append('text').attr('transform', 'translate(0, 30)').text('Dub-seq library');
+		title.append('text')
+			.attr('width', '100')
+			.attr('x', 60)
+			.attr('y', -40)
+			.attr('text-anchor', 'middle')
+			.attr('class', 'title')
+			.text(props.title)
+		
+		selectAll('.title').call(wrap)
+
+		// title.append('text').text('Escherichia coli');
+		// title.append('text').attr('transform', 'translate(0, 15)').text('BW25113');
+		// title.append('text').attr('transform', 'translate(0, 30)').text('Dub-seq library');
 
 
 	}
@@ -105,7 +146,7 @@ function GenomeRadialD3(props) {
 					.append('textPath')
 					// .attr('startOffset', )
 					.attr('xlink:href', d => '#' + uid(d))
-					.text(d => d.tickval/1000000 + 'Mb'))
+					.text(d => d.tickval / 1000000 + 'Mb'))
 
 			)
 

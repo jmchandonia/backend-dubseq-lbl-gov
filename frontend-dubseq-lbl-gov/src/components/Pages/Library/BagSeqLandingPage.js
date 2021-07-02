@@ -25,15 +25,15 @@ function BagSeqLandingPage() {
 
 		async function fetchData() {
 			// let res1 = await axios.get(`/api/libraries/${id}/stats`);
-			let res1 = await axios.post('/v2/api/query/16', {'library_id': id})
+			let res1 = await axios.post('/v2/api/query/16', {'library_id': parseInt(id)})
 			setStats(res1.data);
 			// let res2 = await axios.get(`/api/libraries/${id}/experiments`);
-			let res2 = await axios.post('/v2/api/query/17', {'library_id': id})
+			let res2 = await axios.post('/v2/api/query/17', {'library_id': parseInt(id)})
 			res2.data = addLink(res2.data, 'itnum', ['experiment_id'], '/bagseq/libraries/${id}/experiments/${id_experiment}')
 			setExperients(res2.data);
 
 			// let res3 = await axios.get(`/api/libraries/${id}/highscoregenes`);
-			let res3 = await axios.post('/v2/api/query/13', {'library_id': id})
+			let res3 = await axios.post('/v2/api/query/13', {'library_id': parseInt(id)})
 			res3.data = res3.data.map((row, index) => ({
 				'uid': index,
 				...row

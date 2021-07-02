@@ -56,7 +56,7 @@ function HeatMap() {
 	// Getting organisms.
 	useEffect(() => {
 		const fetchOrganisms = async () => {
-			let res = await axios('organisms')
+			let res = await axios.post('/v2/api/query/0')
 			setOrganisms(res.data)
 		}
 		fetchOrganisms();
@@ -66,7 +66,7 @@ function HeatMap() {
 	useEffect(() => {
 		if (!selectedOrganism) return
 		const fetchExperiment = async () => {
-			let res = await axios(`organisms/${selectedOrganism}/experiments`)
+			let res = await axios.post('/v2/api/query/3', {'genome_id': selectedOrganism})
 			// console.log(res.data)
 			setExperiments(res.data)
 		}
@@ -81,7 +81,8 @@ function HeatMap() {
 		if (!selectedOrganism) return
 
 		try {
-			let res = await axios(`organisms/${selectedOrganism}/genes/${start.toLowerCase()}`)
+			// let res = await axios(`organisms/${selectedOrganism}/genes/${start.toLowerCase()}`)
+			let res = await axios(`/api/organisms/${parseInt(selectedOrganism)}/genes/${start.toLowerCase()}`)
 			console.log(res.data)
 			return res.data.map(e => ({ value: e['gene_id'], label: e['name'] }))
 		} catch (err) {
