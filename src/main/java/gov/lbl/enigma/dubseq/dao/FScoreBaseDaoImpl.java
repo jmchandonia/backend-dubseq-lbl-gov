@@ -28,7 +28,7 @@ public class FScoreBaseDaoImpl implements FScoreBaseDao {
         ArrayList<FScoreBaseRecord> result = new ArrayList<>();
         ObjectReader objectReader = mapper.reader(FScoreBaseRecord.class).with(schema);
 
-        try(Reader reader = new FileReader(fileName)){
+        try(Reader reader = new FileReader("docs/fscore_base.tsv")){
             MappingIterator<FScoreBaseRecord> record = objectReader.readValues(reader);
             while(record.hasNext()){
 
