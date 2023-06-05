@@ -198,7 +198,7 @@
         <repository>
             <id>github</id>
             <name>Github Repo</name>
-            <url>https://maven.pkg.github.com/gzakhar/backend-dubseq-lbl-gov</url>
+            <url>https://maven.pkg.github.com/yuexiliu6/backend-dubseq-lbl-gov</url>
         </repository>
     </distributionManagement>
 
