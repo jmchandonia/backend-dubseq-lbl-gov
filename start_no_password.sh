@@ -14,6 +14,6 @@ export URL=jdbc:postgresql://database-dubseq.c7oi87ikmkmz.us-east-2.rds.amazonaw
 export URL=jdbc:postgresql://localhost:5432/dubseq
 export DB_USERNAME=dubseq
 export DB_PASSWORD=dubseq
-export SECURITY_ENABLED=false
+export SECURITY_ENABLED=False
 #java -jar dubseq-lbl-gov-1.0-20210114.030854-8.jar
 java -jar dubseq-lbl-gov-1.0-SNAPSHOT.jar
