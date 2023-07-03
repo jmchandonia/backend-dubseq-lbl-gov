@@ -66,7 +66,7 @@ public class PublicKeyReader {
         try {
 
 //            public key.
-            PublicKey publicKey = get("/Users/gzakhar/test_key.pub");
+            PublicKey publicKey = get("/Users/gzahar/.ssh/test_key.pub");
 //            indicate the type of cipher.
             Cipher instance = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
 //            initilize cipher to encryp with paramter public_key.

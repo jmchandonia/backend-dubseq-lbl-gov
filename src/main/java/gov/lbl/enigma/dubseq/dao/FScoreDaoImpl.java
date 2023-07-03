@@ -30,7 +30,6 @@ public class FScoreDaoImpl implements FScoreDao {
         try(Reader reader = new FileReader(fileName)){
             MappingIterator<FScoreRecord> record = objectReader.readValues(reader);
             while(record.hasNext()){
-
                 result.add(record.nextValue());
             }
         }

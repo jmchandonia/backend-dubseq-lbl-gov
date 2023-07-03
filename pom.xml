@@ -124,6 +124,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.2.2.RELEASE</version>
                 <executions>
                     <execution>
                         <goals>
@@ -173,6 +174,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -196,7 +198,7 @@
         <repository>
             <id>github</id>
             <name>Github Repo</name>
-            <url>https://maven.pkg.github.com/gzakhar/backend-dubseq-lbl-gov</url>
+            <url>https://maven.pkg.github.com/yuexiliu6/backend-dubseq-lbl-gov</url>
         </repository>
     </distributionManagement>
 
